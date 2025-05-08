@@ -1,6 +1,5 @@
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ContainerImage extends StatelessWidget {
   const ContainerImage(
@@ -31,7 +30,7 @@ class ContainerImage extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-            margin: EdgeInsets.symmetric(horizontal: horizontalMargin ?? 20.w),
+            margin: EdgeInsets.symmetric(horizontal: horizontalMargin ?? 20),
             decoration: BoxDecoration(
                 borderRadius: borderRadius != null
                     ? BorderRadius.circular(borderRadius!)
@@ -59,8 +58,8 @@ class ContainerImage extends StatelessWidget {
                     : Image.asset(
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.image),
-                        height: height ?? 10.h,
-                        width: width ?? 10.w,
+                        height: height ?? 10,
+                        width: width ?? 10,
                         image,
                         fit: fit ?? BoxFit.cover))));
   }

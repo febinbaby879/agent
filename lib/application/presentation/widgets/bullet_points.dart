@@ -1,7 +1,6 @@
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BullletPoints extends StatelessWidget {
   const BullletPoints(
@@ -27,13 +26,13 @@ class BullletPoints extends StatelessWidget {
                     pointStyle ??
                         Text('• ',
                             style: textHeadStyle1.copyWith(
-                                color: kBlack, fontSize: 14.sp)),
+                                color: kBlack, fontSize: 14)),
                     kWidth5,
                     Expanded(
                         child: Text(texts[index],
                             style: style ??
                                 textStyle1.copyWith(
-                                    fontSize: 12.3.sp,
+                                    fontSize: 12.3,
                                     fontWeight: FontWeight.w700)))
                   ]),
                   subTexts != null && subTexts!.isNotEmpty ? kHeight5 : kEmpty,

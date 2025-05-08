@@ -1,7 +1,6 @@
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorRefreshIndicator extends StatelessWidget {
   const ErrorRefreshIndicator({
@@ -28,7 +27,7 @@ class ErrorRefreshIndicator extends StatelessWidget {
           kHeight50,
           kHeight50,
           image != null && image != ''
-              ? Image.asset(image!, height: 200.h)
+              ? Image.asset(image!, height: 200)
               : const Icon(Icons.refresh, color: kGrey),
           Center(child: Text(errorMessage)),
           const SizedBox(width: double.infinity)

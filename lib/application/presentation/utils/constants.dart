@@ -1,28 +1,27 @@
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const errorMessage = 'Something went wrong, please try again';
 const poppins = 'Poppins';
 
 const kEmpty = SizedBox();
 
-final kHeight5 = SizedBox(height: 5.h);
-final kHeight10 = SizedBox(height: 10.h);
-final kHeight15 = SizedBox(height: 15.h);
-final kHeight20 = SizedBox(height: 20.h);
-final kHeight30 = SizedBox(height: 30.h);
-final kHeight40 = SizedBox(height: 40.h);
-final kHeight50 = SizedBox(height: 50.h);
-final kHeight60 = SizedBox(height: 60.h);
-final kHeight7 = SizedBox(height: 7.h);
+const kHeight5 = SizedBox(height: 5);
+const kHeight10 = SizedBox(height: 10);
+const kHeight15 = SizedBox(height: 15);
+const kHeight20 = SizedBox(height: 20);
+const kHeight30 = SizedBox(height: 30);
+const kHeight40 = SizedBox(height: 40);
+const kHeight50 = SizedBox(height: 50);
+const kHeight60 = SizedBox(height: 60);
+const kHeight7 = SizedBox(height: 7);
 
-final kWidth5 = SizedBox(width: 5.w);
-final kWidth10 = SizedBox(width: 10.w);
-final kWidth15 = SizedBox(width: 15.w);
-final kWidth20 = SizedBox(width: 20.w);
-final kWidth30 = SizedBox(width: 30.w);
-final kWidth50 = SizedBox(width: 50.w);
+const kWidth5 = SizedBox(width: 5);
+const kWidth10 = SizedBox(width: 10);
+const kWidth15 = SizedBox(width: 15);
+const kWidth20 = SizedBox(width: 20);
+const kWidth30 = SizedBox(width: 30);
+const kWidth50 = SizedBox(width: 50);
 
 final kRadius5 = BorderRadius.circular(5);
 final kRadius7 = BorderRadius.circular(7);
@@ -31,13 +30,13 @@ final kRadius15 = BorderRadius.circular(15);
 final kRadius50 = BorderRadius.circular(50);
 
 TextStyle textHeadStyle1 =
-    TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp, height: 1.9);
+    const TextStyle(fontWeight: FontWeight.w700, fontSize: 15, height: 1.9);
 
 TextStyle textStyle1 =
-    TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp, height: 1.9);
+    const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, height: 1.9);
 
 TextStyle textThinStyle1 =
-    TextStyle(fontWeight: FontWeight.w300, fontSize: 11.sp, height: 1.9);
+    const TextStyle(fontWeight: FontWeight.w300, fontSize: 11, height: 1.9);
 
 List<BoxShadow> boxShadow1 = const [
   BoxShadow(spreadRadius: 5, blurRadius: 10, offset: Offset(0, 3), color: kGrey)
@@ -53,3 +52,6 @@ List<BoxShadow> boxShadow4 = [
   const BoxShadow(
       spreadRadius: 2, blurRadius: 5, offset: Offset(0, 1), color: kGrey)
 ];
+
+// Assets
+String eduGuardianLogo = 'assets/images/eduGuardian_logo.jpeg';
