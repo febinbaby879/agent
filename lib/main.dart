@@ -4,7 +4,10 @@ import 'package:agent_dashboard/domain/core/binding/bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-void main() => runApp(const AgentDashBoard());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const AgentDashBoard());
+}
 
 class AgentDashBoard extends StatelessWidget {
   const AgentDashBoard({super.key});

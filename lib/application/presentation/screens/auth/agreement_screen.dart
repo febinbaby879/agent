@@ -1,5 +1,5 @@
 import 'package:agent_dashboard/application/controller/agreement.dart';
-import 'package:agent_dashboard/application/presentation/screens/argeement/widgets/pdf_viewer_blob.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/widgets/pdf_viewer_blob.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdfx/pdfx.dart';
