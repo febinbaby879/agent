@@ -13,12 +13,11 @@ class AgentDashBoard extends StatelessWidget {
   Widget build(BuildContext context) => GetMaterialApp(
       title: 'Agent',
       theme: ThemeData(
+          fontFamily: 'Merriweather',
           primaryColor: kBluePrimary,
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: kGreyLightBackground,
-          textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: kBlack, displayColor: kBlack, fontFamily: 'Poppins')),
+          scaffoldBackgroundColor: kWhite),
       getPages: GetXRouterConfig.routes,
-      initialRoute: Routes.signatureTest,
+      initialRoute: Routes.homeScreen,
       debugShowCheckedModeBanner: false);
 }
