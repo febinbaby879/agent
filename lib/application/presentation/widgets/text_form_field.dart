@@ -33,6 +33,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLength,
     this.lebelText,
     this.focusedBorder,
+    this.autovalidateMode,
     this.inputFormatters = const <TextInputFormatter>[],
   });
 
@@ -62,6 +63,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String value)? onChanged;
   final List<TextInputFormatter> inputFormatters;
   final String? lebelText;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -85,6 +87,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
+    autovalidateMode:  widget.autovalidateMode,
       inputFormatters: widget.inputFormatters,
       keyboardType: widget.inputType,
       onChanged: widget.onChanged,

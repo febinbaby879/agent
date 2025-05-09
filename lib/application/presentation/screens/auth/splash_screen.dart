@@ -7,8 +7,8 @@ class ScreenSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<AuthController>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller = Get.find<AuthController>();
       controller.getLog(context);
     });
     return const Scaffold(

@@ -1,6 +1,6 @@
 class Routes {
-  static String homeScreen = '/';
-  static String initial = '/splash';
+  static String initial = '/';
+  static String homeScreen = '/home';
 
   static const String login = '/sigin';
   static const String signUp = '/signUp';
@@ -8,5 +8,5 @@ class Routes {
   static const String resetPassword = '/reset_password';
 
   static const String profile = '/profile';
-  static const String signatureTest = '/signature_test';
+  static const String agrementSign = '/agreement_signature';
 }
