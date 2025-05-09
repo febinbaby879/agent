@@ -48,23 +48,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class ApplicationsContent extends StatelessWidget {
-  const ApplicationsContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text("Applications Content goes here."));
-  }
-}
-
-class CoursesContent extends StatelessWidget {
-  const CoursesContent({super.key});
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text("Courses Content goes here."));
-}
-
 class OnlineCounsellorContent extends StatelessWidget {
   const OnlineCounsellorContent({super.key});
 
