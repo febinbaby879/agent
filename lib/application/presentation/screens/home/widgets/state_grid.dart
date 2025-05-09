@@ -17,21 +17,31 @@ class BuildStateGrid extends StatelessWidget {
       child: Row(children: [
         Expanded(
             child: BuildStatteItem(
+                onTap: () {},
                 count: '1',
-                label: 'Institution',
+                label: 'Total Applications',
                 color: kpurple400!,
                 icon: Icons.business)),
         Expanded(
             child: BuildStatteItem(
+                onTap: () {},
                 count: '11',
-                label: 'Courses',
+                label: 'New Applications',
                 color: kpurple400!,
                 icon: Icons.menu_book)),
         Expanded(
             child: BuildStatteItem(
+                onTap: () {},
                 count: '0',
-                label: 'Applications',
+                label: 'Offer Letter',
                 color: kpurple400!,
-                icon: Icons.description))
+                icon: Icons.description)),
+        Expanded(
+            child: BuildStatteItem(
+                onTap: () {},
+                count: '1',
+                label: 'Visa Approved',
+                color: kpurple400!,
+                icon: Icons.business)),
       ]));
 }

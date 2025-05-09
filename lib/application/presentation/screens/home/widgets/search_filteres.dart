@@ -158,20 +158,16 @@ class _BuildSearchAndFilersState extends State<BuildSearchAndFilers> {
                                 });
                               })))
                 ])),
-            Obx(() => homeController.toDateController.text.isNotEmpty ||
-                    homeController.fromDateController.text.isNotEmpty ||
-                    homeController.selectedIntake.value.isNotEmpty
-                ? Container(
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: kpurple400!),
-                        borderRadius: kRadius5),
-                    width: 50,
-                    height: 50,
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.done, color: kpurple400)))
-                : kEmpty)
+            // Container(
+            //     margin: const EdgeInsets.only(left: 5),
+            //     decoration: BoxDecoration(
+            //         border: Border.all(color: kpurple400!),
+            //         borderRadius: kRadius5),
+            //     width: 50,
+            //     height: 50,
+            //     child: IconButton(
+            //         onPressed: () {},
+            //         icon: Icon(Icons.done, color: kpurple400)))
           ])
     ]);
   }

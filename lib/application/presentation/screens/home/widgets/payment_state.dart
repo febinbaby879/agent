@@ -24,6 +24,7 @@ class BuildAndSatatePayments extends StatelessWidget {
           Expanded(
               flex: 1,
               child: BuildStatteItem(
+                  onTap: () {},
                   count: '0',
                   label: 'Visas Approved',
                   color: kpurple400!,
@@ -32,6 +33,7 @@ class BuildAndSatatePayments extends StatelessWidget {
           Expanded(
               flex: 1,
               child: BuildStatteItem(
+                  onTap: () {},
                   count: '0',
                   label: 'Visas Rejected',
                   color: kpurple400!,
@@ -40,6 +42,7 @@ class BuildAndSatatePayments extends StatelessWidget {
           Expanded(
               flex: 1,
               child: BuildStatteItem(
+                  onTap: () {},
                   count: '0',
                   label: 'Payments',
                   color: kpurple400!,

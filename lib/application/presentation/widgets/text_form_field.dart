@@ -95,8 +95,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       autofocus: false,
       cursorHeight: 17,
       cursorWidth: 2.2,
-      onTapOutside: (event) =>
-          widget.onTapOutside != null ? widget.onTapOutside!() : null,
+      onTapOutside: (event) => widget.onTapOutside != null
+          ? widget.onTapOutside!()
+          : FocusScope.of(context).unfocus(),
       onTap: widget.onTap,
       textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
       controller: widget.controller,

@@ -1,8 +1,8 @@
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
 
-class BuildTopNavbar extends StatelessWidget {
-  const BuildTopNavbar({super.key});
+class SideBar extends StatelessWidget {
+  const SideBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,12 @@ class BuildTopNavbar extends StatelessWidget {
             tabKey: 'courses',
           ),
           BuildNavItem(
-              title: 'Online Counsellor Courses',
-              icon: Icons.menu_book_outlined,
+              title: 'Institutions',
+              icon: Icons.connect_without_contact_sharp,
+              tabKey: 'institution'),
+          BuildNavItem(
+              title: 'Connect Consiller',
+              icon: Icons.connect_without_contact_sharp,
               tabKey: 'online_courses')
         ]));
   }
