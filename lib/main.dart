@@ -19,6 +19,6 @@ class AgentDashBoard extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: kBlack, displayColor: kBlack, fontFamily: 'Poppins')),
       getPages: GetXRouterConfig.routes,
-      initialRoute: Routes.homeScreen,
+      initialRoute: Routes.signatureTest,
       debugShowCheckedModeBanner: false);
 }

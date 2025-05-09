@@ -8,4 +8,5 @@ class Routes {
   static const String resetPassword = '/reset_password';
 
   static const String profile = '/profile';
+  static const String signatureTest = '/signature_test';
 }
