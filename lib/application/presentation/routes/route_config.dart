@@ -1,5 +1,5 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
-import 'package:agent_dashboard/application/presentation/screens/argeement/agreement_screen.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/agreement_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
