@@ -9,50 +9,50 @@ import 'dart:ui' as ui;
 class PdfService {
   static Future<Uint8List> addSignatureToPdf(
       Uint8List originalPdfBytes, Uint8List signatureBytes) async {
-    try {
-      final renderDoc = await render.PdfDocument.openData(originalPdfBytes);
-      final pdf = pw.Document();
+        try {
+              final renderDoc = await render.PdfDocument.openData(originalPdfBytes);
+    final pdf = pw.Document();
 
-      for (int i = 1; i <= renderDoc.pageCount; i++) {
-        final page = await renderDoc.getPage(i);
-        final pageImage = await page.render();
-        final rawImage = await pageImage.createImageDetached();
+    for (int i = 1; i <= renderDoc.pageCount; i++) {
+      final page = await renderDoc.getPage(i);
+      final pageImage = await page.render();
+      final rawImage = await pageImage.createImageDetached();
 
-        // Convert dart:ui.Image to image.Image (from image package)
-        final imgBytes =
-            await rawImage.toByteData(format: ui.ImageByteFormat.png);
-        final imgList = imgBytes!.buffer.asUint8List();
+      // Convert dart:ui.Image to image.Image (from image package)
+      final imgBytes =
+          await rawImage.toByteData(format: ui.ImageByteFormat.png);
+      final imgList = imgBytes!.buffer.asUint8List();
 
-        pdf.addPage(
-          pw.Page(
-            pageFormat: PdfPageFormat(page.width, page.height),
-            build: (_) {
-              return pw.Stack(
-                children: [
-                  pw.Image(pw.MemoryImage(imgList), fit: pw.BoxFit.cover),
-                  if (i == renderDoc.pageCount)
-                    pw.Positioned(
-                      bottom: 30,
-                      right: 30,
-                      child: pw.Image(
-                        pw.MemoryImage(signatureBytes),
-                        width: 100,
-                        height: 50,
-                      ),
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat(page.width, page.height),
+          build: (_) {
+            return pw.Stack(
+              children: [
+                pw.Image(pw.MemoryImage(imgList), fit: pw.BoxFit.cover),
+                if (i == renderDoc.pageCount)
+                  pw.Positioned(
+                    bottom: 30,
+                    right: 30,
+                    child: pw.Image(
+                      pw.MemoryImage(signatureBytes),
+                      width: 100,
+                      height: 50,
                     ),
-                ],
-              );
-            },
-          ),
-        );
-        // await page.close();
-      }
-
-      await renderDoc.dispose();
-      return pdf.save();
-    } catch (e) {
-      print('sign pdf error : $e');
-      return originalPdfBytes;
+                  ),
+              ],
+            );
+          },
+        ),
+      );
+      // await page.close();
     }
+
+    await renderDoc.dispose();
+    return pdf.save();
+        } catch (e) {
+          print('sign pdf error : $e');
+          return originalPdfBytes;
+        }
   }
 }

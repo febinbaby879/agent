@@ -4,7 +4,10 @@ import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-void main() => runApp(const AgentDashBoard());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const AgentDashBoard());
+}
 
 class AgentDashBoard extends StatelessWidget {
   const AgentDashBoard({super.key});
@@ -18,6 +21,6 @@ class AgentDashBoard extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: kWhite),
       getPages: GetXRouterConfig.routes,
-      initialRoute: Routes.homeScreen,
+      initialRoute: Routes.initial,
       debugShowCheckedModeBanner: false);
 }
