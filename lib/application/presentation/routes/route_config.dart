@@ -1,5 +1,7 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
-import 'package:agent_dashboard/application/presentation/screens/auth/agreement_screen.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/widgets/agreement_screen.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +14,19 @@ class GoRouterConfig {
       errorBuilder: (context, state) => _errorScreen());
   static final List<RouteBase> routes = [
     GoRoute(
+        path: Routes.initial,
+        builder: (context, state) => const ScreenSplash()),
+    GoRoute(
+        path: Routes.login, builder: (context, state) => const ScreenLogin()),
+    GoRoute(
         path: Routes.profile,
         builder: (context, state) => const ScreenProfile()),
     GoRoute(
         path: Routes.homeScreen,
         builder: (context, state) => const HomeScreen()),
     GoRoute(
-        path: Routes.signatureTest,
-        builder: (context, state) => const ScreenSignatureTest()),
+        path: Routes.agrementSign,
+        builder: (context, state) => const ScreenAgrementSignature()),
   ];
   static _errorScreen() => Scaffold(
         appBar: AppBar(title: const Text('Error')),

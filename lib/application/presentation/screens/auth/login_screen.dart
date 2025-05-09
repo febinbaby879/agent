@@ -1,21 +1,18 @@
+import 'package:agent_dashboard/application/controller/auth.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/widgets/login_card.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/widgets/otp_card.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/widgets/sign_up_card.dart';
+import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ScreenLogin extends StatefulWidget {
+class ScreenLogin extends StatelessWidget {
   const ScreenLogin({super.key});
 
   @override
-  State<ScreenLogin> createState() => _ScreenLoginState();
-}
-
-class _ScreenLoginState extends State<ScreenLogin> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
-  bool _rememberMe = false;
-
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AuthController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: LayoutBuilder(
@@ -45,7 +42,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
               // Right side with login form
               Expanded(
-                flex: isMobile ? 10 : 4,
+                flex: isMobile ? 1 : 6,
                 child: Container(
                   color: Colors.white,
                   padding: EdgeInsets.symmetric(
@@ -63,155 +60,24 @@ class _ScreenLoginState extends State<ScreenLogin> {
                             alignment: Alignment.topLeft,
                             child: Image.asset(
                               eduGuardianLogo,
-                              height: 60,
+                              height: 160,fit: BoxFit.contain,
                             ),
                           ),
-                        if (isMobile) const SizedBox(height: 40),
-
-                        // Welcome text
-                        const Text(
-                          'Welcome to EduGuardian Agent Portal',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF4A4A4A),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Please sign-in to your account',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF6B7280),
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-
-                        // Email/Username field
-                        const Row(
-                          children: [
-                            Text(
-                              'Email',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF6B7280),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            hintText: 'Enter your email or username',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 16,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Password field
-                        const Text(
-                          'Password',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF6B7280),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: _passwordController,
-                          obscureText: _obscurePassword,
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 16,
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscurePassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Remember me and Forgot Password
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _rememberMe,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _rememberMe = value ?? false;
-                                    });
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                                const Text(
-                                  'Remember Me',
-                                  style: TextStyle(color: Color(0xFF6B7280)),
-                                ),
-                              ],
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Sign In button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF6366F1),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
+                        if (isMobile) const SizedBox(height: 20),
+                        // Tab buttons
+                        const _TabButtons(),
+                        kHeight10,
+                        Obx(
+                          () {
+                            if (controller.showOtp.value) {
+                              return const OtpCard();
+                            }
+                            if (controller.showLogin.value) {
+                              return const LoginCard();
+                            }
+                            return const SignUPCard();
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -220,6 +86,64 @@ class _ScreenLoginState extends State<ScreenLogin> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _TabButtons extends StatelessWidget {
+  const _TabButtons();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<AuthController>();
+    return Obx(
+      () => Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                controller.showLoginCard(true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: controller.showLogin.value ? kPurple : null,
+                foregroundColor: controller.showLogin.value ? kWhite : null,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          kWidth10,
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                controller.showLoginCard(false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: controller.showLogin.value ? null : kPurple,
+                foregroundColor: controller.showLogin.value ? null : kWhite,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'SignUp',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -23,11 +23,23 @@ const kWidth20 = SizedBox(width: 20);
 const kWidth30 = SizedBox(width: 30);
 const kWidth50 = SizedBox(width: 50);
 
+adjustWidth(double width) {
+  return SizedBox(width: width);
+}
+
+adjustHieght(double height) {
+  return SizedBox(height: height);
+}
+
 final kRadius5 = BorderRadius.circular(5);
 final kRadius7 = BorderRadius.circular(7);
 final kRadius10 = BorderRadius.circular(10);
 final kRadius15 = BorderRadius.circular(15);
 final kRadius50 = BorderRadius.circular(50);
+
+adjustRadius(double radius) {
+  return BorderRadius.circular(radius);
+}
 
 TextStyle textHeadStyle1 =
     const TextStyle(fontWeight: FontWeight.w700, fontSize: 15, height: 1.9);
