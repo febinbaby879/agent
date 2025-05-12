@@ -53,7 +53,7 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                               ? _buildRequestForm(controller, true)
                               : controller.selectedRequest.value?.id == null ||
                                       !controller.showRequestDetail.value
-                                  ? _buildRequestsList(controller)
+                                  ? _buildRequestsList(controller,mobile: true)
                                   : _buildRequestDetails(controller,
                                       controller.selectedRequest.value!)),
                     ],
@@ -176,8 +176,8 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
     );
   }
 
-  Widget _buildRequestsList(CounsillerController controller) {
-    final showTrailing = MediaQuery.of(context).size.width > 1200;
+  Widget _buildRequestsList(CounsillerController controller,{bool mobile = false}) {
+    final showTrailing = mobile;
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
