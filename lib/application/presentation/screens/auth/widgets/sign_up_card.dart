@@ -88,8 +88,65 @@ class SignUPCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               CustomTextField(
-                hintText: 'Name',
-                controller: controller.nameSignupController,
+                hintText: 'Agency Name',
+                controller: controller.agencyNameSignupController,
+                validate: Validate.notNull,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Directors Name',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Directors Name',
+                controller: controller.directorsNameSignupController,
+                validate: Validate.notNull,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Country',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Country',
+                controller: controller.countrySignupController,
+                validate: Validate.notNull,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Address',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Address',
+                controller: controller.addressSignupController,
                 validate: Validate.notNull,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),

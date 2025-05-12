@@ -8,6 +8,10 @@ class AuthController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailSignupController = TextEditingController();
   final TextEditingController nameSignupController = TextEditingController();
+  final TextEditingController agencyNameSignupController = TextEditingController();
+  final TextEditingController directorsNameSignupController = TextEditingController();
+  final TextEditingController countrySignupController = TextEditingController();
+  final TextEditingController addressSignupController = TextEditingController();
   final TextEditingController phoneSignupController = TextEditingController();
   final TextEditingController otpSignupController = TextEditingController();
 
