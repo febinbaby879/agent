@@ -60,7 +60,8 @@ class ScreenLogin extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: Image.asset(
                               eduGuardianLogo,
-                              height: 160,fit: BoxFit.contain,
+                              height: 160,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         if (isMobile) const SizedBox(height: 20),

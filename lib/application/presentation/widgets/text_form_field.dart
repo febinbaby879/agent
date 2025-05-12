@@ -29,6 +29,7 @@ class CustomTextField extends StatefulWidget {
     this.enabledBorder,
     this.password,
     this.borderRadius = 8,
+    this.autofocus = false,
     this.onChanged,
     this.maxLength,
     this.lebelText,
@@ -56,6 +57,7 @@ class CustomTextField extends StatefulWidget {
   final Color? fillColor;
   final TextCapitalization? textCapitalization;
   final bool obscureText;
+  final bool autofocus;
   final TextEditingController? password;
   final InputBorder? enabledBorder;
   final InputBorder? focusedBorder;
@@ -87,56 +89,59 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-    autovalidateMode:  widget.autovalidateMode,
-      inputFormatters: widget.inputFormatters,
-      keyboardType: widget.inputType,
-      onChanged: widget.onChanged,
-      maxLines: widget.maxLines ?? 1,
-      maxLength: widget.maxLength,
-      style: textStyle1.copyWith(fontWeight: FontWeight.w700),
-      obscureText: showEye,
-      autofocus: false,
-      cursorHeight: 17,
-      cursorWidth: 2.2,
-      onTapOutside: (event) => widget.onTapOutside != null
-          ? widget.onTapOutside!()
-          : FocusScope.of(context).unfocus(),
-      onTap: widget.onTap,
-      textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
-      controller: widget.controller,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: BorderSide(color: kpurple400!)),
-          hintStyle: textStyle1,
-          prefixIconConstraints: BoxConstraints.tight(const Size(43, 30)),
-          labelText: widget.lebelText,
-          errorMaxLines: 5,
-          fillColor: widget.fillColor ?? kWhite,
-          filled: true,
-          disabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(7)),
-          enabledBorder: widget.enabledBorder ??
-              OutlineInputBorder(borderSide: BorderSide(color: kpurple400!)),
-          focusedBorder: widget.focusedBorder,
-          counter: const SizedBox.shrink(),
-          contentPadding: calculateContentPadding(),
-          suffixIcon: widget.obscureText
-              ? IconButton(
-                  onPressed: () => setState(() => showEye = !showEye),
-                  icon: Icon(
-                      showEye
-                          ? Icons.remove_red_eye_outlined
-                          : Icons.remove_red_eye,
-                      color: kPurple))
-              : widget.suffixIcon,
-          prefix: widget.prefix,
-          prefixIcon: widget.prefixIcon,
-          hintText: widget.hintText),
-      validator: (value) => ValidationTextField.validateTextField(
+        autovalidateMode: widget.autovalidateMode,
+        inputFormatters: widget.inputFormatters,
+        keyboardType: widget.inputType,
+        onChanged: widget.onChanged,
+        maxLines: widget.maxLines ?? 1,
+        maxLength: widget.maxLength,
+        style: textStyle1.copyWith(fontWeight: FontWeight.w700),
+        obscureText: showEye,
+        autofocus: widget.autofocus,
+        cursorHeight: 17,
+        cursorWidth: 2.2,
+        onTapOutside: (event) => widget.onTapOutside != null
+            ? widget.onTapOutside!()
+            : FocusScope.of(context).unfocus(),
+        onTap: widget.onTap,
+        textCapitalization:
+            widget.textCapitalization ?? TextCapitalization.none,
+        controller: widget.controller,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(color: kpurple400!)),
+            hintStyle: textStyle1,
+            prefixIconConstraints: BoxConstraints.tight(const Size(43, 30)),
+            labelText: widget.lebelText,
+            errorMaxLines: 5,
+            fillColor: widget.fillColor ?? kWhite,
+            filled: true,
+            disabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(7)),
+            enabledBorder: widget.enabledBorder ??
+                OutlineInputBorder(borderSide: BorderSide(color: kpurple400!)),
+            focusedBorder: widget.focusedBorder,
+            counter: const SizedBox.shrink(),
+            contentPadding: calculateContentPadding(),
+            suffixIcon: widget.obscureText
+                ? IconButton(
+                    onPressed: () => setState(() => showEye = !showEye),
+                    icon: Icon(
+                        showEye
+                            ? Icons.remove_red_eye_outlined
+                            : Icons.remove_red_eye,
+                        color: kPurple))
+                : widget.suffixIcon,
+            prefix: widget.prefix,
+            prefixIcon: widget.prefixIcon,
+            hintText: widget.hintText),
+        validator: (value) => ValidationTextField.validateTextField(
           labelText: widget.hintText,
           validate: widget.validate,
           value: value,
-          password: widget.password?.text));
+          password: widget.password?.text,
+        ),
+      );
 }

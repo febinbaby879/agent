@@ -44,10 +44,12 @@ class ValidationTextField {
         break;
 
       case Validate.phone:
-        if (!RegExp(r'^[0-9]+$').hasMatch(value!)) {
-          return 'Enter valid phone number (numeric characters only)';
-        } else if (value.length != 10) {
-          return 'Phone number should have exactly 10 digits';
+        if (!RegExp(r'^\+?[0-9\s\-\(\)]+$').hasMatch(value!)) {
+          return 'Enter a valid phone number';
+        } else if (value.replaceAll(RegExp(r'[^0-9]'), '').length < 6) {
+          return 'Phone number is too short';
+        } else if (value.replaceAll(RegExp(r'[^0-9]'), '').length > 15) {
+          return 'Phone number is too long';
         }
         break;
 
