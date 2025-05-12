@@ -1,5 +1,6 @@
 import 'package:agent_dashboard/application/controller/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/applications.dart';
+import 'package:agent_dashboard/application/presentation/screens/counsillor/connect_counsiler_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/courses/courses.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/dashboard_content.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/side_bar.dart';
@@ -46,12 +47,4 @@ class HomeScreen extends StatelessWidget {
           const BuildProfileSideBar()
         ])));
   }
-}
-
-class OnlineCounsellorContent extends StatelessWidget {
-  const OnlineCounsellorContent({super.key});
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text("Online Counsellor Courses Content goes here."));
 }

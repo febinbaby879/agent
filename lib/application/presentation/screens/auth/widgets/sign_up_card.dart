@@ -1,6 +1,8 @@
 import 'package:agent_dashboard/application/controller/auth.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
+import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
+import 'package:agent_dashboard/application/presentation/widgets/dropdown_search.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +38,6 @@ class SignUPCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-
               const Row(
                 children: [
                   Text(
@@ -88,11 +89,95 @@ class SignUPCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               CustomTextField(
-                hintText: 'Name',
-                controller: controller.nameSignupController,
+                hintText: 'Agency Name',
+                controller: controller.agencyNameSignupController,
                 validate: Validate.notNull,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Directors Name',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Directors Name',
+                controller: controller.directorsNameSignupController,
+                validate: Validate.notNull,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Directors Phone',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Directors Phone',
+                controller: controller.directorsPhoneSignupController,
+                validate: Validate.phone,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Address',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                maxLines: 3,
+                hintText: 'Address',
+                controller: controller.addressSignupController,
+                validate: Validate.notNull,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
+                    'Country',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              SearchableDropdown(
+                borderColor: kRed,
+                controller: controller.countrySignupController,
+                items: countryList,
+                onChanged: (value) {},
+                hintText: 'Country',
+              ),
+              // CustomTextField(
+              //   hintText: 'Country',
+              //   controller: controller.countrySignupController,
+              //   validate: Validate.notNull,
+              //   autovalidateMode: AutovalidateMode.onUserInteraction,
+              // ),
               const SizedBox(height: 15),
 
               // Sign up button
@@ -116,7 +201,7 @@ class SignUPCard extends StatelessWidget {
                             color: kWhite,
                           )
                         : const Text(
-                            'Verify Email',
+                            'Verify',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
