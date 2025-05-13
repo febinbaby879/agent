@@ -8,6 +8,7 @@ class ScreenProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
           body: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+        ;
         bool isSmallScreen = constraints.maxWidth < 600;
         return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           if (!isSmallScreen)
