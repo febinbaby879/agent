@@ -28,7 +28,7 @@ class _HoverMenuItemState extends State<HoverMenuItem> {
     return MouseRegion(
         onEnter: (_) => setState(() => isHovered = true),
         onExit: (_) => setState(() => isHovered = false),
-        cursor: SystemMouseCursors.click,
+        //cursor: SystemMouseCursors.click,
         child: GestureDetector(
             onTap: widget.onTap,
             child: Container(
