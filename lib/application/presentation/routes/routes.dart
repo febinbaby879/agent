@@ -1,6 +1,7 @@
 class Routes {
   static String initial = '/';
   static String homeScreen = '/home';
+  static String onboardingScreen = '/onboarding';
 
   static const String login = '/sigin';
   static const String signUp = '/signUp';

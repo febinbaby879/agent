@@ -8,9 +8,12 @@ class AuthController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailSignupController = TextEditingController();
   final TextEditingController nameSignupController = TextEditingController();
-  final TextEditingController agencyNameSignupController = TextEditingController();
-  final TextEditingController directorsNameSignupController = TextEditingController();
-  final TextEditingController directorsPhoneSignupController = TextEditingController();
+  final TextEditingController agencyNameSignupController =
+      TextEditingController();
+  final TextEditingController directorsNameSignupController =
+      TextEditingController();
+  final TextEditingController directorsPhoneSignupController =
+      TextEditingController();
   final TextEditingController countrySignupController = TextEditingController();
   final TextEditingController addressSignupController = TextEditingController();
   final TextEditingController phoneSignupController = TextEditingController();
@@ -38,6 +41,7 @@ class AuthController extends GetxController {
   Future<void> getLog(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 1));
     // context.go(Routes.login);
-    context.go(Routes.homeScreen);
+    context.go(Routes.onboardingScreen);
+    // context.go(Routes.homeScreen);
   }
 }
