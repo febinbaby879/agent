@@ -1,4 +1,5 @@
 import 'package:agent_dashboard/application/controller/counsiler_connect.dart';
+import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OnlineCounsellorContent extends StatefulWidget {
-  const OnlineCounsellorContent({Key? key}) : super(key: key);
+  const OnlineCounsellorContent({super.key});
 
   @override
   State<OnlineCounsellorContent> createState() =>
@@ -28,9 +29,11 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
         ),
         centerTitle: false,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh, color: kWhite),
-            onPressed: () {},
+          HoverEffectWidget(
+            child: IconButton(
+              icon: const Icon(Icons.refresh, color: kWhite),
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -53,7 +56,8 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                               ? _buildRequestForm(controller, true)
                               : controller.selectedRequest.value?.id == null ||
                                       !controller.showRequestDetail.value
-                                  ? _buildRequestsList(controller,mobile: true)
+                                  ? _buildRequestsList(controller,
+                                      mobile: true, constraints: constraints)
                                   : _buildRequestDetails(controller,
                                       controller.selectedRequest.value!)),
                     ],
@@ -70,10 +74,10 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                                 onPressed: () {
                                   controller.showRequestFormUi(true);
                                 },
-                                child: const Icon(Icons.add),
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: kpurple400,
                                     foregroundColor: kWhite),
+                                child: const Icon(Icons.add),
                               ),
                             ),
                     ),
@@ -91,9 +95,13 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Left panel - Requests List
-                      SizedBox(
-                        width: constraints.maxWidth * 0.35,
-                        child: _buildRequestsList(controller),
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          width: constraints.maxWidth * 0.35,
+                          child: _buildRequestsList(controller,
+                              constraints: constraints),
+                        ),
                       ),
                       // Vertical divider
                       Container(
@@ -102,6 +110,7 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                       ),
                       // Right panel - Request Form or Details
                       Expanded(
+                        flex: 3,
                         child: SingleChildScrollView(
                           child: Obx(
                             () => Padding(
@@ -159,13 +168,15 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                   final data = controller.filters[index];
                   return Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: ChoiceChip(
-                      backgroundColor: kpurple400!.withOpacity(0.1),
-                      label: Text(data),
-                      selected: controller.selectedFilter.value == data,
-                      onSelected: (selected) {
-                        controller.changeStatusFilter(data);
-                      },
+                    child: HoverEffectWidget(
+                      child: ChoiceChip(
+                        backgroundColor: kpurple400!.withOpacity(0.1),
+                        label: Text(data),
+                        selected: controller.selectedFilter.value == data,
+                        onSelected: (selected) {
+                          controller.changeStatusFilter(data);
+                        },
+                      ),
                     ),
                   );
                 },
@@ -176,8 +187,9 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
     );
   }
 
-  Widget _buildRequestsList(CounsillerController controller,{bool mobile = false}) {
-    final showTrailing = mobile;
+  Widget _buildRequestsList(CounsillerController controller,
+      {bool mobile = false, required BoxConstraints constraints}) {
+    // final showTrailing = mobile || constraints.maxWidth < 600;
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,50 +227,53 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
                             const Divider(height: 1),
                         itemBuilder: (context, index) {
                           final request = controller.requests[index];
-                          return ListTile(
-                            title: Text(
-                              '${request.type} Request',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                          return HoverEffectWidget(
+                            child: ListTile(
+                              title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${request.type} Request',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  // if (showTrailing)
+                                  Text(
+                                    '(${request.status})',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                          _getStatusColor(request.status ?? ""),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${(request.description?.length ?? 0) > 60 ? (request.description?.substring(0, 60) ?? '') + '...' : request.description}\n${_formatDate(DateTime.now())}',
+                                  ),
+                                ],
+                              ),
+                              isThreeLine: true,
+                              leading: _getLeadingIcon(request.type ?? ''),
+                              // trailing:
+                              //     !showTrailing ? _trailingStatus(request) : null,
+                              selected: controller.selectedRequest.value?.id ==
+                                  request.id,
+                              selectedTileColor: Colors.blue[50],
+                              onTap: () {
+                                controller.getRequestDetails(request);
+                              },
                             ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (!showTrailing) _trailingStatus(request),
-                                Text(
-                                  '${(request.description?.length ?? 0) > 60 ? (request.description?.substring(0, 60) ?? '') + '...' : request.description}\n${_formatDate(DateTime.now())}',
-                                ),
-                              ],
-                            ),
-                            isThreeLine: true,
-                            leading: _getLeadingIcon(request.type ?? ''),
-                            trailing:
-                                showTrailing ? _trailingStatus(request) : null,
-                            selected: controller.selectedRequest.value?.id ==
-                                request.id,
-                            selectedTileColor: Colors.blue[50],
-                            onTap: () {
-                              controller.getRequestDetails(request);
-                            },
                           );
                         },
                       ),
           ),
         ],
       ),
-    );
-  }
-
-  Chip _trailingStatus(CounsillerConnectRequestModel request) {
-    return Chip(
-      label: Text(
-        request.status ?? '',
-        style: TextStyle(
-          color: _getStatusColor(request.status ?? ''),
-          fontSize: 12,
-        ),
-      ),
-      backgroundColor: _getStatusColor(request.status ?? '').withOpacity(0.1),
     );
   }
 
@@ -293,32 +308,35 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => SegmentedButton<String>(
-              style: ButtonStyle(
-                  side: WidgetStatePropertyAll(BorderSide(color: kpurple400!))),
-              emptySelectionAllowed: false,
-              multiSelectionEnabled: false,
-              segments: const [
-                ButtonSegment(
-                  value: 'Meeting',
-                  label: Text('Meeting'),
-                  icon: Icon(Icons.meeting_room),
-                ),
-                ButtonSegment(
-                  value: 'Call',
-                  label: Text('Call'),
-                  icon: Icon(Icons.phone),
-                ),
-                ButtonSegment(
-                  value: 'Training',
-                  label: Text('Training'),
-                  icon: Icon(Icons.school),
-                ),
-              ],
-              selected: {controller.selectedRequestType.value},
-              onSelectionChanged: (Set<String> newSelection) {
-                controller.changeSelectedRequestType(newSelection.first);
-              },
+            () => HoverEffectWidget(
+              child: SegmentedButton<String>(
+                style: ButtonStyle(
+                    side:
+                        WidgetStatePropertyAll(BorderSide(color: kpurple400!))),
+                emptySelectionAllowed: false,
+                multiSelectionEnabled: false,
+                segments: const [
+                  ButtonSegment(
+                    value: 'Meeting',
+                    label: Text('Meeting'),
+                    icon: Icon(Icons.meeting_room),
+                  ),
+                  ButtonSegment(
+                    value: 'Call',
+                    label: Text('Call'),
+                    icon: Icon(Icons.phone),
+                  ),
+                  ButtonSegment(
+                    value: 'Training',
+                    label: Text('Training'),
+                    icon: Icon(Icons.school),
+                  ),
+                ],
+                selected: {controller.selectedRequestType.value},
+                onSelectionChanged: (Set<String> newSelection) {
+                  controller.changeSelectedRequestType(newSelection.first);
+                },
+              ),
             ),
           ),
 
@@ -349,21 +367,23 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
           // Submit Button
           SizedBox(
             width: double.infinity,
-            child: Obx(() => ElevatedButton.icon(
-                  icon: ShakeX(
-                      animate: controller.addRequestLoading.value,
-                      child: const Icon(Icons.send)),
-                  label: Text(controller.addRequestLoading.value
-                      ? ' Requesting ...'
-                      : 'Submit Request'),
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: kRadius5),
-                      padding: const EdgeInsets.all(16),
-                      backgroundColor: kpurple400,
-                      foregroundColor: kWhite),
-                  onPressed: () {
-                    controller.sendRequest();
-                  },
+            child: Obx(() => HoverEffectWidget(
+                  child: ElevatedButton.icon(
+                    icon: ShakeX(
+                        animate: controller.addRequestLoading.value,
+                        child: const Icon(Icons.send)),
+                    label: Text(controller.addRequestLoading.value
+                        ? ' Requesting ...'
+                        : 'Submit Request'),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: kRadius5),
+                        padding: const EdgeInsets.all(16),
+                        backgroundColor: kpurple400,
+                        foregroundColor: kWhite),
+                    onPressed: () {
+                      controller.sendRequest();
+                    },
+                  ),
                 )),
           ),
         ],
