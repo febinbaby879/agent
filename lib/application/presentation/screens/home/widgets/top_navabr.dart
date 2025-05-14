@@ -32,7 +32,11 @@ class SideBar extends StatelessWidget {
           BuildNavItem(
               title: 'Connect Consiller',
               icon: Icons.connect_without_contact_sharp,
-              tabKey: 'online_courses')
+              tabKey: 'counsiller_connect'),
+          BuildNavItem(
+              title: 'Claims',
+              icon: Icons.attach_money_rounded,
+              tabKey: 'claims'),
         ]));
   }
 }

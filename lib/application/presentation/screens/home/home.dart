@@ -1,5 +1,6 @@
 import 'package:agent_dashboard/application/controller/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/applications.dart';
+import 'package:agent_dashboard/application/presentation/screens/claims/claims_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/counsillor/connect_counsiler_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/courses/courses.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/dashboard_content.dart';
@@ -30,17 +31,24 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.only(right: 30.0),
-                child: Obx(() => homeController.selectedTabContent.value ==
-                        'dashboard'
-                    ? const BuildDashboardContent()
-                    : homeController.selectedTabContent.value == 'applications'
-                        ? const ApplicationsScreen()
-                        : homeController.selectedTabContent.value == 'courses'
-                            ? CoursesSection()
-                            : homeController.selectedTabContent.value ==
-                                    'institution'
-                                ? const InstitutionList()
-                                : const OnlineCounsellorContent()),
+                child: Obx(() {
+                  switch (homeController.selectedTabContent.value) {
+                  case 'dashboard':
+                    return const BuildDashboardContent();
+                  case 'applications':
+                    return const ApplicationsScreen();
+                  case 'courses':
+                    return CoursesSection();
+                  case 'institution':
+                    return const InstitutionList();
+                  case 'counsiller_connect':
+                    return const OnlineCounsellorContent();
+                  case 'claims':
+                    return const ClaimsSection();
+                  default:
+                    return const SizedBox.shrink();
+                  }
+                }),
               ))
             ]))
           ]),
