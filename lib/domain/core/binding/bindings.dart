@@ -1,4 +1,5 @@
 import 'package:agent_dashboard/application/controller/agreement.dart';
+import 'package:agent_dashboard/application/controller/application.dart';
 import 'package:agent_dashboard/application/controller/auth.dart';
 import 'package:agent_dashboard/application/controller/claims.dart';
 import 'package:agent_dashboard/application/controller/counsiler_connect.dart';
@@ -13,5 +14,6 @@ class AllControllerBinding implements Bindings {
     Get.lazyPut(() => AuthController());
     Get.lazyPut(() => CounsillerController());
     Get.lazyPut(() => ClaimsController());
+    Get.lazyPut(() => ApplicationController());
   }
 }
