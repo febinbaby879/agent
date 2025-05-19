@@ -1,4 +1,3 @@
-
 class CounsillerConnectRequestModel {
   final String? id;
   final String? type;

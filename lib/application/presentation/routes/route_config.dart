@@ -3,6 +3,7 @@ import 'package:agent_dashboard/application/presentation/screens/auth/widgets/ag
 import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
+import 'package:agent_dashboard/application/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,9 @@ class GoRouterConfig {
     GoRoute(
         path: Routes.agrementSign,
         builder: (context, state) => const ScreenAgrementSignature()),
+    GoRoute(
+        path: Routes.onboardingScreen,
+        builder: (context, state) => const ScreenOnboarding()),
   ];
   static _errorScreen() => Scaffold(
         appBar: AppBar(title: const Text('Error')),

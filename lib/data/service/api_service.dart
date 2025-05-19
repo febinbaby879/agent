@@ -1,200 +1,144 @@
-import 'dart:developer';
-import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
-import 'package:dio/dio.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
+import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
+import 'package:agent_dashboard/domain/model/commen/api_response/api_response.dart';
+
+import 'dart:developer';
+import 'package:dio/dio.dart';
+// import 'package:path_provider/path_provider.dart';
 
 class ApiService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: ApiEndPoints.baseUrl));
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: ApiEndPoints.baseUrl,
+      headers: {'Content-Type': 'application/json'},
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
+    ),
+  );
 
-  Future<Response<dynamic>> get(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    dynamic data,
-    bool addHeader = true,
-  }) async {
+  ApiService({bool addToken = true}) {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        if (addToken) {
+          final token = await SharedPreferecesStorage.getAccessToken();
+          if (token != null) {
+            options.headers['authorization'] = 'Bearer $token';
+          }
+        }
+        return handler.next(options);
+      },
+    ));
+  }
+
+  Future<ApiResponse> get(String url,
+      {Map<String, dynamic>? queryParameters,
+      Map<String, String>? headers,
+      bool addHeader = true}) async {
     try {
-      if (addHeader) {
-        final token = await SharedPreferecesStorage.getToken()
-            .then((token) => token.token);
-        _dio.options.headers.addAll(
-          {
-            'authorization': "Bearer $token",
-            ...headers ?? {'content-Type': 'application/json'}
-          },
-        );
-      } else {
-        _dio.options.headers['content-Type'] = 'application/json';
-      }
-      // _dio.options.baseUrl = ApiEndPoints.baseUrl;
-      log('api uri ==>get  ${_dio.options.baseUrl + url}');
-      log('token ==>  ${_dio.options.headers['authorization']}');
       final response = await _dio.get(url,
+          queryParameters: queryParameters, options: Options(headers: headers));
+      return _handleResponse(response);
+    } catch (e) {
+      log('GET Exception => $e');
+      return ApiResponse.error();
+    }
+  }
+
+  Future<ApiResponse> post(String url,
+      {Map<String, dynamic>? queryParameters,
+      Map<String, String>? headers,
+      dynamic data,
+      bool addHeader = true}) async {
+    try {
+      final response = await _dio.post(url,
           data: data,
           queryParameters: queryParameters,
-          cancelToken: CancelToken());
-      return response;
-    } on DioException catch (exception) {
-      log('Dio exception code => ${exception.response?.statusCode}');
-      log('Dio exception => ${exception.response}');
-      rethrow;
+          options: Options(headers: headers));
+      return _handleResponse(response);
     } catch (e) {
-      log('Exception => $e');
-      rethrow;
+      log('POST Exception => $e');
+      return ApiResponse.error();
     }
   }
 
-  Future<Response<dynamic>> post(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    dynamic data,
-    bool addHeader = true,
-  }) async {
+  Future<ApiResponse> put(String url,
+      {Map<String, dynamic>? queryParameters,
+      Map<String, String>? headers,
+      dynamic data,
+      bool addHeader = true}) async {
     try {
-      if (addHeader) {
-        final token = await SharedPreferecesStorage.getToken()
-            .then((token) => token.token);
-        _dio.options.headers.addAll(
-          {
-            'authorization': "Bearer $token",
-            ...headers ?? {'content-Type': 'application/json'}
-          },
-        );
-      } else {
-        _dio.options.headers['content-Type'] = 'application/json';
-      }
-      //_dio.options.baseUrl = ApiEndPoints.localHost;
-      log('api uri ==>post  ${_dio.options.baseUrl + url}');
-      log('token ==>  ${_dio.options.headers['authorization']}');
-      final response = await _dio.post(
-        url,
-        data: data,
-        queryParameters: queryParameters,
-      );
-      log('post success $url');
-      return response;
-    } on DioException catch (exception) {
-      log('Dio exception code => ${exception.response?.statusCode}');
-      log('Dio exception => ${exception.response?.data}');
-      if (exception.response?.statusCode == 403) {
-        //_logOut();
-      }
-      rethrow;
-    } catch (e) {
-      log('Exception => $e');
-      rethrow;
-    }
-  }
-
-  Future<Response<dynamic>> put(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    dynamic data,
-    bool addHeader = true,
-  }) async {
-    try {
-      if (addHeader) {
-        final token = await SharedPreferecesStorage.getToken()
-            .then((token) => token.token);
-        _dio.options.headers.addAll({
-          'authorization': "Bearer $token",
-          ...headers ?? {'content-Type': 'application/json'}
-        });
-      } else {
-        _dio.options.headers['content-Type'] = 'application/json';
-      }
-      // _dio.options.baseUrl = ApiEndPoints.baseUrl;
-      log('api uri ==>put  ${_dio.options.baseUrl + url}');
       final response = await _dio.put(url,
-          data: data is FormData ? data : data as Map<String, dynamic>?,
-          queryParameters: queryParameters);
-      return response;
-    } on DioException catch (exception) {
-      log('Dio exception code => ${exception.response?.statusCode}');
-      log('Dio exception => ${exception.response?.statusCode}');
-      if (exception.response?.statusCode == 403) {
-        //_logOut();
-      }
-      rethrow;
+          data: data,
+          queryParameters: queryParameters,
+          options: Options(headers: headers));
+      return _handleResponse(response);
     } catch (e) {
-      log('Exception => $e');
-      rethrow;
+      log('PUT Exception => $e');
+      return ApiResponse.error();
     }
   }
 
-  Future<Response<dynamic>> delete(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? data,
-    bool addHeader = true,
-  }) async {
+  Future<ApiResponse> delete(String url,
+      {Map<String, dynamic>? queryParameters,
+      Map<String, String>? headers,
+      dynamic data,
+      bool addHeader = true}) async {
     try {
-      if (addHeader) {
-        final token = await SharedPreferecesStorage.getToken()
-            .then((token) => token.token);
-        _dio.options.headers.addAll(
-          {
-            'authorization': "Bearer $token",
-            ...headers ?? {'content-Type': 'application/json'}
-          },
-        );
-      } else {
-        _dio.options.headers['content-Type'] = 'application/json';
-      }
-      // _dio.options.baseUrl = ApiEndPoints.baseUrl;
-      log('api uri ==>delete  ${_dio.options.baseUrl + url}');
-      final response =
-          await _dio.delete(url, data: data, queryParameters: queryParameters);
-      return response;
-    } on DioException catch (exception) {
-      log('Dio exception code => ${exception.response?.statusCode}');
-      log('Dio exception => ${exception.response?.statusCode}');
-      if (exception.response?.statusCode == 403) {
-        //_logOut();
-      }
-      rethrow;
+      final response = await _dio.delete(url,
+          data: data,
+          queryParameters: queryParameters,
+          options: Options(headers: headers));
+      return _handleResponse(response);
     } catch (e) {
-      log('Exception => $e');
-      rethrow;
+      log('DELETE Exception => $e');
+      return ApiResponse.error();
     }
   }
 
-  Future<Response<dynamic>> patch(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? data,
-    bool addHeader = true,
+  Future<ApiResponse> patch(String url,
+      {Map<String, dynamic>? queryParameters,
+      Map<String, String>? headers,
+      dynamic data,
+      bool addHeader = true}) async {
+    try {
+      final response = await _dio.patch(url,
+          data: data,
+          queryParameters: queryParameters,
+          options: Options(headers: headers));
+      return _handleResponse(response);
+    } catch (e) {
+      log('PATCH Exception => $e');
+      return ApiResponse.error();
+    }
+  }
+
+  ApiResponse _handleResponse(Response response) {
+    try {
+      final data = response.data;
+      if (data is List) {
+        return ApiResponse(data: data);
+      }
+      return ApiResponse.fromJson(data);
+    } catch (e) {
+      return ApiResponse.error(response.data, response.statusCode);
+    }
+  }
+
+  Future<bool> downloadFile({
+    required String url,
+    required String savePath,
+    void Function(int, int)? onReceiveProgress,
   }) async {
     try {
-      if (addHeader) {
-        final token = await SharedPreferecesStorage.getToken()
-            .then((token) => token.token);
-        _dio.options.headers.addAll(
-          {
-            'authorization': "Bearer $token",
-            ...headers ?? {'content-Type': 'application/json'}
-          },
-        );
-      } else {
-        _dio.options.headers['content-Type'] = 'application/json';
-      }
-      //  _dio.options.baseUrl = ApiEndPoints.baseUrl;
-      log('api uri ==>patch  ${_dio.options.baseUrl + url}');
-      final response =
-          await _dio.patch(url, data: data, queryParameters: queryParameters);
-      return response;
-    } on DioException catch (exception) {
-      log('Dio exception code => ${exception.response?.statusCode}');
-      log('Dio exception => ${exception.response?.statusCode}');
-      if (exception.response?.statusCode == 403) {}
-      rethrow;
+      await _dio.download(
+        url,
+        savePath,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return true;
     } catch (e) {
-      log('Exception => $e');
-      rethrow;
+      log('Error downloading file: $e');
+      return false;
     }
   }
 }

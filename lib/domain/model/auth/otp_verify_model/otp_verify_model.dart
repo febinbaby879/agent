@@ -4,6 +4,7 @@ part 'otp_verify_model.g.dart';
 
 @JsonSerializable()
 class OtpVerifyModel {
+  @JsonKey(name: 'agentEmailId')
   String? email;
   String? otp;
 

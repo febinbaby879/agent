@@ -9,8 +9,13 @@ part of 'success_responce_model.dart';
 SuccessResponceModel _$SuccessResponceModelFromJson(
         Map<String, dynamic> json) =>
     SuccessResponceModel(
-        message: json['message'] as String?, success: json['success'] as bool?);
+      message: json['message'] as String?,
+      success: json['success'] as bool?,
+    );
 
 Map<String, dynamic> _$SuccessResponceModelToJson(
         SuccessResponceModel instance) =>
-    <String, dynamic>{'message': instance.message, 'success': instance.success};
+    <String, dynamic>{
+      'message': instance.message,
+      'success': instance.success,
+    };

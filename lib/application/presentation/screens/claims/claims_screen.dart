@@ -39,7 +39,7 @@ class ClaimsSection extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           await controller.refreshClaims();
         },
         child: Column(
