@@ -33,20 +33,20 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 30.0),
                 child: Obx(() {
                   switch (homeController.selectedTabContent.value) {
-                  case 'dashboard':
-                    return const BuildDashboardContent();
-                  case 'applications':
-                    return const ApplicationsScreen();
-                  case 'courses':
-                    return CoursesSection();
-                  case 'institution':
-                    return const InstitutionList();
-                  case 'counsiller_connect':
-                    return const OnlineCounsellorContent();
-                  case 'claims':
-                    return const ClaimsSection();
-                  default:
-                    return const SizedBox.shrink();
+                    case 'dashboard':
+                      return const BuildDashboardContent();
+                    case 'applications':
+                      return const ApplicationsScreen();
+                    case 'courses':
+                      return CoursesSection();
+                    case 'institution':
+                      return const InstitutionList();
+                    case 'counsiller_connect':
+                      return const OnlineCounsellorContent();
+                    case 'claims':
+                      return const ClaimsSection();
+                    default:
+                      return const SizedBox.shrink();
                   }
                 }),
               ))

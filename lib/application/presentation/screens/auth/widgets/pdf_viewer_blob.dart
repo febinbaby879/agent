@@ -16,7 +16,7 @@ class WebPdfViewer extends StatelessWidget {
     final url = html.Url.createObjectUrlFromBlob(blob);
 
     final viewType = 'pdf-viewer-${url.hashCode}';
-    
+
     ui_web.platformViewRegistry.registerViewFactory(
       viewType,
       (int _) => html.IFrameElement()

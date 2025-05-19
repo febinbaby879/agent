@@ -100,7 +100,7 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
       onTap: () {
         _openSearchDialog();
       },
-      onChanged: (value){
+      onChanged: (value) {
         _openSearchDialog();
       },
       suffixIcon: const Icon(Icons.arrow_drop_down),

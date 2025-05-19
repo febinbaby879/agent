@@ -41,6 +41,25 @@ class SignUPCard extends StatelessWidget {
               const Row(
                 children: [
                   Text(
+                    'Name',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              CustomTextField(
+                hintText: 'Name',
+                controller: controller.nameSignupController,
+                validate: Validate.none,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Text(
                     'Email',
                     style: TextStyle(
                       fontSize: 14,
@@ -79,7 +98,7 @@ class SignUPCard extends StatelessWidget {
               const Row(
                 children: [
                   Text(
-                    'Name',
+                    'Agency Name',
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF6B7280),

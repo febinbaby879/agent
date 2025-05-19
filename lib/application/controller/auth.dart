@@ -40,8 +40,8 @@ class AuthController extends GetxController {
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 1));
-    // context.go(Routes.login);
-    context.go(Routes.onboardingScreen);
+    context.go(Routes.login);
+    // context.go(Routes.onboardingScreen);
     // context.go(Routes.homeScreen);
   }
 }

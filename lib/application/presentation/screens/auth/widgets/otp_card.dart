@@ -121,4 +121,3 @@ class OtpCard extends StatelessWidget {
     ));
   }
 }
-

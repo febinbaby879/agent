@@ -8,12 +8,12 @@ part of 'otp_verify_model.dart';
 
 OtpVerifyModel _$OtpVerifyModelFromJson(Map<String, dynamic> json) =>
     OtpVerifyModel(
-      email: json['email'] as String?,
+      email: json['agentEmailId'] as String?,
       otp: json['otp'] as String?,
     );
 
 Map<String, dynamic> _$OtpVerifyModelToJson(OtpVerifyModel instance) =>
     <String, dynamic>{
-      'email': instance.email,
+      'agentEmailId': instance.email,
       'otp': instance.otp,
     };

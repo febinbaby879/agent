@@ -1,16 +1,10 @@
 class ApiEndPoints {
-  static String baseUrl = '';
+  static String baseUrl = 'https://api.myeduguardian.com/api';
 
   /// Auth
-  static String userRegistration = '/api/userauth/register';
+  static String userRegistration = '/agent/agent-register';
+  static String registerOtpVerification = '/agent/agent-verify-otp';
   static String userLogin = '/api/userauth/login';
-  static String oTPSending = '/api/userauth/send-email';
-  static String oTPVerify = '/api/userauth/verify-otp';
-  static String contactUs = '/api/inquiry/inquiries';
-  static String resetPassword = '/api/userauth/reset-password';
-  static String getUser = '/api/userauth/user';
-  static String updateUser = '/api/userauth/update-user';
-  static String accountSoftDelete = '/api/userauth/users/{user_id}/soft-delete';
-
-  static String formSubmission = '';
+  static String forgotPassword = '/agent/forgot-password';
+  static String resetNewPassword = '/agent/reset-password';
 }
