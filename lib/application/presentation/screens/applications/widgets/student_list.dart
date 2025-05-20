@@ -94,6 +94,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
                           })),
                     ))),
             kWidth10,
+            
             ElevatedButton(
                 onPressed: () {
                   _showSortOptions(context);
