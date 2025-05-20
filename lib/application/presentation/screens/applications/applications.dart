@@ -7,10 +7,6 @@ class ApplicationsScreen extends StatelessWidget {
   const ApplicationsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => const Column(children: [
-        kHeight5,
-        BuildStateGrid(),
-        kHeight20,
-        Expanded(child: StudentListScreen())
-      ]);
+  Widget build(BuildContext context) => const Column(
+      children: [kHeight5, kHeight20, Expanded(child: TaskDashboardScreen())]);
 }

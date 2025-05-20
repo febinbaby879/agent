@@ -83,11 +83,11 @@ class ClaimsSection extends StatelessWidget {
             _ClaimsTileTop(
               count: '58',
               subTitle: 'Claims',
-              title: 'Pending Claims',
-            ),
-          ],
-        ),
-      ),
+              title: 'Pending Claims'
+            )
+          ]
+        )
+      )
     );
   }
 
