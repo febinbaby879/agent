@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/claims.dart';
+import 'package:agent_dashboard/application/controller/claims/claims.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';

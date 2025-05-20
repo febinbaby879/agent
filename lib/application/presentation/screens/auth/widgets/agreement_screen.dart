@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:agent_dashboard/application/controller/agreement.dart';
+import 'package:agent_dashboard/application/controller/onboarding/agreement.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/pdf_viewer_blob.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';

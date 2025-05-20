@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/home.dart';
+import 'package:agent_dashboard/application/controller/home/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/applications.dart';
 import 'package:agent_dashboard/application/presentation/screens/claims/claims_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/counsillor/connect_counsiler_screen.dart';
