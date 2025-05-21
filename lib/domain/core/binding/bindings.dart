@@ -4,6 +4,7 @@ import 'package:agent_dashboard/application/controller/claims/claims_controller.
 import 'package:agent_dashboard/application/controller/counsiler_connect/counsiler_connect_controller.dart';
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
 import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
+
 import 'package:get/get.dart';
 
 class AllControllerBinding implements Bindings {
@@ -15,5 +16,6 @@ class AllControllerBinding implements Bindings {
     Get.lazyPut(() => CounsillerController());
     Get.lazyPut(() => ClaimsController());
     Get.lazyPut(() => OnboardingController());
+    Get.lazyPut(() => ApplicationController());
   }
 }
