@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/application.dart';
+import 'package:agent_dashboard/application/controller/application/application.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/summery_cards.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
