@@ -11,7 +11,7 @@ class SuccessResponceModel {
 
   SuccessResponceModel({this.message, this.success, this.data});
 
-  factory SuccessResponceModel.success(ApiResponse? responce) =>
+  factory SuccessResponceModel.fromResponse(ApiResponse? responce) =>
       SuccessResponceModel(
           success: true, data: responce?.data, message: responce?.message);
 

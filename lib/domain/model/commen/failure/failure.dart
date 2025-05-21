@@ -5,7 +5,7 @@ class Failure {
   int? statusCode;
   dynamic data;
   Failure({this.message, this.data, this.statusCode});
-  factory Failure.fromApiResponse(ApiResponse responce) =>
+  factory Failure.fromResponse(ApiResponse responce) =>
       Failure(message: responce.message, data: responce.data);
 }
 

@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/home/home.dart';
+import 'package:agent_dashboard/application/controller/home/home_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/screens/wishlist/wishlist_course.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';

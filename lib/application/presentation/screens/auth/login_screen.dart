@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/auth/auth.dart';
+import 'package:agent_dashboard/application/controller/auth/auth_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/login_card.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/otp_card.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/sign_up_card.dart';
