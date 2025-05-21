@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/home/home.dart';
+import 'package:agent_dashboard/application/controller/home/home_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/wishlist/widgets/product_item.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';

@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/onboarding/onboarding.dart';
+import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';

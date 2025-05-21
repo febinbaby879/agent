@@ -14,7 +14,13 @@ class RestNewPassword {
     return _$RestNewPasswordFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$RestNewPasswordToJson(this);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    if (email != null) data['email'] = email;
+    if (otp != null) data['otp'] = otp;
+    if (newPassword != null) data['newPassword'] = newPassword;
+    return data;
+  }
 
   RestNewPassword copyWith({
     String? email,

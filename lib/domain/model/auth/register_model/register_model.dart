@@ -30,5 +30,9 @@ class RegisterModel {
     return _$RegisterModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$RegisterModelToJson(this);
+  Map<String, dynamic> toJson() {
+    final data = _$RegisterModelToJson(this);
+    data.removeWhere((key, value) => value == null);
+    return data;
+  }
 }

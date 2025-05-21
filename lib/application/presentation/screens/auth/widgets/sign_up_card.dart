@@ -1,4 +1,4 @@
-import 'package:agent_dashboard/application/controller/auth/auth.dart';
+import 'package:agent_dashboard/application/controller/auth/auth_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
