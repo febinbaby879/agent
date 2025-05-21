@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/toast/flutter_toast.dart';
 import 'package:agent_dashboard/data/service/auth/auth_service.dart';
+import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/auth/login/login_model/login_model.dart';
 import 'package:agent_dashboard/domain/model/auth/otp_verify_model/otp_verify_model.dart';
 import 'package:agent_dashboard/domain/model/auth/register_model/register_model.dart';
@@ -64,10 +67,17 @@ class AuthController extends GetxController {
 
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1));
-    context.go(Routes.login);
-    // context.go(Routes.onboardingScreen);
-    // context.go(Routes.homeScreen);
+    final login = await SharedPreferecesStorage.getLogin();
+    if (login) {
+      final onBoarding = await SharedPreferecesStorage.getOnBoard();
+      if (onBoarding) {
+        context.go(Routes.homeScreen);
+      } else {
+        context.go(Routes.onboardingScreen);
+      }
+    } else {
+      context.go(Routes.login);
+    }
   }
 
   /// login agent
@@ -79,7 +89,11 @@ class AuthController extends GetxController {
               email: emailController.text.trim(),
               password: passwordController.text.trim(),
               deviceToken: ''));
-      result.fold((l) {}, (r) {});
+      result.fold((l) {}, (r) {
+        SharedPreferecesStorage.setLogin();
+        // SharedPreferecesStorage.setOnBoard(true);
+        context.go(Routes.login);
+      });
       loginLoading.value = false;
     }
   }
@@ -117,8 +131,10 @@ class AuthController extends GetxController {
         otp: otpSignupController.text.trim(),
       ),
     );
-    result.fold((l) {}, (r) {
-      // TODO: show onboarding
+    result.fold((l) {
+      showCustomToast(message: l.message ?? errorMessage);
+    }, (r) {
+      context.go(Routes.onboardingScreen);
     });
     otpLoading.value = false;
   }

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferecesStorage {
   static const String accessKey = 'access_key';
   static const String isLogged = 'is_loggedIn';
-  static const String isOnBoarVisted = 'is_onboar_visted';
+  static const String isOnBoardingDone = 'is_onboard_done';
   static const String nameKey = 'name';
   static const String userId = 'user_id';
 
@@ -67,17 +67,17 @@ class SharedPreferecesStorage {
     return login;
   }
 
-  static Future<void> setOnBoard() async {
+  static Future<void> setOnBoard(bool value) async {
     log('set Onboard =>()');
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(isOnBoarVisted, true);
+    await prefs.setBool(isOnBoardingDone, value);
   }
 
   static Future<bool> getOnBoard() async {
     log('get Onboard =>()');
     final prefs = await SharedPreferences.getInstance();
-    final setOnboard = prefs.getBool(isOnBoarVisted) ?? false;
-    log('get setOnboard =>() $setOnboard');
-    return setOnboard;
+    final onboard = prefs.getBool(isOnBoardingDone) ?? false;
+    log('get Onboard =>() $onboard');
+    return onboard;
   }
 }
