@@ -5,8 +5,7 @@ class Routes {
 
   static const String login = '/signin';
   static const String signUp = '/signUp';
-  static const String oTPVerifyResetPasswrod = '/otp_verify_reset_password';
-  static const String resetPassword = '/reset_password';
+  static const String forgotPassword = '/forgot-password';
 
   static const String profile = '/profile';
   static const String agrementSign = '/agreement_signature';

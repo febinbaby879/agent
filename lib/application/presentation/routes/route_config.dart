@@ -1,4 +1,5 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/forgot_password_.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/agreement_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
@@ -19,6 +20,9 @@ class GoRouterConfig {
         builder: (context, state) => const ScreenSplash()),
     GoRoute(
         path: Routes.login, builder: (context, state) => const ScreenLogin()),
+    GoRoute(
+        path: Routes.forgotPassword,
+        builder: (context, state) => const ScreenForgorPassword()),
     GoRoute(
         path: Routes.profile,
         builder: (context, state) => const ScreenProfile()),

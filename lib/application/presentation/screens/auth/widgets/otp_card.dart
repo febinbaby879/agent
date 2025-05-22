@@ -8,7 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpCard extends StatelessWidget {
-  const OtpCard({super.key});
+  const OtpCard({super.key, this.register = true});
+
+  final bool register;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,9 @@ class OtpCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Column(
         children: [
-          const Text(
-            'Welcome to EduGuardian Agent Portal',
-            style: TextStyle(
+          Text(
+            register ? 'Welcome to EduGuardian Agent Portal' : 'Verify OTP',
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Color(0xFF4A4A4A),
@@ -43,7 +45,9 @@ class OtpCard extends StatelessWidget {
               height: 50,
               child: Pinput(
                 length: 6,
-                controller: controller.otpSignupController,
+                controller: register
+                    ? controller.otpSignupController
+                    : controller.otpForgotPasswordController,
                 defaultPinTheme: PinTheme(
                   textStyle: const TextStyle(fontSize: 20, color: Colors.black),
                   decoration: BoxDecoration(
@@ -75,7 +79,10 @@ class OtpCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (register) {
+                  } else {}
+                },
                 child: const Text(
                   'Resend OTP?',
                   style: TextStyle(
@@ -93,7 +100,11 @@ class OtpCard extends StatelessWidget {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  context.go(Routes.agrementSign);
+                  if (register) {
+                    controller.verifyRegisterOtp(context);
+                  } else {
+                    controller.resetPassword(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kPurple,

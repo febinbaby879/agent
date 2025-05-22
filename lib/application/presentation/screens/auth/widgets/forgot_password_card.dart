@@ -1,14 +1,15 @@
 import 'package:agent_dashboard/application/controller/auth/auth_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
+import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginCard extends StatelessWidget {
-  const LoginCard({super.key});
+class ForgotPasswordCard extends StatelessWidget {
+  const ForgotPasswordCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +19,12 @@ class LoginCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Form(
-          key: controller.loginKey,
+          key: controller.forgotPasswordKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               const Text(
-                'Welcome to EduGuardian Agent Portal',
+                'Password Change',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class LoginCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Please sign-in to your account',
+                'Enter your email and new password',
                 style: TextStyle(
                   fontSize: 16,
                   color: Color(0xFF6B7280),
@@ -55,7 +56,7 @@ class LoginCard extends StatelessWidget {
               const SizedBox(height: 4),
               CustomTextField(
                 hintText: 'Email',
-                controller: controller.emailController,
+                controller: controller.emailForgotPasswordController,
                 validate: Validate.email,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
@@ -75,35 +76,13 @@ class LoginCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               CustomTextField(
-                hintText: 'Password',
-                controller: controller.passwordController,
-                validate: Validate.notNull,
+                hintText: 'New Password',
+                controller: controller.newPasswordForgotPasswordController,
+                validate: Validate.password,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 obscureText: true,
               ),
-              // const SizedBox(height: 5),
-
-              // Remember me and Forgot Password
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      context.go(Routes.forgotPassword);
-                    },
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 15),
-
-              // Sign In button
               Obx(
                 () => SizedBox(
                   width: double.infinity,
@@ -111,7 +90,7 @@ class LoginCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // context.go(Routes.homeScreen);
-                      controller.login(context);
+                      controller.forgotPassword();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kPurple,
@@ -125,7 +104,7 @@ class LoginCard extends StatelessWidget {
                             color: kWhite,
                           )
                         : const Text(
-                            'Sign In',
+                            'Submit',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
