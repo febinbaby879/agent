@@ -206,7 +206,8 @@ class SignUPCard extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.showOtpCard(true);
+                      // controller.showOtpCard(true);
+                      controller.registerAgent();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kPurple,

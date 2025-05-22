@@ -52,6 +52,7 @@ class AuthController extends GetxController {
   RxBool otpLoading = false.obs;
   RxBool showLogin = true.obs;
   RxBool showOtp = false.obs;
+  RxBool showOtpForgotPassword = false.obs;
   RxBool forgotPasswordLoading = false.obs;
   RxBool newPasswordLoading = false.obs;
 
@@ -62,7 +63,10 @@ class AuthController extends GetxController {
 
   void showOtpCard(bool value) {
     showOtp.value = value;
-    showCustomToast(message: 'Otp Send Sucessfuly');
+  }
+
+  void showOtpCardResetPassword(bool value) {
+    showOtpForgotPassword.value = value;
   }
 
   /// get login status of user and navigate to appropriate screen
@@ -82,6 +86,7 @@ class AuthController extends GetxController {
 
   /// login agent
   Future<void> login(BuildContext context) async {
+    if (loginLoading.value) return;
     if (loginKey.currentState?.validate() ?? false) {
       loginLoading.value = true;
       final result = await _authService.userLogin(
@@ -92,7 +97,7 @@ class AuthController extends GetxController {
       result.fold((l) {}, (r) {
         SharedPreferecesStorage.setLogin();
         // SharedPreferecesStorage.setOnBoard(true);
-        context.go(Routes.login);
+        context.go(Routes.homeScreen);
       });
       loginLoading.value = false;
     }
@@ -100,6 +105,7 @@ class AuthController extends GetxController {
 
   /// regiser agent
   Future<void> registerAgent() async {
+    if (registerLoading.value) return;
     if (signUpKey.currentState?.validate() ?? false) {
       registerLoading.value = true;
       final result = await _authService.userRegister(
@@ -124,6 +130,7 @@ class AuthController extends GetxController {
 
   /// verify email for registration
   Future<void> verifyRegisterOtp(BuildContext context) async {
+    if (otpLoading.value) return;
     otpLoading.value = true;
     final result = await _authService.verifOtpRegister(
       otpVerifyModel: OtpVerifyModel(
@@ -140,19 +147,24 @@ class AuthController extends GetxController {
   }
 
   /// forgot password otp send
-  Future<void> forgotPassword(BuildContext context) async {
+  Future<void> forgotPassword() async {
+    if (forgotPasswordLoading.value) return;
     if (forgotPasswordKey.currentState?.validate() ?? false) {
       forgotPasswordLoading.value = true;
       final result = await _authService.forgotPassword(
           restNewPassword: RestNewPassword(
               email: emailForgotPasswordController.text.trim()));
-      result.fold((l) {}, (r) {});
+      result.fold((l) {
+        showCustomToast(message: l.message ?? errorMessage);
+      }, (r) {});
+      showOtpCardResetPassword(true);
       forgotPasswordLoading.value = false;
     }
   }
 
   /// reset new password
   Future<void> resetPassword(BuildContext context) async {
+    if (newPasswordLoading.value) return;
     if (newPasswordKey.currentState?.validate() ?? false) {
       newPasswordLoading.value = true;
       final result = await _authService.resetPassword(
@@ -161,8 +173,10 @@ class AuthController extends GetxController {
         newPassword: newPasswordForgotPasswordController.text.trim(),
         otp: otpForgotPasswordController.text.trim(),
       ));
-      result.fold((l) {}, (r) {
-        // TODO: show login page
+      result.fold((l) {
+        showCustomToast(message: l.message ?? errorMessage);
+      }, (r) {
+        GoRouter.of(context).pop();
       });
       newPasswordLoading.value = false;
     }
