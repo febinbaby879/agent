@@ -1,5 +1,6 @@
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/widgets/number_count.dart';
 import 'package:flutter/material.dart';
 
 class SummaryCardsSection extends StatelessWidget {
@@ -44,23 +45,23 @@ class SummaryCardsSection extends StatelessWidget {
       if (constraints.maxWidth > 1200) {
         // Desktop
         crossAxisCount = 4;
-        childAspectRatio = .9;
+        childAspectRatio = 2;
       } else if (constraints.maxWidth > 800) {
         // Tablet
-        crossAxisCount = 3;
-        childAspectRatio = 1;
+        crossAxisCount = 4;
+        childAspectRatio = 3;
       } else if (constraints.maxWidth > 600) {
         // Tablet
-        crossAxisCount = 2;
-        childAspectRatio = 1;
+        crossAxisCount = 3;
+        childAspectRatio = 2;
       } else if (constraints.maxWidth > 400) {
         // Tablet
-        crossAxisCount = 1;
-        childAspectRatio = .9;
+        crossAxisCount = 3;
+        childAspectRatio = 2;
       } else {
         // Mobile
-        crossAxisCount = 1;
-        childAspectRatio = 0.9;
+        crossAxisCount = 2;
+        childAspectRatio = 2;
       }
       return GridView.builder(
           shrinkWrap: true,
@@ -133,22 +134,19 @@ class _SummaryCardState extends State<SummaryCard> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
                           Text(widget.title,
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.grey[800])),
                           kHeight10,
-                          Text('${widget.count}',
-                              style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: widget.iconColor ?? kpurple400))
-                        ]),
+                          AnimatedCounter(target: widget.count)
+                        ])),
                     Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(

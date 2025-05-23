@@ -34,3 +34,5 @@ enum InternetConnectionStatus { connected, disconnected, loading }
 //enum ServiceDesignType { Expandable, Container, Banner, Gallery, Slider }
 
 enum LMSCourseCardDesign { fromTutorCourse, fromCombletedCourse }
+
+enum SlideDirection { left, right, top, bottom }

@@ -22,19 +22,19 @@ class BuildRegistrationState extends StatelessWidget {
           ]),
       child: Row(children: [
         BuildRegistrationItem(
-          count: '0',
+          count: 7,
           label: 'Student Registered (Today)',
           color: kpurple400!,
           icon: Icons.calendar_today,
         ),
         BuildRegistrationItem(
-          count: '0',
+          count: 23,
           label: 'Student Registered (This Month)',
           color: kpurple400!,
           icon: Icons.date_range,
         ),
         BuildRegistrationItem(
-            count: '0',
+            count: 89,
             label: 'Student Registered (Total)',
             color: kpurple400!,
             icon: Icons.people)

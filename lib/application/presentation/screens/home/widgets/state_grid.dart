@@ -18,28 +18,28 @@ class BuildStateGrid extends StatelessWidget {
         Expanded(
             child: BuildStatteItem(
                 onTap: () {},
-                count: '1',
+                count: 4,
                 label: 'Total Applications',
                 color: kpurple400!,
                 icon: Icons.business)),
         Expanded(
             child: BuildStatteItem(
                 onTap: () {},
-                count: '11',
+                count: 77,
                 label: 'New Applications',
                 color: kpurple400!,
                 icon: Icons.menu_book)),
         Expanded(
             child: BuildStatteItem(
                 onTap: () {},
-                count: '0',
+                count: 4,
                 label: 'Offer Letter',
                 color: kpurple400!,
                 icon: Icons.description)),
         Expanded(
             child: BuildStatteItem(
                 onTap: () {},
-                count: '1',
+                count: 90,
                 label: 'Visa Approved',
                 color: kpurple400!,
                 icon: Icons.business)),

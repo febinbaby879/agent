@@ -16,8 +16,7 @@ class GoRouterConfig {
       errorBuilder: (context, state) => _errorScreen());
   static final List<RouteBase> routes = [
     GoRoute(
-        path: Routes.initial,
-        builder: (context, state) => const ScreenSplash()),
+        path: Routes.initial, builder: (context, state) => const HomeScreen()),
     GoRoute(
         path: Routes.login, builder: (context, state) => const ScreenLogin()),
     GoRoute(
