@@ -74,6 +74,34 @@ class ValidationTextField {
           return 'Passwords must be the same';
         }
         break;
+      case Validate.bankAccountNumber:
+        if (value == null || value.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        if (!RegExp(r'^\d{8,20}$').hasMatch(value)) {
+          return 'Bank account number must be 8-20 digits';
+        }
+        break;
+      case Validate.date:
+        if (value == null || value.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        final dateRegExp =
+            RegExp(r'^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$');
+        if (!dateRegExp.hasMatch(value)) {
+          return 'Enter date in dd-mm-yyyy format';
+        }
+        break;
+      case Validate.ifValidDate:
+        if (value == null || value.isEmpty) {
+          return null;
+        }
+        final dateRegExp =
+            RegExp(r'^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$');
+        if (!dateRegExp.hasMatch(value)) {
+          return 'Enter date in dd-mm-yyyy format';
+        }
+        break;
 
       default:
         if (value == 'Content' && value!.length < 20) {

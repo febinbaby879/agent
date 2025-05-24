@@ -2,6 +2,8 @@ enum Validate {
   phone,
   email,
   password,
+  bankAccountNumber,
+  date,
   none,
   noneOrNotNull,
   noneOrPhone,
@@ -11,6 +13,7 @@ enum Validate {
   ifValidnumber,
   ifValidWebsite,
   ifValidEmail,
+  ifValidDate,
   notNullAndLength10
 }
 
