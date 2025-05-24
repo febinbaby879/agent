@@ -1,4 +1,5 @@
 import 'package:agent_dashboard/application/controller/claims/claims_controller.dart';
+import 'package:agent_dashboard/application/presentation/screens/claims/widget/claims_dialoge.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
@@ -59,36 +60,29 @@ class ClaimsSection extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return _ClaimDialogeWidget(controller: controller);
+                    return const ClaimDialogeWidget();
                   });
             },
-            label: const Text('Claim All')),
+            label: const Text('Claim')),
       ),
     );
   }
 
   Widget _claimsList() {
     return const FittedBox(
-      fit: BoxFit.scaleDown,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            _ClaimsTileTop(
-              count: '134',
-              subTitle: 'Claims',
-              title: 'Total Claims',
-            ),
-            kWidth10,
-            _ClaimsTileTop(
-              count: '58',
-              subTitle: 'Claims',
-              title: 'Pending Claims'
-            )
-          ]
-        )
-      )
-    );
+        fit: BoxFit.scaleDown,
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(children: [
+              _ClaimsTileTop(
+                count: '134',
+                subTitle: 'Claims',
+                title: 'Total Claims',
+              ),
+              kWidth10,
+              _ClaimsTileTop(
+                  count: '58', subTitle: 'Claims', title: 'Pending Claims')
+            ])));
   }
 
   Widget _tabViewClaims(ClaimsController controller) {
@@ -175,14 +169,14 @@ class ClaimsSection extends StatelessWidget {
             child: Card(
               child: ListTile(
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return _ClaimDialogeWidget(
-                          controller: controller,
-                          claimAll: false,
-                        );
-                      });
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (context) {
+                  //       return _ClaimDialogeWidget(
+                  //         controller: controller,
+                  //         claimAll: false,
+                  //       );
+                  //     });
                 },
                 title: const Text('Student Name'),
                 subtitle: Column(
@@ -208,96 +202,6 @@ class ClaimsSection extends StatelessWidget {
   }
 }
 
-class _ClaimDialogeWidget extends StatelessWidget {
-  const _ClaimDialogeWidget(
-      {super.key, required this.controller, this.claimAll = true});
-
-  final ClaimsController controller;
-  final bool claimAll;
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Apply for claim',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            kHeight20,
-            const Text(
-              'Apply for a claim. \nWe will initiate the payment after your claim request is approved.\nThe amount will be credited to your bank account.',
-              style: TextStyle(),
-            ),
-            kHeight15,
-            claimAll
-                ? Text.rich(
-                    TextSpan(
-                      text: 'Total ',
-                      style: const TextStyle(color: Colors.black),
-                      children: [
-                        TextSpan(
-                          text: '58',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: kpurple400,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: ' claims pending',
-                        ),
-                      ],
-                    ),
-                  )
-                : Text.rich(
-                    TextSpan(
-                      text: 'Student Name ',
-                      style: const TextStyle(color: Colors.black),
-                      children: [
-                        TextSpan(
-                          text: '100%',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: kpurple400,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: ' claim pending',
-                        ),
-                      ],
-                    ),
-                  ),
-            kHeight15,
-            Obx(
-              () => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: kpurple400, foregroundColor: kWhite),
-                onPressed: () {
-                  controller.applyClaim();
-                },
-                child: controller.applyClaimLoading.value
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ShakeX(infinite: true, child: const Icon(Icons.send)),
-                          const Text('  Submitting... ')
-                        ],
-                      )
-                    : const Text(' Apply '),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _ClaimsTileTop extends StatelessWidget {
   const _ClaimsTileTop({

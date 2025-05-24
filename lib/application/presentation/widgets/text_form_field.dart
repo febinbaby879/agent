@@ -114,6 +114,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             hintStyle: textStyle1,
             prefixIconConstraints: BoxConstraints.tight(const Size(43, 30)),
             labelText: widget.lebelText,
+            labelStyle: textStyle1,
             errorMaxLines: 5,
             fillColor: widget.fillColor ?? kWhite,
             filled: true,

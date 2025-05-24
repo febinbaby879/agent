@@ -71,17 +71,18 @@ class AuthController extends GetxController {
 
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
-    final login = await SharedPreferecesStorage.getLogin();
-    if (login) {
-      final onBoarding = await SharedPreferecesStorage.getOnBoard();
-      if (onBoarding) {
-        context.go(Routes.homeScreen);
-      } else {
-        context.go(Routes.onboardingScreen);
-      }
-    } else {
-      context.go(Routes.login);
-    }
+    context.go(Routes.homeScreen);
+    // final login = await SharedPreferecesStorage.getLogin();
+    // if (login) {
+    //   final onBoarding = await SharedPreferecesStorage.getOnBoard();
+    //   if (onBoarding) {
+    //     context.go(Routes.homeScreen);
+    //   } else {
+    //     context.go(Routes.onboardingScreen);
+    //   }
+    // } else {
+    //   context.go(Routes.login);
+    // }
   }
 
   /// login agent
