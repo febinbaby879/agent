@@ -9,4 +9,5 @@ class Routes {
 
   static const String profile = '/profile';
   static const String agrementSign = '/agreement_signature';
+  static const String applicationForm = '/application_form';
 }

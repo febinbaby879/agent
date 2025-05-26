@@ -1,7 +1,10 @@
+import 'package:agent_dashboard/application/controller/home/home_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/courses/widgets/courses_card.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/widgets/dropdown_builder.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CoursesSection extends StatelessWidget {
   CoursesSection({super.key});
@@ -38,23 +41,39 @@ class CoursesSection extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(children: [
-            kHeight10,
-            CustomTextField(
-                hintText: 'Search Course',
-                onTapOutside: () => FocusScope.of(context).unfocus()),
-            kHeight10,
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: programs.length,
-                itemBuilder: (context, index) =>
-                    CoursesCard(program: programs[index]))
-          ])));
+  Widget build(BuildContext context) {
+    final homeController = Get.find<HomeController>();
+    return SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(children: [
+              kHeight10,
+              Row(children: [
+                Expanded(
+                    child: CustomTextField(
+                        hintText: 'Search Course',
+                        onTapOutside: () => FocusScope.of(context).unfocus())),
+                kWidth10,
+                SizedBox(
+                    width: 300,
+                    child: Obx(() => CustomDropDownBuilder(
+                        items: homeController.projectTopics,
+                        onChanged: (data) =>
+                            homeController.changeProjectDropDown(data ?? ""),
+                        hintText: 'Select Project',
+                        selectedvalue:
+                            homeController.selectedProjectDropdown.value)))
+              ]),
+              kHeight10,
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: programs.length,
+                  itemBuilder: (context, index) =>
+                      CoursesCard(program: programs[index]))
+            ])));
+  }
 }
 
 class Program {

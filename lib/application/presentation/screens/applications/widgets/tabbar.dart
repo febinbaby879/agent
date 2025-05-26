@@ -1,10 +1,13 @@
 import 'package:agent_dashboard/application/controller/application/application.dart';
+import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/widgets/event_button.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class Tabbar extends StatefulWidget {
   const Tabbar({super.key, required this.tabController});
@@ -67,7 +70,13 @@ class _TabbarState extends State<Tabbar> {
               foregroundColor: kWhite,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20))),
-          child: const Text('Sort'))
+          child: const Text('Sort')),
+      kWidth10,
+      EventButton(
+          style: textHeadStyle1,
+          color: kRed,
+          text: 'New Student',
+          onTap: () => context.go(Routes.applicationForm))
     ]);
   }
 

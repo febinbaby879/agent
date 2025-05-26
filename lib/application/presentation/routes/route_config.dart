@@ -1,8 +1,8 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
+import 'package:agent_dashboard/application/presentation/screens/applications/widgets/form.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/forgot_password_.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/agreement_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
-import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
 import 'package:agent_dashboard/application/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/profile.dart';
@@ -17,6 +17,9 @@ class GoRouterConfig {
   static final List<RouteBase> routes = [
     GoRoute(
         path: Routes.initial, builder: (context, state) => const HomeScreen()),
+    GoRoute(
+        path: Routes.applicationForm,
+        builder: (context, state) => const StudentApllicationForm()),
     GoRoute(
         path: Routes.login, builder: (context, state) => const ScreenLogin()),
     GoRoute(
@@ -33,7 +36,7 @@ class GoRouterConfig {
         builder: (context, state) => const ScreenAgrementSignature()),
     GoRoute(
         path: Routes.onboardingScreen,
-        builder: (context, state) => const ScreenOnboarding()),
+        builder: (context, state) => const ScreenOnboarding())
   ];
   static _errorScreen() => Scaffold(
         appBar: AppBar(title: const Text('Error')),

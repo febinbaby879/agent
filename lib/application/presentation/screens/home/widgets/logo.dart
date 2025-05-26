@@ -10,13 +10,13 @@ class LogoWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(children: [
-        ContainerImage(image: eduGuardianLogo),
+        ContainerImage(image: eduGuardianLogo, width: 100, height: 60),
         kWidth15,
         Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('eduGuardian - Agent',
+              Text('eG Business',
                   style: textStyle ??
                       textHeadStyle1.copyWith(
                           color: kPurple,

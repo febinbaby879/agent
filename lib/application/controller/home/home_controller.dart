@@ -22,4 +22,18 @@ class HomeController extends GetxController {
       selectedTabContent.value = item;
 
   void profileAction() => profileEnable.value = !profileEnable.value;
+
+  List<String> projectTopics = [
+    'All',
+    'MIBD',
+    'eduGuardian',
+    'WINC',
+    'CTC',
+    'UoB RAK',
+    'Vibe Education'
+  ];
+  RxString selectedProjectDropdown = ''.obs;
+  void changeProjectDropDown(String value) {
+    selectedProjectDropdown.value = value;
+  }
 }
