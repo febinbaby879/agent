@@ -3,8 +3,8 @@ import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-class BuildStateGrid extends StatelessWidget {
-  const BuildStateGrid({super.key});
+class TopGrids extends StatelessWidget {
+  const TopGrids({super.key});
 
   @override
   Widget build(BuildContext context) => Container(

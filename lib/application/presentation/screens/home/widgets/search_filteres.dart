@@ -1,9 +1,12 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
+import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/widgets/date_picking_bottom_sheet.dart';
+import 'package:agent_dashboard/application/presentation/widgets/event_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../widgets/text_form_field.dart';
 
@@ -35,7 +38,13 @@ class _BuildSearchAndFilersState extends State<BuildSearchAndFilers> {
                 border: Border.all(color: kpurple400!), borderRadius: kRadius5),
             width: 50,
             height: 50,
-            child: Icon(Icons.search, color: kpurple400))
+            child: Icon(Icons.search, color: kpurple400)),
+        kWidth5,
+        EventButton(
+            hieght: 50,
+            text: 'New Student',
+            onTap: () => context.go(Routes.applicationForm),
+            color: kRed)
       ]),
       kHeight15,
       Row(
@@ -158,16 +167,6 @@ class _BuildSearchAndFilersState extends State<BuildSearchAndFilers> {
                                 });
                               })))
                 ])),
-            // Container(
-            //     margin: const EdgeInsets.only(left: 5),
-            //     decoration: BoxDecoration(
-            //         border: Border.all(color: kpurple400!),
-            //         borderRadius: kRadius5),
-            //     width: 50,
-            //     height: 50,
-            //     child: IconButton(
-            //         onPressed: () {},
-            //         icon: Icon(Icons.done, color: kpurple400)))
           ])
     ]);
   }

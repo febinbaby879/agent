@@ -1,28 +1,40 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart' as dio;
 
 class ImageModel {
-  File? fileImage;
+  File? fileImage; // For mobile
+  Uint8List? webImage; // For web
   String? base64;
   String? type;
   dio.MultipartFile? multipartFile;
-  ImageModel({this.fileImage, this.base64, this.type, this.multipartFile});
 
-  // Factory constructor to create an ImageModel instance from a map
+  ImageModel({
+    this.fileImage,
+    this.webImage,
+    this.base64,
+    this.type,
+    this.multipartFile,
+  });
+
+  /// 🔹 Factory constructor to create an ImageModel from a map
   factory ImageModel.fromMap(Map<String, dynamic> map) {
     return ImageModel(
-      // fileImage cannot be directly restored from JSON, as it's a file.
       fileImage: map['fileImage'] != null ? File(map['fileImage']) : null,
+      webImage: map['webImage'] != null
+          ? Uint8List.fromList(List<int>.from(map['webImage']))
+          : null,
       base64: map['base64'] as String?,
       type: map['type'] as String?,
+      multipartFile: null, // MultipartFile can't be stored in JSON
     );
   }
 
-  // Method to convert ImageModel instance to a JSON-compatible map
+  /// 🔹 Convert ImageModel to JSON-compatible map
   Map<String, dynamic> toJson() {
     return {
-      // fileImage is saved as a file path instead of the File object itself
-      'fileImage': fileImage?.path,
+      'fileImage': fileImage?.path, // Store file path (only for mobile)
+      'webImage': webImage?.toList(), // Convert Uint8List to List<int> for JSON
       'base64': base64,
       'type': type,
     };
