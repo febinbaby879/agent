@@ -87,7 +87,8 @@ class ClaimDialogeWidget extends StatelessWidget {
         elevation: controller.agreeTermsError.value ? 0 : null,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Checkbox(
                   isError: controller.agreeTermsError.value,

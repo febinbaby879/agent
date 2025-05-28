@@ -12,13 +12,13 @@ import 'package:agent_dashboard/domain/model/auth/register_success_model/registe
 import 'package:agent_dashboard/domain/repository/auth_repo.dart';
 
 class AuthService implements AuthRepo {
-  final ApiService apiService = ApiService(addToken: false);
+  final ApiService _apiService = ApiService(addToken: false);
 
   @override
   Future<Either<Failure, RegisterSuccessModel>> userLogin(
       {required LoginModel loginModel}) async {
     try {
-      final responce = await apiService.post(ApiEndPoints.userLogin,
+      final responce = await _apiService.post(ApiEndPoints.userLogin,
           data: loginModel.toJson());
       log('Success userLogin');
       if (responce.success ?? false) {
@@ -36,7 +36,7 @@ class AuthService implements AuthRepo {
   Future<Either<Failure, RegisterSuccessModel>> userRegister(
       {required RegisterModel registerModel}) async {
     try {
-      final responce = await apiService.post(ApiEndPoints.userRegistration,
+      final responce = await _apiService.post(ApiEndPoints.userRegistration,
           data: registerModel.toJson());
       log('Success userRegister');
       if (responce.success ?? false) {
@@ -54,7 +54,7 @@ class AuthService implements AuthRepo {
   Future<Either<Failure, RegisterSuccessModel>> verifOtpRegister(
       {required OtpVerifyModel otpVerifyModel}) async {
     try {
-      final responce = await apiService.post(
+      final responce = await _apiService.post(
           ApiEndPoints.registerOtpVerification,
           data: otpVerifyModel.toJson());
       log('Success verifOtpRegister');
@@ -73,7 +73,7 @@ class AuthService implements AuthRepo {
   Future<Either<Failure, SuccessResponceModel>> forgotPassword(
       {required RestNewPassword restNewPassword}) async {
     try {
-      final responce = await apiService.post(ApiEndPoints.forgotPassword,
+      final responce = await _apiService.post(ApiEndPoints.forgotPassword,
           data: restNewPassword.toJson());
       log('Success forgotPassword');
       if (responce.success ?? false) {
@@ -91,7 +91,7 @@ class AuthService implements AuthRepo {
   Future<Either<Failure, SuccessResponceModel>> resetPassword(
       {required RestNewPassword restNewPassword}) async {
     try {
-      final responce = await apiService.post(ApiEndPoints.resetNewPassword,
+      final responce = await _apiService.post(ApiEndPoints.resetNewPassword,
           data: restNewPassword.toJson());
       log('Success resetPassword');
       if (responce.success ?? false) {

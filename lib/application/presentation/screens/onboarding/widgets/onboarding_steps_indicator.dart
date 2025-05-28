@@ -12,31 +12,39 @@ class _OnboardingStepsIndicator extends StatelessWidget {
           boxShadow: boxShadow4, color: kWhite, borderRadius: kRadius5),
       child: Row(
         children: List.generate(
-          controller.steps.length,
+          controller.onBoardingStatus.value.stages?.length ?? 0,
           (index) => Expanded(
             child: Obx(
-              () => HoverEffectWidget(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    children: [
-                      Text(
-                        controller.steps[index],
-                        style: const TextStyle(
-                          fontSize: 18,
+              () {
+                final step = controller.onBoardingStatus.value.stages![index];
+                return HoverEffectWidget(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Text(
+                          step.name ?? '',
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      kHeight10,
-                      LinearProgressIndicator(
-                        color: kpurple400,
-                        value: controller.stepCompletion[index] ? 1 : 0,
-                        borderRadius: kRadius5,
-                        minHeight: 10,
-                      ),
-                    ],
+                        kHeight10,
+                        LinearProgressIndicator(
+                          color: kpurple400,
+                          value: (controller.onBoardingStatus.value.progress
+                                          ?.completedStages ??
+                                      0) <=
+                                  index
+                              ? 1
+                              : 0,
+                          borderRadius: kRadius5,
+                          minHeight: 10,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),

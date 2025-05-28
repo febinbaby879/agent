@@ -73,7 +73,7 @@ class ValidationTextField {
         if (password!.trim() != value) {
           return 'Passwords must be the same';
         }
-        break;
+        return null;
       case Validate.bankAccountNumber:
         if (value == null || value.isEmpty) {
           return 'Please enter $labelText';

@@ -11,9 +11,9 @@ RegisterSuccessModel _$RegisterSuccessModelFromJson(
     RegisterSuccessModel(
       message: json['message'] as String?,
       token: json['token'] as String?,
-      user: json['user'] == null
+      user: json['agent'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : User.fromJson(json['agent'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegisterSuccessModelToJson(
@@ -21,5 +21,5 @@ Map<String, dynamic> _$RegisterSuccessModelToJson(
     <String, dynamic>{
       'message': instance.message,
       'token': instance.token,
-      'user': instance.user,
+      'agent': instance.user,
     };

@@ -202,7 +202,6 @@ class ClaimsSection extends StatelessWidget {
   }
 }
 
-
 class _ClaimsTileTop extends StatelessWidget {
   const _ClaimsTileTop({
     super.key,

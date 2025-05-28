@@ -10,6 +10,8 @@ void showCustomToast({
   double fontSize = 12.0,
   Color backgroundColor = kBlack,
   Color textColor = kWhite,
+
+  /// left, center or right
   dynamic webPosition = 'right',
   bool webShowClose = true,
 }) {

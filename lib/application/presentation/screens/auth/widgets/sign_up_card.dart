@@ -38,140 +38,49 @@ class SignUPCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              const Row(
-                children: [
-                  Text(
-                    'Name',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Name',
                 controller: controller.nameSignupController,
                 validate: Validate.none,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Email',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Email',
                 controller: controller.emailSignupController,
                 validate: Validate.email,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Phone',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Phone',
                 controller: controller.phoneSignupController,
                 validate: Validate.phone,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Agency Name',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Agency Name',
                 controller: controller.agencyNameSignupController,
                 validate: Validate.notNull,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Directors Name',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Directors Name',
                 controller: controller.directorsNameSignupController,
                 validate: Validate.notNull,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Directors Phone',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 hintText: 'Directors Phone',
                 controller: controller.directorsPhoneSignupController,
                 validate: Validate.phone,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    'Address',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              CustomTextField(
+              _TextField(
                 maxLines: 3,
                 hintText: 'Address',
                 controller: controller.addressSignupController,
                 validate: Validate.notNull,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              const SizedBox(height: 8),
               const Row(
                 children: [
                   Text(
@@ -191,12 +100,13 @@ class SignUPCard extends StatelessWidget {
                 onChanged: (value) {},
                 hintText: 'Country',
               ),
-              // CustomTextField(
-              //   hintText: 'Country',
-              //   controller: controller.countrySignupController,
-              //   validate: Validate.notNull,
-              //   autovalidateMode: AutovalidateMode.onUserInteraction,
-              // ),
+              _TextField(
+                maxLines: 1,
+                hintText: 'Password',
+                controller: controller.passwordSignupController,
+                validate: Validate.password,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
               const SizedBox(height: 15),
 
               // Sign up button
@@ -234,6 +144,50 @@ class SignUPCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TextField extends StatelessWidget {
+  const _TextField({
+    this.controller,
+    this.validate = Validate.none,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
+    this.hintText = '',
+    this.maxLines = 1,
+  });
+
+  final String hintText;
+  final TextEditingController? controller;
+  final Validate validate;
+  final AutovalidateMode autovalidateMode;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              hintText,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF6B7280),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        CustomTextField(
+          maxLines: maxLines,
+          hintText: hintText,
+          controller: controller,
+          validate: validate,
+          autovalidateMode: autovalidateMode,
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }
