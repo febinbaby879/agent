@@ -27,7 +27,7 @@ class ApiResponse {
 
   factory ApiResponse.error([Map<String, dynamic>? json, int? statusCode]) {
     return ApiResponse(
-      data: json?['data'] != null ? json!['data'] : null,
+      data: json?['data'] != null ? json!['data'] : json,
       success: false,
       message: (json?['message'] as String?) ?? 'Something went wrong',
     );

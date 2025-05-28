@@ -4,26 +4,22 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  String? fullName;
-  String? email;
-  bool? isVerified;
-  String? role;
-  @JsonKey(name: '_id')
   String? id;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  @JsonKey(name: '__v')
-  int? v;
+  String? name;
+  String? email;
+  String? agencyName;
+  String? country;
+  String? agentAs;
+  bool? onboarding;
 
   User({
-    this.fullName,
-    this.email,
-    this.isVerified,
-    this.role,
     this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
+    this.name,
+    this.email,
+    this.agencyName,
+    this.country,
+    this.agentAs,
+    this.onboarding,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

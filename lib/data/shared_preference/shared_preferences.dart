@@ -9,10 +9,10 @@ class SharedPreferecesStorage {
   static const String nameKey = 'name';
   static const String userId = 'user_id';
 
-  static Future<void> saveToken({required TokenModel tokenModel}) async {
-    log('save token =>() ${tokenModel.token}');
+  static Future<void> saveToken({required String token}) async {
+    log('save token =>() $token');
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(accessKey, tokenModel.token);
+    await prefs.setString(accessKey, token);
   }
 
   static Future<String?> getAccessToken() async {

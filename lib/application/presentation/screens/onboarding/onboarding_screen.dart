@@ -36,12 +36,12 @@ class ScreenOnboarding extends StatelessWidget {
           }),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             kHeight15,
-            const _OnboardingStepsIndicator(),
+            _OnboardingStepsIndicator(),
             kHeight10,
           ],
         ),
