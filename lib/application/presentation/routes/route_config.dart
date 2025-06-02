@@ -1,6 +1,7 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/form.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/forgot_password_.dart';
+import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/agreement_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
@@ -11,12 +12,15 @@ import 'package:go_router/go_router.dart';
 
 class GoRouterConfig {
   static final router = GoRouter(
-      initialLocation: '/',
+      initialLocation: Routes.initial,
       routes: routes,
       errorBuilder: (context, state) => _errorScreen());
   static final List<RouteBase> routes = [
     GoRoute(
-        path: Routes.initial, builder: (context, state) => const HomeScreen()),
+        path: Routes.initial,
+        builder: (context, state) => const ScreenSplash()),
+    // GoRoute(
+    //     path: Routes.initial, builder: (context, state) => const HomeScreen()),
     GoRoute(
         path: Routes.applicationForm,
         builder: (context, state) => const StudentApllicationForm()),

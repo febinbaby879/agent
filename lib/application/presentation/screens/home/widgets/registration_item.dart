@@ -29,8 +29,7 @@ class _BuildRegistrationItemState extends State<BuildRegistrationItem> {
         child: MouseRegion(
             onEnter: (_) => setState(() => _isHovered = true),
             onExit: (_) => setState(() => _isHovered = false),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                   width: size,
                   height: size,

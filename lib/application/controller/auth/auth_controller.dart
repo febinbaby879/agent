@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/toast/flutter_toast.dart';
@@ -8,6 +9,8 @@ import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/auth/login/login_model/login_model.dart';
 import 'package:agent_dashboard/domain/model/auth/otp_verify_model/otp_verify_model.dart';
 import 'package:agent_dashboard/domain/model/auth/register_model/register_model.dart';
+import 'package:agent_dashboard/domain/model/auth/register_success_model/register_success_model.dart';
+import 'package:agent_dashboard/domain/model/auth/register_success_model/user.dart';
 import 'package:agent_dashboard/domain/model/auth/rest_new_password/rest_new_password.dart';
 import 'package:agent_dashboard/domain/repository/auth_repo.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +37,8 @@ class AuthController extends GetxController {
       TextEditingController();
   final TextEditingController countrySignupController = TextEditingController();
   final TextEditingController addressSignupController = TextEditingController();
+  final TextEditingController passwordSignupController =
+      TextEditingController();
   final TextEditingController phoneSignupController = TextEditingController();
   final TextEditingController otpSignupController = TextEditingController();
 
@@ -71,18 +76,33 @@ class AuthController extends GetxController {
 
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
-    context.go(Routes.homeScreen);
-    // final login = await SharedPreferecesStorage.getLogin();
-    // if (login) {
-    //   final onBoarding = await SharedPreferecesStorage.getOnBoard();
-    //   if (onBoarding) {
-    //     context.go(Routes.homeScreen);
-    //   } else {
-    //     context.go(Routes.onboardingScreen);
-    //   }
-    // } else {
-    //   context.go(Routes.login);
-    // }
+    // await Future.delayed(const Duration(seconds: 2));
+    // print('get log called');
+    // context.go(Routes.onboardingScreen);
+    final login = await SharedPreferecesStorage.getLogin();
+    if (login) {
+      final onBoarding = await SharedPreferecesStorage.getOnBoard();
+      if (onBoarding) {
+        context.go(Routes.homeScreen);
+      } else {
+        context.go(Routes.onboardingScreen);
+      }
+    } else {
+      context.go(Routes.login);
+    }
+  }
+
+  Future<void> _completeLogin(
+      BuildContext context, RegisterSuccessModel model) async {
+    await SharedPreferecesStorage.saveToken(token: model.token ?? '');
+    await SharedPreferecesStorage.saveUserId(userId: model.user?.id ?? "");
+    if (model.user?.onboarding ?? false) {
+      context.go(Routes.onboardingScreen);
+    } else {
+      context.go(Routes.homeScreen);
+    }
+    await SharedPreferecesStorage.setLogin();
+    await SharedPreferecesStorage.setOnBoard(model.user?.onboarding ?? false);
   }
 
   /// login agent
@@ -95,12 +115,13 @@ class AuthController extends GetxController {
               email: emailController.text.trim(),
               password: passwordController.text.trim(),
               deviceToken: ''));
-      result.fold((l) {}, (r) {
-        SharedPreferecesStorage.setLogin();
-        // SharedPreferecesStorage.setOnBoard(true);
-        context.go(Routes.homeScreen);
+      await result.fold((l) {
+        showCustomToast(message: l.message ?? errorMessage);
+        loginLoading.value = false;
+      }, (r) async {
+        await _completeLogin(context, r);
+        loginLoading.value = false;
       });
-      loginLoading.value = false;
     }
   }
 
@@ -118,6 +139,8 @@ class AuthController extends GetxController {
           agentPhoneNumber: phoneSignupController.text.trim(),
           directorName: directorsNameSignupController.text.trim(),
           directorContactNumber: directorsPhoneSignupController.text.trim(),
+          password: passwordSignupController.text.trim(),
+          source: 'website',
         ),
       );
       result.fold((l) {
@@ -139,12 +162,15 @@ class AuthController extends GetxController {
         otp: otpSignupController.text.trim(),
       ),
     );
-    result.fold((l) {
+    await result.fold((l) {
       showCustomToast(message: l.message ?? errorMessage);
-    }, (r) {
-      context.go(Routes.onboardingScreen);
+    }, (r) async {
+      await _completeLogin(context, r);
+      if (r.user?.onboarding ?? false) {
+        Get.find<OnboardingController>().refreshOnboarding();
+      }
+      otpLoading.value = false;
     });
-    otpLoading.value = false;
   }
 
   /// forgot password otp send

@@ -11,6 +11,7 @@ SuccessResponceModel _$SuccessResponceModelFromJson(
     SuccessResponceModel(
       message: json['message'] as String?,
       success: json['success'] as bool?,
+      data: json['data'],
     );
 
 Map<String, dynamic> _$SuccessResponceModelToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$SuccessResponceModelToJson(
     <String, dynamic>{
       'message': instance.message,
       'success': instance.success,
+      'data': instance.data,
     };

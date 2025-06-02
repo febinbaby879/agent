@@ -13,6 +13,7 @@ class RegisterModel {
   String? directorContactNumber;
   String? email;
   String? password;
+  String? source;
 
   RegisterModel({
     this.agencyName,
@@ -24,6 +25,7 @@ class RegisterModel {
     this.directorContactNumber,
     this.email,
     this.password,
+    this.source,
   });
 
   factory RegisterModel.fromJson(Map<String, dynamic> json) {

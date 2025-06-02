@@ -8,6 +8,7 @@ part 'register_success_model.g.dart';
 class RegisterSuccessModel {
   String? message;
   String? token;
+  @JsonKey(name: 'agent')
   User? user;
 
   RegisterSuccessModel({this.message, this.token, this.user});

@@ -1,20 +1,29 @@
+import 'package:agent_dashboard/data/service/onboarding/onboarding_service.dart';
+import 'package:agent_dashboard/domain/model/onboard/onboard_satus_model/onboard_satus_model.dart';
+import 'package:agent_dashboard/domain/repository/onboarding_repo.dart';
 import 'package:get/get.dart';
 
 class OnboardingController extends GetxController {
-  RxInt step = 0.obs;
-  List<String> steps = ['Step 1', 'Step 2', 'Step 3'];
-  RxList<bool> stepCompletion = [true, false, false].obs;
+  final OnboardingRepo _onboardingService = OnboardingService();
+
   RxBool refreshing = false.obs;
+  RxBool error = false.obs;
+
+  /// onboarding status data
+  Rx<OnboardSatusModel> onBoardingStatus = OnboardSatusModel().obs;
 
   Future<void> refreshOnboarding() async {
     if (refreshing.value) return;
     refreshing.value = true;
-    await Future.delayed(const Duration(seconds: 2));
+    error.value = false;
+    final result = await _onboardingService.getOnboardStatus();
+    result.fold(
+      (l) => error.value = true,
+      (r) {
+        onBoardingStatus.value = r;
+        error.value = false;
+      },
+    );
     refreshing.value = false;
-  }
-
-  /// onboarding steps
-  void changeStep(int step) {
-    this.step.value = step;
   }
 }
