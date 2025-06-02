@@ -16,8 +16,11 @@ class OnboardingService implements OnboardingRepo {
       final responce = await _apiService.get(ApiEndPoints.getOnboardingStatus);
       log('Success getOnboardStatus');
       if (responce.success ?? false) {
+      log('Success getOnboardStatus 1');
+      log("getOnboardStatus: ${responce.data.toString()}");
         return Right(OnboardSatusModel.fromJson(responce.data));
       } else {
+      log('Success getOnboardStatus 2 fail');
         return Left(Failure.fromResponse(responce));
       }
     } catch (e) {

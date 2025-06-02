@@ -39,7 +39,7 @@ class ApiService {
           queryParameters: queryParameters, options: Options(headers: headers));
       return _handleResponse(response);
     } on DioException catch (e) {
-      log('PATCH Exception => ${e.response?.data}');
+      log('GET Exception => ${e.response?.data}');
       return ApiResponse.error(e.response?.data, e.response?.statusCode);
     } catch (e) {
       log('GET Exception => $e');
@@ -59,7 +59,7 @@ class ApiService {
           options: Options(headers: headers));
       return _handleResponse(response);
     } on DioException catch (e) {
-      log('PATCH Exception => ${e.response?.data}');
+      log('POST Exception => ${e.response?.data}');
       return ApiResponse.error(e.response?.data, e.response?.statusCode);
     } catch (e) {
       log('POST Exception => $e');
@@ -79,7 +79,7 @@ class ApiService {
           options: Options(headers: headers));
       return _handleResponse(response);
     } on DioException catch (e) {
-      log('PATCH Exception => ${e.response?.data}');
+      log('PUT Exception => ${e.response?.data}');
       return ApiResponse.error(e.response?.data, e.response?.statusCode);
     } catch (e) {
       log('PUT Exception => $e');
@@ -99,7 +99,7 @@ class ApiService {
           options: Options(headers: headers));
       return _handleResponse(response);
     } on DioException catch (e) {
-      log('PATCH Exception => ${e.response?.data}');
+      log('DELETE Exception => ${e.response?.data}');
       return ApiResponse.error(e.response?.data, e.response?.statusCode);
     } catch (e) {
       log('DELETE Exception => $e');

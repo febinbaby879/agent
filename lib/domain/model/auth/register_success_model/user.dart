@@ -10,6 +10,7 @@ class User {
   String? agencyName;
   String? country;
   String? agentAs;
+  @JsonKey(name: 'onboading')
   bool? onboarding;
 
   User({
