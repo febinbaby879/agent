@@ -76,8 +76,8 @@ class AuthController extends GetxController {
 
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
-    // await Future.delayed(const Duration(seconds: 2));
-    // print('get log called');
+    await Future.delayed(const Duration(seconds: 2));
+    print('get log called');
     // context.go(Routes.onboardingScreen);
     final login = await SharedPreferecesStorage.getLogin();
     if (login) {
@@ -96,13 +96,14 @@ class AuthController extends GetxController {
       BuildContext context, RegisterSuccessModel model) async {
     await SharedPreferecesStorage.saveToken(token: model.token ?? '');
     await SharedPreferecesStorage.saveUserId(userId: model.user?.id ?? "");
-    if (model.user?.onboarding ?? false) {
+    if (model.user?.onboarding == false) {
       context.go(Routes.onboardingScreen);
+      await SharedPreferecesStorage.setOnBoard(false);
     } else {
       context.go(Routes.homeScreen);
+      await SharedPreferecesStorage.setOnBoard(true);
     }
     await SharedPreferecesStorage.setLogin();
-    await SharedPreferecesStorage.setOnBoard(model.user?.onboarding ?? false);
   }
 
   /// login agent
@@ -166,9 +167,9 @@ class AuthController extends GetxController {
       showCustomToast(message: l.message ?? errorMessage);
     }, (r) async {
       await _completeLogin(context, r);
-      if (r.user?.onboarding ?? false) {
-        Get.find<OnboardingController>().refreshOnboarding();
-      }
+      // if (r.user?.onboarding ?? false) {
+      //   Get.find<OnboardingController>().refreshOnboarding(con);
+      // }
       otpLoading.value = false;
     });
   }

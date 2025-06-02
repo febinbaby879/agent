@@ -13,6 +13,9 @@ Stage _$StageFromJson(Map<String, dynamic> json) => Stage(
       subStage: json['subStage'] as String?,
       subStageName: json['subStageName'] as String?,
       color: json['color'] as String?,
+      schedule: json['schedule'] == null
+          ? null
+          : Schedule.fromJson(json['schedule'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$StageToJson(Stage instance) => <String, dynamic>{
@@ -22,4 +25,5 @@ Map<String, dynamic> _$StageToJson(Stage instance) => <String, dynamic>{
       'subStage': instance.subStage,
       'subStageName': instance.subStageName,
       'color': instance.color,
+      'schedule': instance.schedule,
     };
