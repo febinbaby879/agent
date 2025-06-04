@@ -68,6 +68,8 @@ List<BoxShadow> boxShadow4 = [
 // Assets
 String eduGuardianLogo = 'assets/images/eduGuardian_logo.jpeg';
 
+String svgFormsPending = 'assets/images/svg/forms_person.svg';
+
 const List<String> countryList = [
   "Afghanistan",
   "Albania",

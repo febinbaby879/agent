@@ -18,7 +18,7 @@ class _ProfileContentState extends State<ProfileContent> {
   Widget build(BuildContext context) => Scaffold(
       appBar: widget.isSmallScreen
           ? AppBar(
-              title: const Text('Profile Information'),
+              title: const Text('Business Information'),
               backgroundColor: kWhite,
               foregroundColor: Colors.black,
             )
@@ -31,7 +31,7 @@ class _ProfileContentState extends State<ProfileContent> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // Personal Information section
-            _buildSectionHeader('Personal Information', onEdit: () {}),
+            _buildSectionHeader('Business Information', onEdit: () {}),
             Card(
                 margin: const EdgeInsets.only(top: 8, bottom: 24),
                 child: Padding(
@@ -117,7 +117,7 @@ class _ProfileContentState extends State<ProfileContent> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
-                        readOnly: true))),
+                        readOnly: true),),),
 
             // FAQs section
             const Text(

@@ -1,10 +1,12 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
+import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/application.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/student_detail.dart';
 import 'package:agent_dashboard/application/presentation/screens/claims/claims_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/counsillor/connect_counsiler_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/courses/courses.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/dashboard_content.dart';
+import 'package:agent_dashboard/application/presentation/screens/home/widgets/kyc_update_status.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/side_bar.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/tobbar.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/top_navabr.dart';
@@ -38,6 +40,11 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.only(right: 30.0),
                           child: Obx(() {
+                            if (!Get.find<OnboardingController>()
+                                .onboardingDone
+                                .value) {
+                              return const KycUpdateActionWidget();
+                            }
                             switch (homeController.selectedTabContent.value) {
                               case 'dashboard':
                                 return const BuildDashboardContent();

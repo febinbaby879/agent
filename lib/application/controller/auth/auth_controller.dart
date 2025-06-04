@@ -78,32 +78,25 @@ class AuthController extends GetxController {
   Future<void> getLog(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2));
     print('get log called');
-    // context.go(Routes.onboardingScreen);
-    final login = await SharedPreferecesStorage.getLogin();
-    if (login) {
-      final onBoarding = await SharedPreferecesStorage.getOnBoard();
-      if (onBoarding) {
-        context.go(Routes.homeScreen);
-      } else {
-        context.go(Routes.onboardingScreen);
-      }
-    } else {
-      context.go(Routes.login);
-    }
+    context.go(Routes.homeScreen);
+    // final login = await SharedPreferecesStorage.getLogin();
+    // if (login) {
+    //   final controller = Get.find<OnboardingController>();
+    //   final onBoarding = await controller.getOnboardingStatus();
+    //   controller.setOnboard(onboard: onBoarding);
+    //   context.go(Routes.homeScreen);
+    // } else {
+    //   context.go(Routes.login);
+    // }
   }
 
   Future<void> _completeLogin(
       BuildContext context, RegisterSuccessModel model) async {
     await SharedPreferecesStorage.saveToken(token: model.token ?? '');
     await SharedPreferecesStorage.saveUserId(userId: model.user?.id ?? "");
-    if (model.user?.onboarding == false) {
-      context.go(Routes.onboardingScreen);
-      await SharedPreferecesStorage.setOnBoard(false);
-    } else {
-      context.go(Routes.homeScreen);
-      await SharedPreferecesStorage.setOnBoard(true);
-    }
+    await Get.find<OnboardingController>().setOnboard(onboard: model.user?.onboarding == true);
     await SharedPreferecesStorage.setLogin();
+    context.go(Routes.homeScreen);
   }
 
   /// login agent

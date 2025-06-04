@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+import 'package:go_router/go_router.dart';
 
 class ClaimsController extends GetxController {
   RxBool claimsListLoading = false.obs;
   RxBool applyClaimLoading = false.obs;
+  RxBool addBankAccoundLoading = false.obs;
   RxBool claimsDetailLoading = false.obs;
   RxBool refreshing = false.obs;
 
@@ -17,6 +19,7 @@ class ClaimsController extends GetxController {
       Debouncer(delay: const Duration(milliseconds: 300));
 
   final GlobalKey<FormState> claimFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> bankingDetailKey = GlobalKey<FormState>();
 
   final TextEditingController agentName = TextEditingController();
   final TextEditingController agencyName = TextEditingController();
@@ -98,6 +101,18 @@ class ClaimsController extends GetxController {
       applyClaimLoading.value = true;
       await Future.delayed(const Duration(seconds: 2));
       applyClaimLoading.value = false;
+    }
+  }
+
+  void addBankAccount(BuildContext context) {
+    if (bankingDetailKey.currentState?.validate() ?? false) {
+      if (addBankAccoundLoading.value) return;
+      addBankAccoundLoading.value = true;
+      // Simulate a network call
+      Future.delayed(const Duration(seconds: 2), () {
+        addBankAccoundLoading.value = false;
+        GoRouter.of(context).pop();
+      });
     }
   }
 }

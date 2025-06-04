@@ -1,9 +1,11 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
+import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/widgets/logo.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key});
@@ -18,8 +20,11 @@ class TopBar extends StatelessWidget {
           const LogoWithText(),
           const Spacer(),
           IconButton(
-              onPressed: () => homeController.profileAction(),
-              icon: Icon(Icons.person, color: kpurple400)),
+              // onPressed: () => homeController.profileAction(),
+              onPressed: () {
+                context.go(Routes.profile);
+              },
+              icon: Hero(tag: 'profile_icon',child: Icon(Icons.person, color: kpurple400))),
           kWidth15
         ]));
   }
