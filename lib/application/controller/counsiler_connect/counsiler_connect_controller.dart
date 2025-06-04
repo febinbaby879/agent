@@ -12,10 +12,23 @@ class CounsillerController extends GetxController {
   // Form values
   final formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
   RxString selectedRequestType = "Meeting".obs;
   List<String> requestTypes = ['Meeting', 'Training', 'Call'];
   RxString selectedFilter = "All".obs;
   List<String> filters = ['All', 'Requested', 'In Progress', 'Completed'];
+  RxString selectedDate = "".obs;
+  RxString selectedTimeSlot = "".obs;
+  RxList<String> timeSlots = [
+    '10 AM - 11 AM',
+    '11 AM - 12 PM',
+    '12 PM - 1 PM',
+    '2 PM - 3 PM',
+    '3 PM - 4 PM',
+    '4 PM - 5 PM',
+    '5 PM - 6 PM',
+  ].obs;
   Rx<CounsillerConnectRequestModel?> selectedRequest =
       CounsillerConnectRequestModel().obs;
 

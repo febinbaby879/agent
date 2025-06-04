@@ -16,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.textCapitalization,
     this.focusNode,
     this.showUnderline = false,
+    this.enabled = true,
     this.validate = Validate.none,
     this.onTapOutside,
     this.obscureText = false,
@@ -58,6 +59,7 @@ class CustomTextField extends StatefulWidget {
   final TextCapitalization? textCapitalization;
   final bool obscureText;
   final bool autofocus;
+  final bool enabled;
   final TextEditingController? password;
   final InputBorder? enabledBorder;
   final InputBorder? focusedBorder;
@@ -89,6 +91,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
+    enabled: widget.enabled,
       autovalidateMode: widget.autovalidateMode,
       inputFormatters: widget.inputFormatters,
       keyboardType: widget.inputType,

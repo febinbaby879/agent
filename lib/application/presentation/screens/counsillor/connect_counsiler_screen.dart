@@ -2,6 +2,7 @@ import 'package:agent_dashboard/application/controller/counsiler_connect/counsil
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/widgets/pop_up_menu.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
 import 'package:agent_dashboard/domain/model/counsiller_connect/counsiller_connect_request_model.dart';
 import 'package:animate_do/animate_do.dart';
@@ -279,6 +280,17 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
 
   Widget _buildRequestForm(CounsillerController controller,
       [bool showBackButton = false]) {
+    Future<String?> pickDate(BuildContext context) async {
+      final date = await showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          lastDate: DateTime(DateTime.now().year + 1));
+      if (date != null) {
+        return '${date.day}/${date.month}/${date.year}';
+      }
+      return null;
+    }
+
     return Form(
       key: controller.formKey,
       child: Column(
@@ -362,6 +374,78 @@ class _OnlineCounsellorContentState extends State<OnlineCounsellorContent> {
               return null;
             },
           ),
+          const SizedBox(height: 10),
+          const Text(
+            'Prefered Date and Time',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          Row(children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  controller.selectedDate.value = await pickDate(context) ?? '';
+                },
+                child: Tooltip(
+                  message: 'Select Preferred Date',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            controller.selectedDate.value.isEmpty
+                                ? 'select date'
+                                : controller.selectedDate.value,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ),
+                        // const Spacer(),
+                        const Icon(Icons.calendar_today, size: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            kWidth10,
+            Expanded(
+              child: Obx(
+                () => PopUpMenuButtonWidget(
+                  onSelected: (value) {
+                    controller.selectedTimeSlot.value = value;
+                  },
+                  tooltip: 'Select Preferred Time Slot',
+                  items: controller.timeSlots,
+                  hintText: controller.selectedTimeSlot.value.isEmpty
+                      ? 'Time Slot'
+                      : controller.selectedTimeSlot.value,
+                ),
+              ),
+            )
+            // Expanded(
+            //     child: CustomTextField(
+            //   hintText: 'Time',
+            //   suffixIcon: IconButton(
+            //     onPressed: () {},
+            //     icon: Icon(Icons.timelapse_rounded),
+            //   ),
+            // ),),
+          ]),
           const SizedBox(height: 32),
 
           // Submit Button

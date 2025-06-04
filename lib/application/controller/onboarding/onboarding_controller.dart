@@ -13,8 +13,23 @@ class OnboardingController extends GetxController {
   RxBool refreshing = false.obs;
   RxBool error = false.obs;
 
+  /// obboarding process status
+  RxBool onboardingDone = false.obs;
+
   /// onboarding status data
   Rx<OnboardSatusModel> onBoardingStatus = OnboardSatusModel().obs;
+
+  /// get onboarding status from shared preferences
+  Future<bool> getOnboardingStatus() async {
+    onboardingDone.value = await SharedPreferecesStorage.getOnBoard();
+    return onboardingDone.value;
+  }
+
+  /// set onboarding status
+  Future<void> setOnboard({bool onboard = true}) async {
+    onboardingDone.value = onboard;
+    await SharedPreferecesStorage.setOnBoard(onboard);
+  }
 
   Future<void> refreshOnboarding(BuildContext context) async {
     if (refreshing.value) return;

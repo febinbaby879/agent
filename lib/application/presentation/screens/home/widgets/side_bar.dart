@@ -1,10 +1,12 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
+import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/screens/wishlist/wishlist_course.dart';
+import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/responsive/responsive.dart';
-import 'package:agent_dashboard/application/presentation/widgets/hover_menu.dart';
+import 'package:agent_dashboard/application/presentation/widgets/hover/hover_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +17,7 @@ class BuildProfileSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<OnboardingController>();
     return Obx(() => Get.find<HomeController>().profileEnable.value &&
             (!Responsive.isMobile(context) && !Responsive.isTab(context))
         ? Positioned(
@@ -26,7 +29,7 @@ class BuildProfileSideBar extends StatelessWidget {
                     border: Border.all(color: kpurple400!),
                     color: Colors.white),
                 width: 550,
-                height: 550,
+                height: 450,
                 padding: const EdgeInsets.all(16),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,62 +40,78 @@ class BuildProfileSideBar extends StatelessWidget {
                             backgroundImage:
                                 AssetImage('assets/images/submit.png')),
                         kWidth20,
-                        const Column(
+                        Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Your Name',
-                                  style: TextStyle(
+                              Text(
+                                  controller.onBoardingStatus.value.agentInfo
+                                          ?.name ??
+                                      "",
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
-                              SizedBox(height: 4),
-                              Text('f@gmail.com',
-                                  style: TextStyle(color: Colors.grey)),
-                              SizedBox(height: 2),
-                              Text('+91 6238075738',
-                                  style: TextStyle(color: Colors.grey))
+                              const SizedBox(height: 4),
+                              Text(
+                                  controller.onBoardingStatus.value.agentInfo
+                                          ?.email ??
+                                      "",
+                                  style: const TextStyle(color: Colors.grey)),
+                              const SizedBox(height: 2),
+                              Text(
+                                  controller.onBoardingStatus.value.agentInfo
+                                          ?.phone ??
+                                      "",
+                                  style: const TextStyle(color: Colors.grey))
                             ]),
                         const Spacer(),
-                        CircularPercentIndicator(
-                            radius: 50,
-                            lineWidth: 7,
-                            percent: 1.0,
-                            center: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('Profile', style: textStyle1),
-                                  Text('100%', style: textStyle1)
-                                ]),
-                            progressColor: Colors.green,
-                            backgroundColor: Colors.green.withOpacity(0.2))
+                        HoverEffectWidget(
+                          child: CircularPercentIndicator(
+                              radius: 50,
+                              lineWidth: 7,
+                              percent: (controller.onBoardingStatus.value
+                                          .progress?.percentage ??
+                                      0) *
+                                  0.01,
+                              center: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Profile', style: textStyle1),
+                                    Text(
+                                        '${controller.onBoardingStatus.value.progress?.percentage ?? 0}%',
+                                        style: textStyle1)
+                                  ]),
+                              progressColor: Colors.green,
+                              backgroundColor: Colors.green.withOpacity(0.2)),
+                        )
                       ]),
                       kHeight20,
                       Expanded(
                           child: SingleChildScrollView(
                               child: Column(children: [
-                        HoverMenuItem(
-                            iconColor: kpurple400,
-                            icon: Icons.favorite_outline,
-                            text: 'Wishlist Institutions',
-                            onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => const WhislistDailog())),
-                        HoverMenuItem(
-                            iconColor: kpurple400,
-                            icon: Icons.golf_course,
-                            text: 'Wishlist Courses',
-                            onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => const WhislistDailog())),
-                        HoverMenuItem(
-                            iconColor: kpurple400,
-                            icon: Icons.money,
-                            text: 'Commissions',
-                            onTap: () {}),
-                        HoverMenuItem(
-                            iconColor: kpurple400,
-                            icon: Icons.manage_accounts,
-                            text: 'Relationship Manager',
-                            onTap: () {}),
+                        // HoverMenuItem(
+                        //     iconColor: kpurple400,
+                        //     icon: Icons.favorite_outline,
+                        //     text: 'Wishlist Institutions',
+                        //     onTap: () => showDialog(
+                        //         context: context,
+                        //         builder: (context) => const WhislistDailog())),
+                        // HoverMenuItem(
+                        //     iconColor: kpurple400,
+                        //     icon: Icons.golf_course,
+                        //     text: 'Wishlist Courses',
+                        //     onTap: () => showDialog(
+                        //         context: context,
+                        //         builder: (context) => const WhislistDailog())),
+                        // HoverMenuItem(
+                        //     iconColor: kpurple400,
+                        //     icon: Icons.money,
+                        //     text: 'Commissions',
+                        //     onTap: () {}),
+                        // HoverMenuItem(
+                        //     iconColor: kpurple400,
+                        //     icon: Icons.manage_accounts,
+                        //     text: 'Relationship Manager',
+                        //     onTap: () {}),
                         HoverMenuItem(
                             iconColor: kpurple400,
                             icon: Icons.work,
