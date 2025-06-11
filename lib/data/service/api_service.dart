@@ -60,6 +60,7 @@ class ApiService {
       return _handleResponse(response);
     } on DioException catch (e) {
       log('POST Exception => ${e.response?.data}');
+      log('POST Exception => ${e.response}');
       return ApiResponse.error(e.response?.data, e.response?.statusCode);
     } catch (e) {
       log('POST Exception => $e');

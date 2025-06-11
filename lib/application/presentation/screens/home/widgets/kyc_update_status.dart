@@ -15,15 +15,20 @@ class KycUpdateActionWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgPicture.asset(svgFormsPending, height: 200,),
+        SvgPicture.asset(
+          svgFormsPending,
+          height: 200,
+        ),
         kHeight20,
         const Text(
           'Complete your KYC details to access the dashboard',
         ),
         kHeight20,
-        ElevatedButton(onPressed: () {
-          context.go(Routes.onboardingScreen);
-        }, child: const Text('Complete KYC'))
+        ElevatedButton(
+            onPressed: () {
+              context.go(Routes.profile);
+            },
+            child: const Text('Complete KYC'))
       ],
     );
   }

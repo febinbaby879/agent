@@ -1,4 +1,3 @@
-import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
 import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
@@ -14,7 +13,6 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<OnboardingController>();
     final profileController = Get.find<ProfileController>();
     return Container(
       width: maxWidth,
@@ -34,10 +32,7 @@ class SidebarWidget extends StatelessWidget {
                       height: 80,
                       child: CircularProgressIndicator(
                         strokeWidth: 4,
-                        value: (controller.onBoardingStatus.value.progress
-                                    ?.percentage ??
-                                0) *
-                            0.01,
+                        value: 1,
                         backgroundColor: kGrey,
                         color: kpurple400,
                       ),
@@ -47,7 +42,8 @@ class SidebarWidget extends StatelessWidget {
                         radius: 36,
                         backgroundColor: kpurple400,
                         child: Text(
-                          '${(controller.onBoardingStatus.value.progress?.percentage ?? 0)}%',
+                          // '${(controller.onBoardingStatus.value.progress?.percentage ?? 0)}%',
+                          'Agent',
                           style: const TextStyle(color: kWhite),
                         ),
                       ),
@@ -63,22 +59,25 @@ class SidebarWidget extends StatelessWidget {
                   ],
                 ),
                 kWidth10,
-                const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hello,',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                        ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text(
+                    'Hello,',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Obx(
+                    () => Text(
+                      profileController.profileInfo.value.agentName ?? "",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
-                      Text('Feb Bab',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87))
-                    ])
+                    ),
+                  )
+                ])
               ])),
           kHeight10,
           // MY ORDERS

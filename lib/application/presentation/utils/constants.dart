@@ -70,6 +70,23 @@ String eduGuardianLogo = 'assets/images/eduGuardian_logo.jpeg';
 
 String svgFormsPending = 'assets/images/svg/forms_person.svg';
 
+List<String> companyTypes = [
+  "Individual",
+  "Agency",
+  "Educational Consultant",
+  "Other",
+];
+
+List<String> socialMediaPlatforms = [
+  'Facebook',
+  'Instagram',
+  'Twitter',
+  'LinkedIn',
+  'YouTube',
+  'TikTok',
+  'WhatsApp',
+];
+
 const List<String> countryList = [
   "Afghanistan",
   "Albania",

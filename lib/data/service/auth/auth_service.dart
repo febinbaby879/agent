@@ -20,7 +20,7 @@ class AuthService implements AuthRepo {
     try {
       final responce = await _apiService.post(ApiEndPoints.userLogin,
           data: loginModel.toJson());
-      log('Success userLogin');
+      log('Success userLogin -> ${responce.data}');
       if (responce.success ?? false) {
         return Right(RegisterSuccessModel.fromJson(responce.data));
       } else {

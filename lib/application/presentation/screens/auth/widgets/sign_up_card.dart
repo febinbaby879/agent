@@ -56,31 +56,6 @@ class SignUPCard extends StatelessWidget {
                 validate: Validate.phone,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              _TextField(
-                hintText: 'Agency Name',
-                controller: controller.agencyNameSignupController,
-                validate: Validate.notNull,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              _TextField(
-                hintText: 'Directors Name',
-                controller: controller.directorsNameSignupController,
-                validate: Validate.notNull,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              _TextField(
-                hintText: 'Directors Phone',
-                controller: controller.directorsPhoneSignupController,
-                validate: Validate.phone,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              _TextField(
-                maxLines: 3,
-                hintText: 'Address',
-                controller: controller.addressSignupController,
-                validate: Validate.notNull,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
               const Row(
                 children: [
                   Text(
@@ -99,6 +74,25 @@ class SignUPCard extends StatelessWidget {
                 items: countryList,
                 onChanged: (value) {},
                 hintText: 'Country',
+              ),
+              const Row(
+                children: [
+                  Text(
+                    'Company Type',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              SearchableDropdown(
+                borderColor: kRed,
+                controller: controller.companyTypeSignupController,
+                items: companyTypes,
+                onChanged: (value) {},
+                hintText: 'Company Type',
               ),
               _TextField(
                 maxLines: 1,

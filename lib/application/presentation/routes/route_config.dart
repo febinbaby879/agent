@@ -2,10 +2,9 @@ import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/form.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/forgot_password_.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
-import 'package:agent_dashboard/application/presentation/screens/auth/widgets/agreement_screen.dart';
+import 'package:agent_dashboard/application/presentation/screens/onboarding/agreement_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/login_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
-import 'package:agent_dashboard/application/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -36,11 +35,13 @@ class GoRouterConfig {
         path: Routes.homeScreen,
         builder: (context, state) => const HomeScreen()),
     GoRoute(
-        path: Routes.agrementSign,
-        builder: (context, state) => const ScreenAgrementSignature()),
-    GoRoute(
-        path: Routes.onboardingScreen,
-        builder: (context, state) => const ScreenOnboarding())
+      path: '${Routes.agrementSign}/:id/:service',
+      builder: (context, state) {
+        final id = state.pathParameters['id'];
+        final name = state.pathParameters['service'];
+        return ScreenAgrementSignature(id: id, service: name);
+      },
+    ),
   ];
   static _errorScreen() => Scaffold(
         appBar: AppBar(title: const Text('Error')),

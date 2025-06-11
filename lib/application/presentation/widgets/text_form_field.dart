@@ -91,7 +91,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-    enabled: widget.enabled,
+      enabled: widget.enabled,
       autovalidateMode: widget.autovalidateMode,
       inputFormatters: widget.inputFormatters,
       keyboardType: widget.inputType,

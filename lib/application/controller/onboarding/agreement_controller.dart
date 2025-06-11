@@ -2,19 +2,37 @@ import 'dart:typed_data';
 import 'package:agent_dashboard/data/feature/file_picker/file_picker_service.dart';
 import 'package:agent_dashboard/data/feature/pdf/pdf_service.dart';
 import 'package:agent_dashboard/data/feature/signature/signature_service.dart';
+import 'package:agent_dashboard/data/service/onboarding/onboarding_service.dart';
+import 'package:agent_dashboard/domain/model/profile/agrement_model/agrement_model.dart';
+import 'package:agent_dashboard/domain/repository/onboarding_repo.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
 class AgreementController extends GetxController {
+  final OnboardingRepo _onboardingService = OnboardingService();
   final pdfBytes = Rxn<Uint8List>();
   final signatureBytes = Rxn<Uint8List>();
   final signedPdfBytes = Rxn<Uint8List>();
 
   RxBool signatureLoading = false.obs;
   RxBool uploadPdfLoading = false.obs;
+  RxBool getAgreementLoading = false.obs;
+
+  Rx<AgrementModel> agrementModel = AgrementModel().obs;
 
   SignatureController signatureController() => SignatureService.controller;
+
+  Future<void> getAgreement({String? id, String? service}) async {
+    if (getAgreementLoading.value) return;
+    getAgreementLoading.value = true;
+    final result =
+        await _onboardingService.getAgreement(id: id, service: service);
+    result.fold((l) {}, (r) {
+      agrementModel.value = r;
+    });
+    getAgreementLoading.value = false;
+  }
 
   Future<void> pickPdf() async {
     try {
