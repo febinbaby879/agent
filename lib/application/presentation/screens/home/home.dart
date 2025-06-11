@@ -1,5 +1,5 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
-import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
+import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/application.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/student_detail.dart';
 import 'package:agent_dashboard/application/presentation/screens/claims/claims_screen.dart';
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.only(right: 30.0),
                           child: Obx(() {
-                            if (!Get.find<OnboardingController>()
+                            if (!Get.find<ProfileController>()
                                 .onboardingDone
                                 .value) {
                               return const KycUpdateActionWidget();

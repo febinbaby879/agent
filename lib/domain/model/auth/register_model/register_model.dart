@@ -4,25 +4,21 @@ part 'register_model.g.dart';
 
 @JsonSerializable()
 class RegisterModel {
-  String? agencyName;
+  String? companyType;
   String? agentName;
   String? agentPhoneNumber;
   String? agentEmailId;
   String? agentCountry;
-  String? directorName;
-  String? directorContactNumber;
   String? email;
   String? password;
   String? source;
 
   RegisterModel({
-    this.agencyName,
+    this.companyType,
     this.agentName,
     this.agentPhoneNumber,
     this.agentEmailId,
     this.agentCountry,
-    this.directorName,
-    this.directorContactNumber,
     this.email,
     this.password,
     this.source,

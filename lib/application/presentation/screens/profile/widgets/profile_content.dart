@@ -1,161 +1,560 @@
+import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/profile/widgets/side_bar.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
+import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
+import 'package:agent_dashboard/application/presentation/utils/image_preview/network_image_with_loader.dart';
+import 'package:agent_dashboard/application/presentation/widgets/dropdown_builder.dart';
+import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ProfileContent extends StatefulWidget {
+class ProfileContent extends StatelessWidget {
   final bool isSmallScreen;
 
   const ProfileContent({super.key, required this.isSmallScreen});
 
   @override
-  State<ProfileContent> createState() => _ProfileContentState();
-}
-
-class _ProfileContentState extends State<ProfileContent> {
-  String? _selectedGender = 'Male';
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      appBar: widget.isSmallScreen
+  Widget build(BuildContext context) {
+    final controller = Get.find<ProfileController>();
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: isSmallScreen
           ? AppBar(
-              title: const Text('Business Information'),
+              title: const Text('Business Information',
+                  style: TextStyle(fontWeight: FontWeight.w600)),
               backgroundColor: kWhite,
               foregroundColor: Colors.black,
+              elevation: 0,
+              shadowColor: Colors.black12,
             )
           : null,
-      drawer: widget.isSmallScreen
+      drawer: isSmallScreen
           ? const Drawer(child: SidebarWidget(maxWidth: 280))
           : null,
       body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // Personal Information section
-            _buildSectionHeader('Business Information', onEdit: () {}),
-            Card(
-                margin: const EdgeInsets.only(top: 8, bottom: 24),
-                child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // First name and Last name fields
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                    child: TextFormField(
-                                        initialValue: 'Feb',
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            labelText: 'First Name'))),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                    child: TextFormField(
-                                        initialValue: 'Bab',
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            labelText: 'Last Name')))
-                              ]),
-                          const SizedBox(height: 24),
+        padding: EdgeInsets.all(isSmallScreen ? 12 : 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Section
+            if (!isSmallScreen)
+              Container(
+                margin: const EdgeInsets.only(bottom: 24),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[600],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const Text(
+                      'Business Information',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1A1A1A),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-                          // Gender selection
-                          const Text(
-                            'Your Gender',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(children: [
-                            Radio<String>(
-                              value: 'Male',
-                              groupValue: _selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedGender = value;
-                                });
-                              },
-                            ),
-                            const Text('Male'),
-                            const SizedBox(width: 16),
-                            Radio<String>(
-                              value: 'Female',
-                              groupValue: _selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedGender = value;
-                                });
-                              },
-                            ),
-                            const Text('Female')
-                          ])
-                        ]))),
-
-            // Email Address section
-            _buildSectionHeader('Email Address', onEdit: () {}),
-            Card(
-              margin: const EdgeInsets.only(top: 8, bottom: 24),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextFormField(
-                  initialValue: 'febinbaby879@gmail.com',
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+            // Main Profile Card
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 4),
                   ),
-                  readOnly: true,
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(isSmallScreen ? 16 : 32),
+                child: Obx(
+                  () => Column(
+                    children: [
+                      // Profile Header with Edit Button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Profile Details',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF2D3748),
+                            ),
+                          ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            decoration: BoxDecoration(
+                              color: controller.enableEdit.value
+                                  ? Colors.red[50]
+                                  : Colors.blue[50],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                controller
+                                    .showEdit(!controller.enableEdit.value);
+                              },
+                              icon: Icon(
+                                controller.enableEdit.value
+                                    ? Icons.close_rounded
+                                    : Icons.edit_outlined,
+                                color: controller.enableEdit.value
+                                    ? Colors.red[600]
+                                    : Colors.blue[600],
+                              ),
+                              tooltip: controller.enableEdit.value
+                                  ? 'Cancel Edit'
+                                  : 'Edit Profile',
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+                      const Divider(color: Color(0xFFE2E8F0)),
+                      const SizedBox(height: 24),
+
+                      // Profile Content
+                      isSmallScreen
+                          ? _buildMobileLayout(controller, context)
+                          : _buildDesktopLayout(controller, context),
+                    ],
+                  ),
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
 
-            // Mobile Number section
-            _buildSectionHeader('Mobile Number', onEdit: () {}),
-            Card(
-                margin: const EdgeInsets.only(top: 8, bottom: 24),
-                child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: TextFormField(
-                        initialValue: '+916238075734',
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        readOnly: true),),),
+  Widget _buildMobileLayout(
+      ProfileController controller, BuildContext context) {
+    return Column(
+      children: [
+        // Profile Image and Basic Info
+        _buildProfileHeader(controller, context, isMobile: true),
+        const SizedBox(height: 32),
 
-            // FAQs section
-            const Text(
-              'FAQs',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
+        // Profile Fields
+        _buildProfileFields(controller, context),
 
-            // FAQ item
-            const Text(
-              'What happens when I update my email address (or mobile number)?',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-                'Your login email id (or mobile number) changes, likewise. You\'ll receive all your account related communication on your updated email address.',
-                style: TextStyle(fontSize: 14, color: Colors.black87))
-          ])));
+        // Social Media Section
+        if (controller.profileInfo.value.socialMediaLinks != null &&
+            controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
+          _buildSocialMediaSection(controller),
+      ],
+    );
+  }
 
-  Widget _buildSectionHeader(String title, {required VoidCallback onEdit}) =>
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+  Widget _buildDesktopLayout(
+      ProfileController controller, BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Left Column - Profile Image and Basic Info
+        Expanded(
+          flex: 1,
+          child: _buildProfileHeader(controller, context, isMobile: false),
+        ),
+
+        const SizedBox(width: 48),
+
+        // Right Column - Profile Fields
+        Expanded(
+          flex: 2,
+          child: Column(
+            children: [
+              _buildProfileFields(controller, context),
+
+              // Social Media Section
+              if (controller.profileInfo.value.socialMediaLinks != null &&
+                  controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
+                _buildSocialMediaSection(controller),
+            ],
           ),
         ),
-        TextButton(
-            onPressed: onEdit,
-            child: const Text('Edit',
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
-      ]);
+      ],
+    );
+  }
+
+  Widget _buildProfileHeader(ProfileController controller, BuildContext context,
+      {required bool isMobile}) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [kpurple400!.withOpacity(0.1), kpurple400!.withOpacity(0.3)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.blue[100]!),
+      ),
+      child: Column(
+        children: [
+          // Profile Image with enhanced styling
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: kpurple400!.withOpacity(0.2),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: ClipOval(
+              child: Container(
+                width: isMobile ? 80 : 120,
+                height: isMobile ? 80 : 120,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 4),
+                  shape: BoxShape.circle,
+                ),
+                child: NetworkImageWithLoader(
+                  controller.profileInfo.value.profileImg ?? '',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Name and Designation
+          Text(
+            controller.profileInfo.value.agentName ?? 'Name',
+            style: TextStyle(
+              fontSize: isMobile ? 18 : 22,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF2D3748),
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 8),
+
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: kpurple400!.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              controller.profileInfo.value.agentId ?? 'Agent ID',
+              style: const TextStyle(
+                color: kWhite,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileFields(
+      ProfileController controller, BuildContext context) {
+    final fields = [
+      {
+        'label': 'Email',
+        'value': controller.profileInfo.value.agentEmailId,
+        'editable': false
+      },
+      {
+        'label': 'Country',
+        'value': controller.profileInfo.value.agentCountry,
+        'editable': false
+      },
+      {
+        'label': 'Phone',
+        'value': controller.profileInfo.value.agentPhoneNumber,
+        'editable': false
+      },
+      {
+        'label': 'Company Type',
+        'value': controller.profileInfo.value.companyType,
+        'editable': false
+      },
+      {
+        'label': 'Designation',
+        'value': controller.profileInfo.value.designation,
+        'editable': true,
+        'controller': controller.designationController
+      },
+      {
+        'label': 'Business Reg. No.',
+        'value': controller.profileInfo.value.businessRegNum,
+        'editable': true,
+        'controller': controller.businessRegNumController
+      },
+      {
+        'label': 'Contact Person',
+        'value': controller.profileInfo.value.nameofContactPerson,
+        'editable': true,
+        'controller': controller.contactPersonController
+      },
+      {
+        'label': 'Full Address',
+        'value': controller.profileInfo.value.fullAddress,
+        'editable': true,
+        'controller': controller.addressController
+      },
+      {
+        'label': 'Website',
+        'value': controller.profileInfo.value.websiteLink,
+        'editable': true,
+        'controller': controller.websitController
+      },
+      {
+        'label': 'Date of Birth',
+        'value': controller.profileInfo.value.dateofBirth,
+        'editable': true,
+        'controller': controller.dateOfBirthController,
+        'isDate': true
+      },
+      {
+        'label': 'Director Name',
+        'value': controller.profileInfo.value.directorName,
+        'editable': true,
+        'controller': controller.directorNameController
+      },
+      {
+        'label': 'Director Contact',
+        'value': controller.profileInfo.value.directorContactNumber,
+        'editable': true,
+        'controller': controller.directorPhoneController
+      },
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[200]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text(
+                'Information Details',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF2D3748),
+                ),
+              ),
+              if (controller.enableEdit.value) const Spacer(),
+              if (controller.enableEdit.value)
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: kWhite, backgroundColor: kpurple400),
+                    onPressed: () {
+                      // controller.
+                    },
+                    child: const Text('Update'))
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Grid layout for fields
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: isSmallScreen ? 1 : 2,
+              childAspectRatio: isSmallScreen ? 6 : 4,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: fields.length,
+            itemBuilder: (context, index) {
+              final field = fields[index];
+              return _profileField(
+                context,
+                field['label'] as String,
+                field['value'] as String?,
+                enableEdit: controller.enableEdit.value &&
+                    (field['editable'] as bool? ?? false),
+                date: field['isDate'] as bool? ?? false,
+                controller: field['controller'] as TextEditingController?,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialMediaSection(ProfileController controller) {
+    return Container(
+      margin: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.purple[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.purple[100]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.share, color: Colors.purple[600], size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'Social Media Links',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Color(0xFF2D3748),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: controller.profileInfo.value.socialMediaLinks!
+                .map<Widget>((link) => Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.purple[200]!),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        link.toString(),
+                        style: TextStyle(
+                          color: Colors.purple[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileField(
+    BuildContext context,
+    String label,
+    String? value, {
+    bool enableEdit = false,
+    bool date = false,
+    List<String>? dropDown,
+    TextEditingController? controller,
+    Validate validate = Validate.none,
+  }) {
+    if (enableEdit) {
+      if (enableEdit && dropDown != null) {
+        return CustomDropDownBuilder(
+          items: dropDown,
+          onChanged: (data) {
+            controller?.text = data ?? "";
+          },
+        );
+      }
+      return CustomTextField(
+        validate: validate,
+        hintText: label,
+        controller: controller,
+        onTap: () async {
+          if (date) {
+            final result = await showDatePicker(
+              context: context,
+              firstDate:
+                  DateTime.now().subtract(const Duration(days: 365 * 100)),
+              lastDate: DateTime.now().subtract(const Duration(days: 365 * 18)),
+            );
+            if (result != null) {
+              controller?.text =
+                  '${result.day.toString().padLeft(2, '0')}-${result.month.toString().padLeft(2, '0')}-${result.year}';
+            }
+          }
+        },
+      );
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: enableEdit
+              ? const Color.fromARGB(0, 255, 255, 255)!
+              : Colors.grey[200]!,
+          width: enableEdit ? 2 : 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!enableEdit)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[600],
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                if (enableEdit)
+                  Icon(
+                    Icons.edit_outlined,
+                    size: 14,
+                    color: kpurple400,
+                  ),
+              ],
+            ),
+          kHeight5,
+          Text(
+            value?.isNotEmpty == true ? value! : 'N/A',
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              // fontSize: 14,
+              // color: Color(0xFF2D3748),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

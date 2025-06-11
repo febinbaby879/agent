@@ -1,7 +1,6 @@
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
-import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
+import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
-import 'package:agent_dashboard/application/presentation/screens/wishlist/wishlist_course.dart';
 import 'package:agent_dashboard/application/presentation/utils/animations/hover_effect.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
@@ -17,7 +16,7 @@ class BuildProfileSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<OnboardingController>();
+    final controller = Get.find<ProfileController>();
     return Obx(() => Get.find<HomeController>().profileEnable.value &&
             (!Responsive.isMobile(context) && !Responsive.isTab(context))
         ? Positioned(
@@ -44,22 +43,21 @@ class BuildProfileSideBar extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  controller.onBoardingStatus.value.agentInfo
-                                          ?.name ??
+                                  controller.profileInfo.value
+                                          .agentName ??
                                       "",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(height: 4),
                               Text(
-                                  controller.onBoardingStatus.value.agentInfo
-                                          ?.email ??
+                                  controller.profileInfo.value
+                                          ?.agentEmailId ??
                                       "",
                                   style: const TextStyle(color: Colors.grey)),
                               const SizedBox(height: 2),
                               Text(
-                                  controller.onBoardingStatus.value.agentInfo
-                                          ?.phone ??
+                                  controller.profileInfo.value.agentPhoneNumber ??
                                       "",
                                   style: const TextStyle(color: Colors.grey))
                             ]),
@@ -68,16 +66,14 @@ class BuildProfileSideBar extends StatelessWidget {
                           child: CircularPercentIndicator(
                               radius: 50,
                               lineWidth: 7,
-                              percent: (controller.onBoardingStatus.value
-                                          .progress?.percentage ??
-                                      0) *
-                                  0.01,
+                              percent: 1,
                               center: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Profile', style: textStyle1),
                                     Text(
-                                        '${controller.onBoardingStatus.value.progress?.percentage ?? 0}%',
+                                      '',
+                                        // '${controller.onBoardingStatus.value.progress?.percentage ?? 0}%',
                                         style: textStyle1)
                                   ]),
                               progressColor: Colors.green,

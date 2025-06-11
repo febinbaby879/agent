@@ -4,35 +4,59 @@ import 'package:agent_dashboard/application/controller/onboarding/agreement_cont
 import 'package:agent_dashboard/application/presentation/screens/auth/widgets/pdf_viewer_blob.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:signature/signature.dart';
 
-class ScreenAgrementSignature extends StatelessWidget {
-  const ScreenAgrementSignature({super.key});
+class ScreenAgrementSignature extends StatefulWidget {
+  const ScreenAgrementSignature({super.key, this.id, this.service});
+
+  final String? service;
+  final String? id;
+
+  @override
+  State<ScreenAgrementSignature> createState() =>
+      _ScreenAgrementSignatureState();
+}
+
+class _ScreenAgrementSignatureState extends State<ScreenAgrementSignature> {
+  @override
+  void initState() {
+    Get.find<AgreementController>()
+        .getAgreement(id: widget.id, service: widget.service);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AgreementController>();
-
     return Scaffold(
       body: Obx(() {
         final pdfBytes = controller.pdfBytes.value;
         final signedPdfBytes = controller.signedPdfBytes.value;
+        if (controller.getAgreementLoading.value) {
+          return const Center(
+            child: CupertinoActivityIndicator(),
+          );
+        }
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            final isMobile = constraints.maxWidth < 768;
+            final isMobile = constraints.maxWidth < 1000;
             if (isMobile) {
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      _SignaturePart(controller: controller),
                       _DocumentSection(
-                          pdfBytes: pdfBytes, signedPdfBytes: signedPdfBytes),
+                        signedPdfBytes: signedPdfBytes,
+                        isMobile: true,
+                      ),
+                      _SignaturePart(controller: controller),
                     ],
                   ),
                 ),
@@ -43,7 +67,7 @@ class ScreenAgrementSignature extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    flex: 6,
+                    flex: 3,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 25),
@@ -59,13 +83,24 @@ class ScreenAgrementSignature extends StatelessWidget {
                   Expanded(
                     flex: isMobile ? 1 : 6,
                     child: Container(
-                      color: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 20 : 40,
-                        vertical: 0,
-                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: kRadius10,
+                          // border: Border.all(),
+                          boxShadow: boxShadow2),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+
+                      // child: Html(
+                      //   data: controller.agrementModel.value
+                      //           .generatedAgreement?.content ??
+                      //       '',
+                      // )
                       child: _DocumentSection(
-                          pdfBytes: pdfBytes, signedPdfBytes: signedPdfBytes),
+                        // pdfBytes: pdfBytes,
+                        signedPdfBytes: signedPdfBytes,
+                        isMobile: false,
+                      ),
                     ),
                   ),
                 ],
@@ -80,15 +115,18 @@ class ScreenAgrementSignature extends StatelessWidget {
 
 class _DocumentSection extends StatelessWidget {
   const _DocumentSection({
-    required this.pdfBytes,
+    // required this.pdfBytes,
+    required this.isMobile,
     required this.signedPdfBytes,
   });
 
-  final Uint8List? pdfBytes;
+  // final Uint8List? pdfBytes;
   final Uint8List? signedPdfBytes;
+  final bool isMobile;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AgreementController>();
     return Column(
       children: [
         adjustHieght(25),
@@ -101,9 +139,44 @@ class _DocumentSection extends StatelessWidget {
           ),
         ),
         kHeight10,
-        WebPdfViewer(
-          pdfBytes: signedPdfBytes ?? pdfBytes ?? Uint8List(1),
+        Obx(
+          () => Stack(
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: kRadius10,
+                      border: Border.all(),
+                      boxShadow: boxShadow1),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 20 : 40,
+                    vertical: 0,
+                  ),
+                  child: Html(
+                    data: controller
+                            .agrementModel.value.generatedAgreement?.content ??
+                        '',
+                  )
+                  // child: _DocumentSection(
+                  //     pdfBytes: pdfBytes, signedPdfBytes: signedPdfBytes),
+                  ),
+              if (controller.signatureBytes.value != null)
+                Positioned(
+                  bottom: 50,left: 100,
+                  child: Image.memory(
+                    controller.signatureBytes.value!,
+                    height: 50,
+                    width: 75,
+                  ),
+                )
+            ],
+          ),
         ),
+        // WebPdfViewer(
+        //   pdfBytes: signedPdfBytes ?? pdfBytes ?? Uint8List(1),
+        // ),
         kHeight40,
       ],
     );
@@ -122,7 +195,7 @@ class _SignaturePart extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'Agreement',
+          'Sign Agreement',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -164,8 +237,8 @@ class _SignaturePart extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-                      // controller.clearSignature();
-                      controller.pickPdf();
+                      controller.clearSignature();
+                      // controller.pickPdf();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kPurple,
@@ -212,7 +285,7 @@ class _SignaturePart extends StatelessWidget {
             ),
             kHeight15,
             Obx(() {
-              if (controller.signedPdfBytes.value != null) {
+              if (controller.signatureBytes.value != null) {
                 return SizedBox(
                   width: double.infinity,
                   height: 50,

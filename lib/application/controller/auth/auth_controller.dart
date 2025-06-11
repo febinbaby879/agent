@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:agent_dashboard/application/controller/onboarding/onboarding_controller.dart';
+import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/toast/flutter_toast.dart';
@@ -10,7 +10,6 @@ import 'package:agent_dashboard/domain/model/auth/login/login_model/login_model.
 import 'package:agent_dashboard/domain/model/auth/otp_verify_model/otp_verify_model.dart';
 import 'package:agent_dashboard/domain/model/auth/register_model/register_model.dart';
 import 'package:agent_dashboard/domain/model/auth/register_success_model/register_success_model.dart';
-import 'package:agent_dashboard/domain/model/auth/register_success_model/user.dart';
 import 'package:agent_dashboard/domain/model/auth/rest_new_password/rest_new_password.dart';
 import 'package:agent_dashboard/domain/repository/auth_repo.dart';
 import 'package:flutter/material.dart';
@@ -29,17 +28,12 @@ class AuthController extends GetxController {
   final GlobalKey<FormState> signUpKey = GlobalKey<FormState>();
   final TextEditingController emailSignupController = TextEditingController();
   final TextEditingController nameSignupController = TextEditingController();
-  final TextEditingController agencyNameSignupController =
-      TextEditingController();
-  final TextEditingController directorsNameSignupController =
-      TextEditingController();
-  final TextEditingController directorsPhoneSignupController =
-      TextEditingController();
   final TextEditingController countrySignupController = TextEditingController();
-  final TextEditingController addressSignupController = TextEditingController();
   final TextEditingController passwordSignupController =
       TextEditingController();
   final TextEditingController phoneSignupController = TextEditingController();
+  final TextEditingController companyTypeSignupController =
+      TextEditingController();
   final TextEditingController otpSignupController = TextEditingController();
 
   // forgot pasword
@@ -74,27 +68,33 @@ class AuthController extends GetxController {
     showOtpForgotPassword.value = value;
   }
 
+  void chooseCompanyType(String? value) {
+    companyTypeSignupController.text = value ?? "";
+  }
+
   /// get login status of user and navigate to appropriate screen
   Future<void> getLog(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 2));
-    print('get log called');
-    context.go(Routes.homeScreen);
-    // final login = await SharedPreferecesStorage.getLogin();
-    // if (login) {
-    //   final controller = Get.find<OnboardingController>();
-    //   final onBoarding = await controller.getOnboardingStatus();
-    //   controller.setOnboard(onboard: onBoarding);
-    //   context.go(Routes.homeScreen);
-    // } else {
-    //   context.go(Routes.login);
-    // }
+    // await Future.delayed(const Duration(seconds: 2));
+    // print('get log called');
+    // context.go(Routes.login);
+    final login = await SharedPreferecesStorage.getLogin();
+    if (login) {
+      final controller = Get.find<ProfileController>();
+      final onBoarding = await controller.getOnboardingStatus();
+      controller.setOnboard(onboard: onBoarding);
+      // context.go(Routes.onboardingScreen);
+      context.go(Routes.homeScreen);
+    } else {
+      context.go(Routes.login);
+    }
   }
 
   Future<void> _completeLogin(
       BuildContext context, RegisterSuccessModel model) async {
     await SharedPreferecesStorage.saveToken(token: model.token ?? '');
     await SharedPreferecesStorage.saveUserId(userId: model.user?.id ?? "");
-    await Get.find<OnboardingController>().setOnboard(onboard: model.user?.onboarding == true);
+    await Get.find<ProfileController>()
+        .setOnboard(onboard: model.user?.onboarding == true);
     await SharedPreferecesStorage.setLogin();
     context.go(Routes.homeScreen);
   }
@@ -126,15 +126,13 @@ class AuthController extends GetxController {
       registerLoading.value = true;
       final result = await _authService.userRegister(
         registerModel: RegisterModel(
-          agencyName: agencyNameSignupController.text.trim(),
           agentCountry: countrySignupController.text.trim(),
           agentEmailId: emailSignupController.text.trim(),
           agentName: nameSignupController.text.trim(),
           agentPhoneNumber: phoneSignupController.text.trim(),
-          directorName: directorsNameSignupController.text.trim(),
-          directorContactNumber: directorsPhoneSignupController.text.trim(),
           password: passwordSignupController.text.trim(),
           source: 'website',
+          companyType: companyTypeSignupController.text.trim(),
         ),
       );
       result.fold((l) {

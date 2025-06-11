@@ -24,7 +24,9 @@ class TopBar extends StatelessWidget {
               onPressed: () {
                 context.go(Routes.profile);
               },
-              icon: Hero(tag: 'profile_icon',child: Icon(Icons.person, color: kpurple400))),
+              icon: Hero(
+                  tag: 'profile_icon',
+                  child: Icon(Icons.person, color: kpurple400))),
           kWidth15
         ]));
   }
