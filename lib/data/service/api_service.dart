@@ -138,7 +138,7 @@ class ApiService {
     } catch (e) {
       return ApiResponse.error(response.data, response.statusCode);
     }
-  }
+  } 
 
   Future<bool> downloadFile({
     required String url,

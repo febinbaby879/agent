@@ -100,14 +100,14 @@ class _InstitutionCardState extends State<InstitutionCard> {
                                           value: MenuAction.share,
                                           child: Row(children: [
                                             Icon(Icons.share, size: 20),
-                                            SizedBox(width: 8),
+                                            kWidth10,
                                             Text('Share')
                                           ])),
                                       const PopupMenuItem(
                                           value: MenuAction.report,
                                           child: Row(children: [
                                             Icon(Icons.flag, size: 20),
-                                            SizedBox(width: 8),
+                                            kWidth10,
                                             Text('Report')
                                           ])),
                                       const PopupMenuItem(
@@ -115,7 +115,7 @@ class _InstitutionCardState extends State<InstitutionCard> {
                                           child: Row(children: [
                                             Icon(Icons.bookmark_border,
                                                 size: 20),
-                                            SizedBox(width: 8),
+                                            kWidth10,
                                             Text('Bookmark')
                                           ])),
                                       const PopupMenuItem(
@@ -123,14 +123,14 @@ class _InstitutionCardState extends State<InstitutionCard> {
                                           child: Row(children: [
                                             Icon(Icons.compare_arrows,
                                                 size: 20),
-                                            SizedBox(width: 8),
+                                            kWidth10,
                                             Text('Compare')
                                           ])),
                                       const PopupMenuItem(
                                           value: MenuAction.visitWebsite,
                                           child: Row(children: [
                                             Icon(Icons.language, size: 20),
-                                            SizedBox(width: 8),
+                                            kWidth10,
                                             Text('Visit Website')
                                           ]))
                                     ])
