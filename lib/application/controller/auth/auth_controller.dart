@@ -83,7 +83,7 @@ class AuthController extends GetxController {
     if (login) {
       final onBoarding = await SharedPreferecesStorage.getOnBoard();
       if (onBoarding) {
-        context.go(Routes.homeScreen);
+        context.go(Routes.initial);
       } else {
         context.go(Routes.onboardingScreen);
       }
@@ -99,7 +99,7 @@ class AuthController extends GetxController {
     if (model.user?.onboarding ?? false) {
       context.go(Routes.onboardingScreen);
     } else {
-      context.go(Routes.homeScreen);
+      context.go(Routes.initial);
     }
     await SharedPreferecesStorage.setLogin();
     await SharedPreferecesStorage.setOnBoard(model.user?.onboarding ?? false);

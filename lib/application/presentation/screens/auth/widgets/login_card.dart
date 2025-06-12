@@ -110,7 +110,8 @@ class LoginCard extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.login(context);
+                      context.go(Routes.homeScreen);
+                      //controller.login(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kPurple,

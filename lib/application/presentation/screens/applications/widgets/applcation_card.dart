@@ -1,4 +1,5 @@
 import 'package:agent_dashboard/application/presentation/screens/applications/application.dart';
+import 'package:agent_dashboard/application/presentation/screens/applications/widgets/course_builder.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
@@ -6,8 +7,10 @@ import 'package:flutter/material.dart';
 
 class ApplicationStudentCard extends StatefulWidget {
   final ApplicationModel task;
+  final int index;
 
-  const ApplicationStudentCard({super.key, required this.task});
+  const ApplicationStudentCard(
+      {super.key, required this.task, required this.index});
 
   @override
   State<ApplicationStudentCard> createState() => _ApplicationStudentCardState();
@@ -50,7 +53,7 @@ class _ApplicationStudentCardState extends State<ApplicationStudentCard> {
                         children: [
                           Row(children: [
                             Expanded(
-                                child: Text(widget.task.name,
+                                child: Text(allcourses[widget.index],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
