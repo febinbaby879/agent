@@ -21,10 +21,10 @@ class SharedPreferecesStorage {
     return prefs.getString(accessKey);
   }
 
-  static Future<void> saveUserId({required String userId}) async {
+  static Future<void> saveUserId({required String userID}) async {
     //log('save User id =>() ${tokenModel.token}');
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(userId, userId);
+    await prefs.setString(userId, userID);
   }
 
   static Future<String> getUserId() async {

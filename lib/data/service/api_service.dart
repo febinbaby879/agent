@@ -1,9 +1,12 @@
+import 'package:agent_dashboard/application/presentation/routes/route_config.dart';
+import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
 import 'package:agent_dashboard/domain/model/commen/api_response/api_response.dart';
 
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:path_provider/path_provider.dart';
 
 class ApiService {
@@ -35,6 +38,7 @@ class ApiService {
       Map<String, String>? headers,
       bool addHeader = true}) async {
     try {
+      log('GET Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.get(url,
           queryParameters: queryParameters, options: Options(headers: headers));
       return _handleResponse(response);
@@ -53,6 +57,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
+      log('POST Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.post(url,
           data: data,
           queryParameters: queryParameters,
@@ -74,6 +79,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
+      log('PUT Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.put(url,
           data: data,
           queryParameters: queryParameters,
@@ -94,6 +100,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
+      log('DELETE Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.delete(url,
           data: data,
           queryParameters: queryParameters,
@@ -114,6 +121,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
+      log('PATCH Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.patch(url,
           data: data,
           queryParameters: queryParameters,
@@ -129,16 +137,22 @@ class ApiService {
   }
 
   ApiResponse _handleResponse(Response response) {
+    ApiResponse resp;
     try {
       final data = response.data;
       if (data is List) {
-        return ApiResponse(data: data);
+        resp = ApiResponse(data: data);
       }
-      return ApiResponse.fromJson(data);
+      resp = ApiResponse.fromJson(data);
     } catch (e) {
-      return ApiResponse.error(response.data, response.statusCode);
+      resp = ApiResponse.error(response.data, response.statusCode);
     }
-  } 
+    if (resp.action == 'logout') {
+      _logout();
+    }
+    return resp;
+  }
+
 
   Future<bool> downloadFile({
     required String url,
@@ -156,5 +170,10 @@ class ApiService {
       log('Error downloading file: $e');
       return false;
     }
+  }
+
+  _logout() {
+    SharedPreferecesStorage.clearLogin();
+    rootNavigatorKey.currentContext?.go(Routes.initial);
   }
 }

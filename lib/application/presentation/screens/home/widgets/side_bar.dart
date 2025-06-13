@@ -42,22 +42,19 @@ class BuildProfileSideBar extends StatelessWidget {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                  controller.profileInfo.value
-                                          .agentName ??
-                                      "",
+                              Text(controller.profileInfo.value.agentName ?? "",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
                               const SizedBox(height: 4),
                               Text(
-                                  controller.profileInfo.value
-                                          ?.agentEmailId ??
+                                  controller.profileInfo.value?.agentEmailId ??
                                       "",
                                   style: const TextStyle(color: Colors.grey)),
                               const SizedBox(height: 2),
                               Text(
-                                  controller.profileInfo.value.agentPhoneNumber ??
+                                  controller
+                                          .profileInfo.value.agentPhoneNumber ??
                                       "",
                                   style: const TextStyle(color: Colors.grey))
                             ]),
@@ -71,8 +68,7 @@ class BuildProfileSideBar extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text('Profile', style: textStyle1),
-                                    Text(
-                                      '',
+                                    Text('',
                                         // '${controller.onBoardingStatus.value.progress?.percentage ?? 0}%',
                                         style: textStyle1)
                                   ]),

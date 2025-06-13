@@ -1,6 +1,7 @@
 import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/utils/image_preview/network_image_with_loader.dart';
 import 'package:agent_dashboard/application/presentation/widgets/hover/hover_menu.dart';
 import 'package:agent_dashboard/application/presentation/widgets/hover/hover_switcher.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +48,21 @@ class SidebarWidget extends StatelessWidget {
                           style: const TextStyle(color: kWhite),
                         ),
                       ),
-                      child: CircleAvatar(
-                        radius: 36,
-                        backgroundColor: kpurple400,
-                        child: const Hero(
-                          tag: 'profile_icon',
-                          child: Icon(Icons.person, size: 36, color: kWhite),
+                      child: Obx(
+                        () => CircleAvatar(
+                          radius: 36,
+                          backgroundColor: kpurple400,
+                          child: Hero(
+                            tag: 'profile_icon',
+                            child: NetworkImageWithLoader(
+                              profileController.profileInfo.value.profileImg ??
+                                  '',
+                              radius: 200,
+                              fit: BoxFit.cover,
+                              errorWidget: const Icon(Icons.person,
+                                  size: 36, color: kWhite),
+                            ),
+                          ),
                         ),
                       ),
                     ),

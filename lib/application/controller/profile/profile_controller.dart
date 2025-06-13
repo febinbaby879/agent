@@ -1,3 +1,4 @@
+import 'package:agent_dashboard/application/presentation/utils/image_picker/image_picker.dart';
 import 'package:agent_dashboard/data/service/profile/profile_service.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
@@ -32,6 +33,15 @@ class ProfileController extends GetxController {
   RxBool profileinfoLoading = false.obs;
   RxBool profileinfoUpdateLoading = false.obs;
   RxBool enableEdit = false.obs;
+  RxBool profileImageLoading = false.obs;
+  RxBool passportImageLoading = false.obs;
+  RxBool businessLicenseLoading = false.obs;
+
+  @override
+  void onInit() {
+    getAgentProfileInfo(refresh: true);
+    super.onInit();
+  }
 
   void changeProfileNavItem(String value) {
     profileNavItem.value = value;
@@ -70,6 +80,7 @@ class ProfileController extends GetxController {
         ));
     result.fold((l) {}, (r) {
       profileInfo.value = r;
+      enableEdit.value = false;
       getAgentProfileInfo(refresh: true);
     });
     profileinfoUpdateLoading.value = false;
@@ -85,6 +96,50 @@ class ProfileController extends GetxController {
   Future<void> setOnboard({bool onboard = true}) async {
     onboardingDone.value = onboard;
     await SharedPreferecesStorage.setOnBoard(onboard);
+  }
+
+  /// upload profile picture
+  Future<void> uploadProfilePicture() async {
+    final image = await FilePickerService.pickImage();
+    if (image.isEmpty) return;
+    profileImageLoading.value = true;
+    final result = await _profileService.uploadFile(
+        file: image.first!.webImage!, keyName: 'profileImg');
+    result.fold((l) => null, (r) {
+      print('prifle img => ${r.uploadedDocuments?.profileImg}');
+      print('prifle img resp=> ${r.uploadedDocuments?.toJson()}');
+      profileInfo.value = profileInfo.value
+          .copyWith(profileImg: r.uploadedDocuments?.profileImg);
+    });
+    profileImageLoading.value = false;
+  }
+
+  /// upload business license
+  Future<void> uploadBusinessLicense() async {
+    final image = await FilePickerService.pickImage();
+    if (image.isEmpty) return;
+    businessLicenseLoading.value = true;
+    final result = await _profileService.uploadFile(
+        file: image.first!.webImage!, keyName: 'businessLicense');
+    result.fold((l) => null, (r) {
+      profileInfo.value = profileInfo.value
+          .copyWith(businessLicense: r.uploadedDocuments?.businessLicense);
+    });
+    businessLicenseLoading.value = false;
+  }
+
+  /// upload passport file
+  Future<void> uploadPassportFile() async {
+    final image = await FilePickerService.pickImage();
+    if (image.isEmpty) return;
+    passportImageLoading.value = true;
+    final result = await _profileService.uploadFile(
+        file: image.first!.webImage!, keyName: 'passportFile');
+    result.fold((l) => null, (r) {
+      profileInfo.value = profileInfo.value
+          .copyWith(passportFile: r.uploadedDocuments?.passportFile);
+    });
+    passportImageLoading.value = false;
   }
 
   _loadFieldsToTextFields() {

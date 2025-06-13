@@ -5,7 +5,9 @@ import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
 import 'package:agent_dashboard/application/presentation/utils/image_preview/network_image_with_loader.dart';
 import 'package:agent_dashboard/application/presentation/widgets/dropdown_builder.dart';
+import 'package:agent_dashboard/application/presentation/widgets/hover/hover_switcher.dart';
 import 'package:agent_dashboard/application/presentation/widgets/text_form_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -195,74 +197,154 @@ class ProfileContent extends StatelessWidget {
 
   Widget _buildProfileHeader(ProfileController controller, BuildContext context,
       {required bool isMobile}) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [kpurple400!.withOpacity(0.1), kpurple400!.withOpacity(0.3)],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue[100]!),
-      ),
-      child: Column(
-        children: [
-          // Profile Image with enhanced styling
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: kpurple400!.withOpacity(0.2),
-                  blurRadius: 20,
-                  spreadRadius: 2,
-                ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                kpurple400!.withOpacity(0.1),
+                kpurple400!.withOpacity(0.3)
               ],
             ),
-            child: ClipOval(
-              child: Container(
-                width: isMobile ? 80 : 120,
-                height: isMobile ? 80 : 120,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 4),
-                  shape: BoxShape.circle,
-                ),
-                child: NetworkImageWithLoader(
-                  controller.profileInfo.value.profileImg ?? '',
-                  fit: BoxFit.cover,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.blue[100]!),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Profile Image with enhanced styling
+              GestureDetector(
+                onTap: () {
+                  controller.uploadProfilePicture();
+                },
+                child: Obx(
+                  () => Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: kpurple400!.withOpacity(0.2),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: Container(
+                        width: isMobile ? 80 : 120,
+                        height: isMobile ? 80 : 120,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 4),
+                          shape: BoxShape.circle,
+                        ),
+                        child: controller.profileImageLoading.value
+                            ? const CupertinoActivityIndicator(color: kBlack)
+                            : NetworkImageWithLoader(
+                                radius: 200,
+                                controller.profileInfo.value.profileImg ?? '',
+                                fit: BoxFit.cover,
+                                casheImage: false,
+                                errorWidget:
+                                    const Icon(Icons.file_upload_outlined),
+                              ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+
+              const SizedBox(height: 16),
+
+              // Name and Designation
+              Text(
+                controller.profileInfo.value.agentName ?? 'Name',
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF2D3748),
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 8),
+
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: kpurple400!.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  controller.profileInfo.value.agentId ?? 'Agent ID',
+                  style: const TextStyle(
+                    color: kWhite,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
+        kHeight15,
+        Obx(() => Row(
+              children: [
+                _fileUploadWidget(isMobile, controller,
+                    img: controller.profileInfo.value.businessLicense,
+                    title: 'Business License',
+                    loading: controller.businessLicenseLoading.value,
+                    onTap: () {
+                  controller.uploadBusinessLicense();
+                }),
+                kWidth10,
+                _fileUploadWidget(isMobile, controller,
+                    img: controller.profileInfo.value.passportFile,
+                    title: 'Passport Image',
+                    loading: controller.passportImageLoading.value, onTap: () {
+                  controller.uploadPassportFile();
+                }),
+              ],
+            ))
+      ],
+    );
+  }
 
-          const SizedBox(height: 16),
-
-          // Name and Designation
-          Text(
-            controller.profileInfo.value.agentName ?? 'Name',
-            style: TextStyle(
-              fontSize: isMobile ? 18 : 22,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF2D3748),
-            ),
-            textAlign: TextAlign.center,
-          ),
-
-          const SizedBox(height: 8),
-
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: kpurple400!.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              controller.profileInfo.value.agentId ?? 'Agent ID',
-              style: const TextStyle(
-                color: kWhite,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
+  Expanded _fileUploadWidget(bool isMobile, ProfileController controller,
+      {String? img,
+      String title = '',
+      VoidCallback? onTap,
+      bool loading = false}) {
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(title),
+          kHeight5,
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: isMobile ? 60 : 80,
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: kRadius10,
+              ),
+              child: MouseHoverSwitcher(
+                hoverChild:
+                    const Center(child: Icon(Icons.file_upload_outlined)),
+                child: loading
+                    ? const Center(
+                        child: CupertinoActivityIndicator(color: kBlack))
+                    : NetworkImageWithLoader(
+                        img,
+                        radius: 10,
+                        fit: BoxFit.cover,
+                        errorWidget: const Icon(Icons.file_upload_outlined),
+                      ),
               ),
             ),
           ),
@@ -371,9 +453,18 @@ class ProfileContent extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         foregroundColor: kWhite, backgroundColor: kpurple400),
                     onPressed: () {
-                      // controller.
+                      controller.updateProfileInfo();
                     },
-                    child: const Text('Update'))
+                    child: controller.profileinfoUpdateLoading.value
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color: kWhite,
+                            ),
+                          )
+                        : const Text('Update'))
             ],
           ),
           const SizedBox(height: 20),
@@ -501,7 +592,7 @@ class ProfileContent extends StatelessWidget {
             );
             if (result != null) {
               controller?.text =
-                  '${result.day.toString().padLeft(2, '0')}-${result.month.toString().padLeft(2, '0')}-${result.year}';
+                  '${result.year}-${result.month.toString().padLeft(2, '0')}-${result.day.toString().padLeft(2, '0')}';
             }
           }
         },

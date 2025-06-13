@@ -5,6 +5,9 @@ class ApiEndPoints {
   /// [Dev Local]
   // static String baseUrl = 'https://90n3qtc2-8000.inc1.devtunnels.ms/api';
 
+  /// [imag base url]
+  static String imgBaseUrl = 'https://api.myeduguardian.com';
+
   /// Auth
   static String userRegistration = '/agent/agent-register';
   static String registerOtpVerification = '/agent/agent-verify-otp';
@@ -18,7 +21,9 @@ class ApiEndPoints {
   /// [profile]
   static String getProfileInfo = '/agent/get-agent-profile/{id}';
   static String updateProfileInfo = '/agent/update-agent/{id}';
+  static String uploadProfileFiles = '/agent/upload-documents/{id}';
 
   /// [agreement]
   static String getAgreement = '/agreements/generate/{id}';
+  static String addSignatureToAgreement = '/agent/upload-documents/{id}';
 }

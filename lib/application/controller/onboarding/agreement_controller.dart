@@ -4,6 +4,7 @@ import 'package:agent_dashboard/data/feature/pdf/pdf_service.dart';
 import 'package:agent_dashboard/data/feature/signature/signature_service.dart';
 import 'package:agent_dashboard/data/service/onboarding/onboarding_service.dart';
 import 'package:agent_dashboard/domain/model/profile/agrement_model/agrement_model.dart';
+import 'package:agent_dashboard/domain/model/profile/upload_document_response/upload_document_response.dart';
 import 'package:agent_dashboard/domain/repository/onboarding_repo.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,9 @@ class AgreementController extends GetxController {
   RxBool getAgreementLoading = false.obs;
 
   Rx<AgrementModel> agrementModel = AgrementModel().obs;
+
+  Rx<UploadDocumentResponse> uploadSignatureResponse =
+      UploadDocumentResponse().obs;
 
   SignatureController signatureController() => SignatureService.controller;
 
@@ -62,20 +66,32 @@ class AgreementController extends GetxController {
   Future<void> signPdf() async {
     signatureLoading.value = true;
     signatureBytes.value = await SignatureService.getSignature();
-    print('signPdf 1');
-    if (pdfBytes.value != null && signatureBytes.value != null) {
-      print('signPdf 2');
-      final signed = await PdfService.addSignatureToPdf(
-        pdfBytes.value!,
-        signatureBytes.value!,
-      );
-      print('signPdf 3');
-      signedPdfBytes.value = signed;
-    } else {
-      print('signPdf 4');
-      Get.snackbar(
-          "Missing Data", "Please upload PDF and sign before proceeding");
-    }
+    // print('signPdf 1');
+    // if (pdfBytes.value != null && signatureBytes.value != null) {
+    //   print('signPdf 2');
+    //   final signed = await PdfService.addSignatureToPdf(
+    //     pdfBytes.value!,
+    //     signatureBytes.value!,
+    //   );
+    //   print('signPdf 3');
+    //   signedPdfBytes.value = signed;
+    // } else {
+    //   print('signPdf 4');
+    //   Get.snackbar(
+    //       "Missing Data", "Please upload PDF and sign before proceeding");
+    // }
     signatureLoading.value = false;
+  }
+
+  Future<void> uploadSignature(String id) async {
+    if (uploadPdfLoading.value) return;
+    uploadPdfLoading.value = true;
+    uploadSignatureResponse.value = UploadDocumentResponse();
+    final result = await _onboardingService.uploadSignature(
+        signature: signatureBytes.value!,id: id);
+    result.fold((l) {}, (r) {
+      uploadSignatureResponse.value = r;
+    });
+    uploadPdfLoading.value = false;
   }
 }

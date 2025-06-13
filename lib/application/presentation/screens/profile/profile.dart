@@ -18,7 +18,7 @@ class ScreenProfile extends StatelessWidget {
           bool isSmallScreen = constraints.maxWidth < 600;
           return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (!isSmallScreen)
-              SidebarWidget(maxWidth: constraints.maxWidth * 0.3),
+              SidebarWidget(maxWidth: constraints.maxWidth * 0.25),
             Expanded(child: Obx(() {
               switch (controller.profileNavItem.value) {
                 case 'profile':

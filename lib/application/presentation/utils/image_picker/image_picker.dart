@@ -11,7 +11,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart';
 
-class FilePickFile {
+class FilePickerService {
+  static Future<List<ImageModel?>> pickImage(
+      {bool allowMultiple = true}) async {
+    return filePick(allowedExtensions: [
+      'png',
+      'jpg',
+      'jpeg',
+      'webp',
+      'bmp',
+      'gif',
+      'heic',
+      'tiff',
+    ], allowMultiple: allowMultiple);
+  }
+
+  /// pick file
   static Future<List<ImageModel?>> filePick({
     required List<String>? allowedExtensions,
     bool allowMultiple = true,
