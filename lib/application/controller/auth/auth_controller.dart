@@ -84,6 +84,7 @@ class AuthController extends GetxController {
       controller.setOnboard(onboard: onBoarding);
       // context.go(Routes.onboardingScreen);
       context.go(Routes.homeScreen);
+      controller.getAgentProfileInfo(refresh: true);
     } else {
       context.go(Routes.login);
     }
@@ -92,7 +93,7 @@ class AuthController extends GetxController {
   Future<void> _completeLogin(
       BuildContext context, RegisterSuccessModel model) async {
     await SharedPreferecesStorage.saveToken(token: model.token ?? '');
-    await SharedPreferecesStorage.saveUserId(userId: model.user?.id ?? "");
+    await SharedPreferecesStorage.saveUserId(userID: model.user?.id ?? "");
     await Get.find<ProfileController>()
         .setOnboard(onboard: model.user?.onboarding == true);
     await SharedPreferecesStorage.setLogin();

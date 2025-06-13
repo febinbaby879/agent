@@ -1,10 +1,13 @@
+import 'package:agent_dashboard/domain/model/profile/agent_profile/uploaded_documents.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'agent_profile.g.dart';
 
 @JsonSerializable()
 class AgentProfile {
+  String? id;
   String? agentId;
+  UploadedDocuments? documents;
   String? agentName;
   String? agentPhoneNumber;
   String? agentEmailId;
@@ -44,6 +47,8 @@ class AgentProfile {
     this.directorContactNumber,
     this.businessRegNum,
     this.onboading,
+    this.documents,
+    this.id,
   });
 
   factory AgentProfile.fromJson(Map<String, dynamic> json) {
@@ -54,5 +59,53 @@ class AgentProfile {
     final data = _$AgentProfileToJson(this);
     data.removeWhere((key, value) => value == null);
     return data;
+  }
+
+  AgentProfile copyWith({
+    String? id,
+    String? agentId,
+    UploadedDocuments? documents,
+    String? agentName,
+    String? agentPhoneNumber,
+    String? agentEmailId,
+    String? agentCountry,
+    String? companyType,
+    String? businessLicense,
+    String? passportFile,
+    String? profileImg,
+    List<dynamic>? socialMediaLinks,
+    String? designation,
+    String? nameofContactPerson,
+    String? fullAddress,
+    String? websiteLink,
+    String? dateofBirth,
+    String? directorName,
+    String? directorContactNumber,
+    String? businessRegNum,
+    bool? onboading,
+  }) {
+    return AgentProfile(
+      id: id ?? this.id,
+      agentId: agentId ?? this.agentId,
+      documents: documents ?? this.documents,
+      agentName: agentName ?? this.agentName,
+      agentPhoneNumber: agentPhoneNumber ?? this.agentPhoneNumber,
+      agentEmailId: agentEmailId ?? this.agentEmailId,
+      agentCountry: agentCountry ?? this.agentCountry,
+      companyType: companyType ?? this.companyType,
+      businessLicense: businessLicense ?? this.businessLicense,
+      passportFile: passportFile ?? this.passportFile,
+      profileImg: profileImg ?? this.profileImg,
+      socialMediaLinks: socialMediaLinks ?? this.socialMediaLinks,
+      designation: designation ?? this.designation,
+      nameofContactPerson: nameofContactPerson ?? this.nameofContactPerson,
+      fullAddress: fullAddress ?? this.fullAddress,
+      websiteLink: websiteLink ?? this.websiteLink,
+      dateofBirth: dateofBirth ?? this.dateofBirth,
+      directorName: directorName ?? this.directorName,
+      directorContactNumber: directorContactNumber ?? this.directorContactNumber,
+      businessRegNum: businessRegNum ?? this.businessRegNum,
+      onboading: onboading ?? this.onboading,
+    );
   }
 }

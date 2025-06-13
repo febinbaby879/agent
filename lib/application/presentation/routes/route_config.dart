@@ -9,8 +9,11 @@ import 'package:agent_dashboard/application/presentation/screens/profile/profile
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 class GoRouterConfig {
   static final router = GoRouter(
+      navigatorKey: rootNavigatorKey,
       initialLocation: Routes.initial,
       routes: routes,
       errorBuilder: (context, state) => _errorScreen());

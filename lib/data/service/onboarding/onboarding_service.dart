@@ -1,13 +1,16 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:agent_dashboard/data/service/api_service.dart';
+import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
 import 'package:agent_dashboard/domain/model/commen/failure/failure.dart';
-import 'package:agent_dashboard/domain/model/commen/success_responce_model/success_responce_model.dart';
-import 'package:agent_dashboard/domain/model/onboard/onboard_satus_model/onboard_satus_model.dart';
 import 'package:agent_dashboard/domain/model/profile/agrement_model/agrement_model.dart';
+import 'package:agent_dashboard/domain/model/profile/upload_document_response/upload_document_response.dart';
 import 'package:agent_dashboard/domain/repository/onboarding_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 class OnboardingService implements OnboardingRepo {
   final ApiService _apiService = ApiService();
@@ -36,20 +39,29 @@ class OnboardingService implements OnboardingRepo {
   }
 
   @override
-  Future<Either<Failure, OnboardSatusModel>> getOnboardStatus() async {
+  Future<Either<Failure, UploadDocumentResponse>> uploadSignature(
+      {required Uint8List signature, required String id}) async {
     try {
-      final responce = await _apiService.get(ApiEndPoints.getOnboardingStatus);
-      log('Success getOnboardStatus');
+      final responce = await _apiService.post(
+        ApiEndPoints.addSignatureToAgreement.replaceFirst('{id}', id),
+        headers: {'Content-Type': 'multipart/form-data'},
+        data: FormData.fromMap({
+          'agentSignature': MultipartFile.fromBytes(signature,
+              filename: 'signature.png',
+              contentType: MediaType('image', 'png')),
+        }),
+      );
+      log('Success uploadSignature');
       if (responce.success ?? false) {
-        log('Success getOnboardStatus 1');
-        log("getOnboardStatus: ${responce.data.toString()}");
-        return Right(OnboardSatusModel.fromJson(responce.data));
+        log('Success uploadSignature 1');
+        log("uploadSignature: ${responce.data.toString()}");
+        return Right(UploadDocumentResponse.fromJson(responce.data));
       } else {
-        log('Success getOnboardStatus 2 fail');
+        log('Success uploadSignature 2 fail');
         return Left(Failure.fromResponse(responce));
       }
     } catch (e) {
-      log('catch getOnboardStatus $e');
+      log('catch uploadSignature $e');
       return Left(Failure(message: e.toString()));
     }
   }

@@ -135,7 +135,7 @@ class ApplicationController extends GetxController {
   RxBool pickPassportImagesloading = false.obs;
   void pickPassportImages() async {
     pickPassportImagesloading.value = true;
-    final pickedImages = await FilePickFile.filePick(
+    final pickedImages = await FilePickerService.filePick(
         allowedExtensions: ['png'], allowMultiple: true);
 
     if (pickedImages.isNotEmpty) {
@@ -168,7 +168,7 @@ class ApplicationController extends GetxController {
   RxBool pickPasspoertSizePhotoloading = false.obs;
   void pickPasspoertSizePhoto() async {
     pickPasspoertSizePhotoloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -190,7 +190,7 @@ class ApplicationController extends GetxController {
   // Function to update the existing image
   void updatePassportSizePhoto() async {
     //final index = passportSizeImage.indexOf(oldImage);
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -205,7 +205,7 @@ class ApplicationController extends GetxController {
   RxBool pickHighestQualificationCertificateloading = false.obs;
   void pickHighestQualificationCertificate() async {
     pickHighestQualificationCertificateloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -228,7 +228,7 @@ class ApplicationController extends GetxController {
   RxBool pickMastersCertificateloading = false.obs;
   void pickMastersCertificate() async {
     pickMastersCertificateloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -251,7 +251,7 @@ class ApplicationController extends GetxController {
   RxBool pickBachlersCertificateloading = false.obs;
   void pickBachlersCertificate() async {
     pickBachlersCertificateloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -275,7 +275,7 @@ class ApplicationController extends GetxController {
   RxBool pickPlusTwoCertificateloading = false.obs;
   void pickPlusTwoCertificate() async {
     pickPlusTwoCertificateloading.value = true;
-    final images = await FilePickFile.filePick(allowedExtensions: [
+    final images = await FilePickerService.filePick(allowedExtensions: [
       'jpeg',
       'jpg',
       'png',
@@ -301,7 +301,7 @@ class ApplicationController extends GetxController {
   RxBool pickTenthCertificatloading = false.obs;
   void pickTenthCertificate() async {
     pickTenthCertificatloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -324,7 +324,7 @@ class ApplicationController extends GetxController {
   RxBool pickCVCertificateloading = false.obs;
   void pickCVCertificate() async {
     pickCVCertificateloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -347,7 +347,7 @@ class ApplicationController extends GetxController {
   RxBool pickUniversityProposaloading = false.obs;
   void pickUniversityProposal() async {
     pickUniversityProposaloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['pdf'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -370,7 +370,7 @@ class ApplicationController extends GetxController {
   RxBool pickJobDetailsDatloading = false.obs;
   void pickJobDetailsData() async {
     pickJobDetailsDatloading.value = true;
-    final images = await FilePickFile.filePick(
+    final images = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg', 'pdf'], allowMultiple: false);
     for (var image in images) {
       if (image != null &&
@@ -392,7 +392,7 @@ class ApplicationController extends GetxController {
   RxBool pickStartupDataloading = false.obs;
   void pickStartupData() async {
     pickStartupDataloading.value = true;
-    final pickedImages = await FilePickFile.filePick(
+    final pickedImages = await FilePickerService.filePick(
         allowedExtensions: ['png', 'jpeg', 'jpg'], allowMultiple: true);
 
     // Add new images, avoiding duplicates
@@ -416,7 +416,7 @@ class ApplicationController extends GetxController {
   RxBool pickOfferLetterloading = false.obs;
   void pickOfferLetter() async {
     pickOfferLetterloading.value = false;
-    final pickedImages = await FilePickFile.filePick(
+    final pickedImages = await FilePickerService.filePick(
         allowedExtensions: ['pdf'], allowMultiple: true);
 
     // Add new images, avoiding duplicates

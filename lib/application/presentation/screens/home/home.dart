@@ -23,7 +23,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeController = Get.find<HomeController>();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ProfileController>().getAgentProfileInfo(refresh: true);
+    });
     return GestureDetector(
         onTap: () => homeController.profileEnable.value = false,
         child: Scaffold(

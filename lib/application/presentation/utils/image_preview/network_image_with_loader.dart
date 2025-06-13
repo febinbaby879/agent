@@ -1,3 +1,4 @@
+import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +24,15 @@ class NetworkImageWithLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String url = src ?? "";
+    if (src != null && src!.startsWith('uploads')) {
+      url = "${ApiEndPoints.imgBaseUrl}/$src";
+    }
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius)),
       child: !casheImage
           ? Image.network(
-              src ?? '',
+              url,
               fit: fit,
               // loadingBuilder: (context, child, loadingProgress) =>
               //     const ShimmerLoaderTile(),
@@ -37,7 +42,7 @@ class NetworkImageWithLoader extends StatelessWidget {
             )
           : CachedNetworkImage(
               fit: fit,
-              imageUrl: src ?? '',
+              imageUrl: url,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -48,7 +53,9 @@ class NetworkImageWithLoader extends StatelessWidget {
               ),
 
               progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
+                  Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress)),
               // placeholder: (context, url) => const CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => Center(child: errorWidget),
             ),
