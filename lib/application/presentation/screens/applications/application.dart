@@ -94,7 +94,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
               mainAxisSpacing: 16),
           itemCount: tasks.length,
           itemBuilder: (context, index) =>
-              ApplicationStudentCard(task: tasks[index]));
+              ApplicationStudentCard(task: tasks[index], index: index));
     });
   }
 
