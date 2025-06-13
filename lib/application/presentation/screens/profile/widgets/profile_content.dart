@@ -581,6 +581,7 @@ class ProfileContent extends StatelessWidget {
       return CustomTextField(
         validate: validate,
         hintText: label,
+        lebelText: label,
         controller: controller,
         onTap: () async {
           if (date) {
@@ -613,7 +614,6 @@ class ProfileContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!enableEdit)
             Row(
               children: [
                 Expanded(
@@ -627,12 +627,6 @@ class ProfileContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (enableEdit)
-                  Icon(
-                    Icons.edit_outlined,
-                    size: 14,
-                    color: kpurple400,
-                  ),
               ],
             ),
           kHeight5,
