@@ -1,7 +1,11 @@
+import 'package:agent_dashboard/application/presentation/utils/colors.dart';
+import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/image_picker/image_picker.dart';
+import 'package:agent_dashboard/application/presentation/utils/toast/flutter_toast.dart';
 import 'package:agent_dashboard/data/service/profile/profile_service.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
+import 'package:agent_dashboard/domain/model/profile/agent_profile/social_media_link.dart';
 import 'package:agent_dashboard/domain/repository/profile_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +23,14 @@ class ProfileController extends GetxController {
       websitController = TextEditingController(),
       addressController = TextEditingController(),
       contactPersonController = TextEditingController(),
-      designationController = TextEditingController();
+      designationController = TextEditingController(),
+      instagramLink = TextEditingController(),
+      twiterLink = TextEditingController(),
+      linkedInLink = TextEditingController(),
+      youtubeLink = TextEditingController(),
+      whatsappLink = TextEditingController(),
+      tikTokLink = TextEditingController(),
+      faceBookkLink = TextEditingController();
 
   /// profile side panel works with this data
   RxString profileNavItem = 'profile'.obs;
@@ -32,6 +43,7 @@ class ProfileController extends GetxController {
 
   RxBool profileinfoLoading = false.obs;
   RxBool profileinfoUpdateLoading = false.obs;
+  RxBool profileinfoUpdateSocialMediaLoading = false.obs;
   RxBool enableEdit = false.obs;
   RxBool profileImageLoading = false.obs;
   RxBool passportImageLoading = false.obs;
@@ -41,6 +53,49 @@ class ProfileController extends GetxController {
   void onInit() {
     getAgentProfileInfo(refresh: true);
     super.onInit();
+  }
+
+  TextEditingController? getSocialMediaController(String media,
+      {bool loadController = false, String? data}) {
+    switch (media) {
+      case 'Facebook':
+        if (loadController) {
+          faceBookkLink.text = data ?? '';
+        }
+        return faceBookkLink;
+      case 'Instagram':
+        if (loadController) {
+          instagramLink.text = data ?? '';
+        }
+        return instagramLink;
+      case 'Twitter':
+        if (loadController) {
+          twiterLink.text = data ?? '';
+        }
+        return twiterLink;
+      case 'LinkedIn':
+        if (loadController) {
+          linkedInLink.text = data ?? '';
+        }
+        return linkedInLink;
+      case 'YouTube':
+        if (loadController) {
+          youtubeLink.text = data ?? '';
+        }
+        return youtubeLink;
+      case 'WhatsApp':
+        if (loadController) {
+          whatsappLink.text = data ?? '';
+        }
+        return whatsappLink;
+      case 'TikTok':
+        if (loadController) {
+          tikTokLink.text = data ?? '';
+        }
+        return tikTokLink;
+      default:
+        return null;
+    }
   }
 
   void changeProfileNavItem(String value) {
@@ -78,12 +133,45 @@ class ProfileController extends GetxController {
           dateofBirth: dateOfBirthController.text,
           websiteLink: websitController.text,
         ));
-    result.fold((l) {}, (r) {
-      profileInfo.value = r;
+    bool success = true;
+    result.fold((l) {
+      success = false;
+      showCustomToast(
+          message: l.message ?? errorMessage, backgroundColor: kRed);
+    }, (r) {
       enableEdit.value = false;
-      getAgentProfileInfo(refresh: true);
     });
+    if (success) {
+      await getAgentProfileInfo(refresh: true);
+    }
     profileinfoUpdateLoading.value = false;
+  }
+
+  Future<bool> updateSocialMediaLinks() async {
+    profileinfoUpdateSocialMediaLoading.value = true;
+    List<SocialMediaLink> links = profileInfo.value.socialMediaLinks ?? [],
+        updatedLinks = [];
+    for (String i in socialMediaPlatforms) {
+      final l = links.where((e) => e.platform == i);
+      updatedLinks.add(SocialMediaLink(
+          platform: i,
+          url: getSocialMediaController(i)?.text,
+          id: l.isEmpty ? null : l.first.id));
+    }
+    final result = await _profileService.updateProfileInfo(
+        id: await SharedPreferecesStorage.getUserId(),
+        profile: AgentProfile(socialMediaLinks: updatedLinks));
+    bool success = true;
+    result.fold((l) {
+      success = false;
+      showCustomToast(
+          message: l.message ?? errorMessage, backgroundColor: kRed);
+    }, (r) => null);
+    if (success) {
+      await getAgentProfileInfo(refresh: true);
+    }
+    profileinfoUpdateSocialMediaLoading.value = false;
+    return success;
   }
 
   /// get onboarding status from shared preferences
@@ -106,8 +194,6 @@ class ProfileController extends GetxController {
     final result = await _profileService.uploadFile(
         file: image.first!.webImage!, keyName: 'profileImg');
     result.fold((l) => null, (r) {
-      print('prifle img => ${r.uploadedDocuments?.profileImg}');
-      print('prifle img resp=> ${r.uploadedDocuments?.toJson()}');
       profileInfo.value = profileInfo.value
           .copyWith(profileImg: r.uploadedDocuments?.profileImg);
     });
@@ -155,6 +241,10 @@ class ProfileController extends GetxController {
     contactPersonController.text = profileInfo.value.nameofContactPerson ?? '';
     directorPhoneController.text =
         profileInfo.value.directorContactNumber ?? '';
+    for (SocialMediaLink link in profileInfo.value.socialMediaLinks ?? []) {
+      getSocialMediaController(link.platform ?? '',
+          loadController: true, data: link.url);
+    }
   }
 
   _clearTextControllers() {
@@ -169,5 +259,12 @@ class ProfileController extends GetxController {
     directorNameController.clear();
     contactPersonController.clear();
     directorPhoneController.clear();
+    linkedInLink.clear();
+    whatsappLink.clear();
+    faceBookkLink.clear();
+    instagramLink.clear();
+    twiterLink.clear();
+    tikTokLink.clear();
+    youtubeLink.clear();
   }
 }

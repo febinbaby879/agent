@@ -1,5 +1,7 @@
-import 'package:agent_dashboard/domain/model/profile/agent_profile/uploaded_documents.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'social_media_link.dart';
+import 'uploaded_documents.dart';
 
 part 'agent_profile.g.dart';
 
@@ -16,10 +18,11 @@ class AgentProfile {
   String? businessLicense;
   String? passportFile;
   String? profileImg;
-  List<dynamic>? socialMediaLinks;
+  List<SocialMediaLink>? socialMediaLinks;
   String? designation;
   String? nameofContactPerson;
   String? fullAddress;
+  @JsonKey(name: 'WebsiteLink')
   String? websiteLink;
   String? dateofBirth;
   String? directorName;
@@ -73,7 +76,7 @@ class AgentProfile {
     String? businessLicense,
     String? passportFile,
     String? profileImg,
-    List<dynamic>? socialMediaLinks,
+    List<SocialMediaLink>? socialMediaLinks,
     String? designation,
     String? nameofContactPerson,
     String? fullAddress,
@@ -103,7 +106,8 @@ class AgentProfile {
       websiteLink: websiteLink ?? this.websiteLink,
       dateofBirth: dateofBirth ?? this.dateofBirth,
       directorName: directorName ?? this.directorName,
-      directorContactNumber: directorContactNumber ?? this.directorContactNumber,
+      directorContactNumber:
+          directorContactNumber ?? this.directorContactNumber,
       businessRegNum: businessRegNum ?? this.businessRegNum,
       onboading: onboading ?? this.onboading,
     );

@@ -16,17 +16,18 @@ class ScreenProfile extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {
           bool isSmallScreen = constraints.maxWidth < 600;
+          bool isTab = constraints.maxWidth < 900;
           return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (!isSmallScreen)
               SidebarWidget(maxWidth: constraints.maxWidth * 0.25),
             Expanded(child: Obx(() {
               switch (controller.profileNavItem.value) {
                 case 'profile':
-                  return ProfileContent(isSmallScreen: isSmallScreen);
+                  return ProfileContent(isSmallScreen: isSmallScreen,isTab:isTab);
                 case 'bankingInfo':
-                  return BankingInformation(isSmallScreen: isSmallScreen);
+                  return BankingInformation(isSmallScreen: isTab);
                 case 'aboutUs':
-                  return AboutUsInformation(isSmallScreen: isSmallScreen);
+                  return AboutUsInformation(isSmallScreen: isTab);
                 default:
                   return const SizedBox.shrink();
               }

@@ -140,6 +140,7 @@ class AuthController extends GetxController {
         showCustomToast(message: l.message ?? errorMessage);
       }, (r) {
         showOtpCard(true);
+        otpLoading.value = false;
       });
       registerLoading.value = false;
     }
@@ -157,6 +158,7 @@ class AuthController extends GetxController {
     );
     await result.fold((l) {
       showCustomToast(message: l.message ?? errorMessage);
+       otpLoading.value = false;
     }, (r) async {
       await _completeLogin(context, r);
       // if (r.user?.onboarding ?? false) {
@@ -176,6 +178,7 @@ class AuthController extends GetxController {
               email: emailForgotPasswordController.text.trim()));
       result.fold((l) {
         showCustomToast(message: l.message ?? errorMessage);
+        forgotPasswordLoading.value = false;
       }, (r) {});
       showOtpCardResetPassword(true);
       forgotPasswordLoading.value = false;
