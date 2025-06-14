@@ -23,7 +23,9 @@ void showCustomToast({
     webPosition: webPosition,
     timeInSecForIosWeb: timeInSecForIosWeb,
     fontSize: fontSize,
-    webBgColor: "linear-gradient(to right, #000000, #000000)",
+    webBgColor: backgroundColor == kRed
+        ? "linear-gradient(to right, #FF0000, #FF0000)"
+        : "linear-gradient(to right, #000000, #000000)",
     backgroundColor: backgroundColor,
     textColor: textColor,
   );

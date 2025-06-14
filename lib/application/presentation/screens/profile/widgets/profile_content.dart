@@ -10,11 +10,14 @@ import 'package:agent_dashboard/application/presentation/widgets/text_form_field
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileContent extends StatelessWidget {
   final bool isSmallScreen;
+  final bool isTab;
 
-  const ProfileContent({super.key, required this.isSmallScreen});
+  const ProfileContent(
+      {super.key, required this.isSmallScreen, required this.isTab});
 
   @override
   Widget build(BuildContext context) {
@@ -157,9 +160,9 @@ class ProfileContent extends StatelessWidget {
         _buildProfileFields(controller, context),
 
         // Social Media Section
-        if (controller.profileInfo.value.socialMediaLinks != null &&
-            controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
-          _buildSocialMediaSection(controller),
+        // if (controller.profileInfo.value.socialMediaLinks != null &&
+        //     controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
+        _buildSocialMediaSection(context, controller),
       ],
     );
   }
@@ -185,9 +188,9 @@ class ProfileContent extends StatelessWidget {
               _buildProfileFields(controller, context),
 
               // Social Media Section
-              if (controller.profileInfo.value.socialMediaLinks != null &&
-                  controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
-                _buildSocialMediaSection(controller),
+              // if (controller.profileInfo.value.socialMediaLinks != null &&
+              //     controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
+              _buildSocialMediaSection(context, controller),
             ],
           ),
         ),
@@ -475,7 +478,7 @@ class ProfileContent extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: isSmallScreen ? 1 : 2,
-              childAspectRatio: isSmallScreen ? 6 : 4,
+              childAspectRatio: isSmallScreen ? 5 : 4,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
@@ -498,7 +501,8 @@ class ProfileContent extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialMediaSection(ProfileController controller) {
+  Widget _buildSocialMediaSection(
+      BuildContext context, ProfileController controller) {
     return Container(
       margin: const EdgeInsets.only(top: 24),
       padding: const EdgeInsets.all(24),
@@ -522,40 +526,133 @@ class ProfileContent extends StatelessWidget {
                   color: Color(0xFF2D3748),
                 ),
               ),
+              const Spacer(),
+              ElevatedButton(
+                child: Icon(Icons.edit_note_outlined,
+                    color: Colors.purple[600], size: 20),
+                onPressed: () {
+                  _buildSocialMediaAddingDialog(context, controller);
+                },
+              ),
             ],
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 12,
-            runSpacing: 8,
-            children: controller.profileInfo.value.socialMediaLinks!
-                .map<Widget>((link) => Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.purple[200]!),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.purple.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        link.toString(),
-                        style: TextStyle(
-                          color: Colors.purple[700],
-                          fontWeight: FontWeight.w500,
+          if (controller.profileInfo.value.socialMediaLinks?.isNotEmpty ??
+              false)
+            Wrap(
+              spacing: 12,
+              runSpacing: 8,
+              children: (controller.profileInfo.value.socialMediaLinks!
+                      .where((e) => e.url?.isNotEmpty ?? false))
+                  .map<Widget>((link) => Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.purple[200]!),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.purple.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                      ),
-                    ))
-                .toList(),
-          ),
+                        child: Text(
+                          link.url.toString(),
+                          style: TextStyle(
+                            color: Colors.purple[700],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> _buildSocialMediaAddingDialog(
+      BuildContext context, ProfileController controller) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Social Media Links',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Color(0xFF2D3748),
+                      ),
+                    ),
+                    kHeight10,
+                    ...List.generate(socialMediaPlatforms.length, (index) {
+                      String media = socialMediaPlatforms[index];
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.link),
+                              kWidth10,
+                              Expanded(
+                                child: CustomTextField(
+                                  hintText: media,
+                                  lebelText: media,
+                                  controller: controller
+                                      .getSocialMediaController(media),
+                                ),
+                              )
+                            ],
+                          ),
+                          kHeight5,
+                        ],
+                      );
+                    }),
+                    kHeight10,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Obx(
+                        () => SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: kWhite,
+                                backgroundColor: kpurple400),
+                            onPressed: () async {
+                              final success =
+                                  await controller.updateSocialMediaLinks();
+                              if (success) {
+                                GoRouter.of(context).pop();
+                              }
+                            },
+                            child: controller
+                                    .profileinfoUpdateSocialMediaLoading.value
+                                ? const CupertinoActivityIndicator(
+                                    color: kWhite)
+                                : const Text('Update'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -612,23 +709,23 @@ class ProfileContent extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[600],
-                      letterSpacing: 0.5,
-                    ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[600],
+                    letterSpacing: 0.5,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
           kHeight5,
           Text(
             value?.isNotEmpty == true ? value! : 'N/A',

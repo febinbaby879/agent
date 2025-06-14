@@ -52,11 +52,12 @@ class NetworkImageWithLoader extends StatelessWidget {
                 ),
               ),
 
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  Center(
-                      child: CircularProgressIndicator(
-                          value: downloadProgress.progress)),
-              // placeholder: (context, url) => const CupertinoActivityIndicator(),
+              // progressIndicatorBuilder: (context, url, downloadProgress) =>
+              //     Center(
+              //         child: CircularProgressIndicator(
+              //             value: downloadProgress.progress)),
+              placeholder: (context, url) =>
+                  const Center(child: CupertinoActivityIndicator()),
               errorWidget: (context, url, error) => Center(child: errorWidget),
             ),
     );
