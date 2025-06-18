@@ -33,6 +33,9 @@ AgentProfile _$AgentProfileFromJson(Map<String, dynamic> json) => AgentProfile(
           : UploadedDocuments.fromJson(
               json['documents'] as Map<String, dynamic>),
       id: json['id'] as String?,
+      bankDetails: json['bankDetails'] == null
+          ? null
+          : BankDetail.fromJson(json['bankDetails'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AgentProfileToJson(AgentProfile instance) =>
@@ -58,4 +61,5 @@ Map<String, dynamic> _$AgentProfileToJson(AgentProfile instance) =>
       'directorContactNumber': instance.directorContactNumber,
       'businessRegNum': instance.businessRegNum,
       'onboading': instance.onboading,
+      'bankDetails': instance.bankDetails,
     };

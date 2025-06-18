@@ -6,6 +6,8 @@ import 'package:agent_dashboard/data/service/profile/profile_service.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/social_media_link.dart';
+import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_account_info.dart';
+import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_operation.dart';
 import 'package:agent_dashboard/domain/repository/profile_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,13 +32,23 @@ class ProfileController extends GetxController {
       youtubeLink = TextEditingController(),
       whatsappLink = TextEditingController(),
       tikTokLink = TextEditingController(),
-      faceBookkLink = TextEditingController();
+      faceBookkLink = TextEditingController(),
+      bankName = TextEditingController(),
+      bankAccountNumber = TextEditingController(),
+      bankAddress = TextEditingController(),
+      bankSwiftCode = TextEditingController(),
+      bankIBAN = TextEditingController(),
+      bankAccountHolderName = TextEditingController();
+
+  final GlobalKey<FormState> bankingDetailKey = GlobalKey<FormState>();
 
   /// profile side panel works with this data
   RxString profileNavItem = 'profile'.obs;
 
   /// agent profile informations
   Rx<AgentProfile> profileInfo = AgentProfile().obs;
+
+  Rx<BankAccountInfo> selectedBankingInfo = BankAccountInfo().obs;
 
   /// obboarding process status
   RxBool onboardingDone = false.obs;
@@ -48,6 +60,10 @@ class ProfileController extends GetxController {
   RxBool profileImageLoading = false.obs;
   RxBool passportImageLoading = false.obs;
   RxBool businessLicenseLoading = false.obs;
+  RxBool bankingInfoLoading = false.obs;
+  RxBool bankingInfoDeleteLoading = false.obs;
+  RxBool isDefaultBanking = false.obs;
+  RxString bankAccountType = ''.obs;
 
   @override
   void onInit() {
@@ -106,9 +122,11 @@ class ProfileController extends GetxController {
     enableEdit.value = value;
   }
 
-  Future<void> getAgentProfileInfo({bool refresh = false}) async {
+  Future<void> getAgentProfileInfo(
+      {bool refresh = false, bool banking = false}) async {
     if (!refresh && profileinfoLoading.value) return;
-    profileinfoLoading.value = true;
+    if (!banking) profileinfoLoading.value = true;
+    bankingInfoLoading.value = true;
     final result = await _profileService.getAgentProfileInfo(
         id: await SharedPreferecesStorage.getUserId());
     result.fold((l) {}, (r) {
@@ -117,6 +135,7 @@ class ProfileController extends GetxController {
       _loadFieldsToTextFields();
     });
     profileinfoLoading.value = false;
+    bankingInfoLoading.value = false;
   }
 
   Future<void> updateProfileInfo() async {
@@ -145,6 +164,138 @@ class ProfileController extends GetxController {
       await getAgentProfileInfo(refresh: true);
     }
     profileinfoUpdateLoading.value = false;
+  }
+
+  void selectBankAccountInfo(BankAccountInfo? info) {
+    print(info?.toJson());
+    selectedBankingInfo.value = info ?? BankAccountInfo();
+    bankAccountHolderName.text = info?.accountHolderName ?? "";
+    bankAccountNumber.text = info?.accountNumber ?? "";
+    bankAddress.text = info?.bankAddress ?? "";
+    bankName.text = info?.bankName ?? "";
+    bankIBAN.text = info?.iban ?? "";
+    bankSwiftCode.text = info?.swiftCode ?? "";
+    bankAccountType.value = info?.accountType ?? "";
+    isDefaultBanking.value = info?.isDefault ?? false;
+  }
+
+  void clearBankingControllers() {
+    selectedBankingInfo.value = BankAccountInfo();
+    bankAccountHolderName.clear();
+    bankAccountNumber.clear();
+    bankAddress.clear();
+    bankName.clear();
+    bankIBAN.clear();
+    bankSwiftCode.clear();
+    bankAccountType.value = '';
+    isDefaultBanking.value = false;
+  }
+
+  void chooseAccountType(String? value) {
+    bankAccountType.value = value ?? "";
+  }
+
+  void isDefalutBankingData(bool? value) {
+    isDefaultBanking.value = value ?? false;
+  }
+
+  Future<bool> addBankAccount() async {
+    if (bankingInfoLoading.value) return false;
+    if (bankingDetailKey.currentState?.validate() ?? false) {
+      bankingInfoLoading.value = true;
+      final result = await _profileService.bankingOperation(
+        bankingOperation: BankOperation(
+          operation: 'add',
+          bankData: BankAccountInfo(
+            accountHolderName: bankAccountHolderName.text.trim(),
+            accountNumber: bankAccountNumber.text.trim(),
+            bankAddress: bankAddress.text.trim(),
+            bankName: bankName.text.trim(),
+            iban: bankIBAN.text.trim(),
+            swiftCode: bankSwiftCode.text.trim(),
+            accountType:
+                bankAccountType.value.isEmpty ? 'other' : bankAccountType.value,
+            isDefault: isDefaultBanking.value,
+          ),
+        ),
+      );
+      bool success = true;
+      result.fold((l) {
+        bankingInfoLoading.value = false;
+        success = false;
+      }, (r) {
+        getAgentProfileInfo(banking: true, refresh: true);
+      });
+      return success;
+    }
+    return false;
+  }
+
+  Future<bool> updateBankAccount() async {
+    if (bankingInfoLoading.value) return false;
+    if (bankingDetailKey.currentState?.validate() ?? false) {
+      bankingInfoLoading.value = true;
+      print(selectedBankingInfo.value.toJson());
+      final result = await _profileService.bankingOperation(
+        bankingOperation: BankOperation(
+          operation: 'update',
+          bankId: selectedBankingInfo.value.id,
+          bankData: BankAccountInfo(
+            accountHolderName: bankAccountHolderName.text.trim(),
+            accountNumber: bankAccountNumber.text.trim(),
+            bankAddress: bankAddress.text.trim(),
+            bankName: bankName.text.trim(),
+            iban: bankIBAN.text.trim(),
+            swiftCode: bankSwiftCode.text.trim(),
+            accountType: bankAccountType.value.trim(),
+            isDefault: isDefaultBanking.value,
+          ),
+        ),
+      );
+      bool success = true;
+      result.fold((l) {
+        bankingInfoLoading.value = false;
+        success = false;
+      }, (r) {
+        getAgentProfileInfo(banking: true, refresh: true);
+      });
+      return success;
+    }
+    return false;
+  }
+
+  Future<bool> deleteBankAccount({required String id}) async {
+    if (id.isEmpty || bankingInfoDeleteLoading.value) return false;
+    bankingInfoDeleteLoading.value = true;
+    final result = await _profileService.bankingOperation(
+      bankingOperation: BankOperation(
+        operation: 'remove',
+        bankId: id,
+      ),
+    );
+    bool success = true;
+    result.fold((l) {
+      bankingInfoDeleteLoading.value = false;
+      success = false;
+    }, (r) {
+      getAgentProfileInfo(banking: true, refresh: true);
+    });
+    return success;
+  }
+
+  Future<void> markDefaultBankAccount() async {
+    bankingInfoLoading.value = true;
+    final result = await _profileService.bankingOperation(
+      bankingOperation: BankOperation(
+        operation: 'setDefault',
+        bankId: selectedBankingInfo.value.id,
+      ),
+    );
+    result.fold((l) {
+      bankingInfoLoading.value = false;
+    }, (r) {
+      getAgentProfileInfo(banking: true, refresh: true);
+    });
   }
 
   Future<bool> updateSocialMediaLinks() async {

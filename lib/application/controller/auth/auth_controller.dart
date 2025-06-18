@@ -158,7 +158,7 @@ class AuthController extends GetxController {
     );
     await result.fold((l) {
       showCustomToast(message: l.message ?? errorMessage);
-       otpLoading.value = false;
+      otpLoading.value = false;
     }, (r) async {
       await _completeLogin(context, r);
       // if (r.user?.onboarding ?? false) {

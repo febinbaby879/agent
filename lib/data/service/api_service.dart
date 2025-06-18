@@ -153,7 +153,6 @@ class ApiService {
     return resp;
   }
 
-
   Future<bool> downloadFile({
     required String url,
     required String savePath,

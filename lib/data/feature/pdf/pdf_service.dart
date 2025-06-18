@@ -5,6 +5,8 @@ import 'package:pdf_render/pdf_render.dart' as render;
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
 
+import 'package:printing/printing.dart';
+
 class PdfService {
   static Future<Uint8List> addSignatureToPdf(
       Uint8List originalPdfBytes, Uint8List signatureBytes) async {
@@ -60,4 +62,15 @@ class PdfService {
       return originalPdfBytes;
     }
   }
+  
+  static Future<void> downloadHtmlAsPdf(String htmlContent) async {
+  await Printing.layoutPdf(
+    onLayout: (PdfPageFormat format) async {
+      return await Printing.convertHtml(
+        format: format,
+        html: htmlContent,
+      );
+    },
+  );
+}
 }

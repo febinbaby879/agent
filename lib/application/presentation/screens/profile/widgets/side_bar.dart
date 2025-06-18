@@ -39,13 +39,14 @@ class SidebarWidget extends StatelessWidget {
                       ),
                     ),
                     MouseHoverSwitcher(
-                      hoverChild: CircleAvatar(
-                        radius: 36,
-                        backgroundColor: kpurple400,
-                        child: Text(
-                          // '${(controller.onBoardingStatus.value.progress?.percentage ?? 0)}%',
-                          'Agent',
-                          style: const TextStyle(color: kWhite),
+                      hoverChild: GestureDetector(
+                        onTap: () {
+                          profileController.uploadProfilePicture();
+                        },
+                        child: CircleAvatar(
+                          radius: 36,
+                          backgroundColor: kpurple400,
+                          child: const Icon(Icons.file_upload_outlined),
                         ),
                       ),
                       child: Obx(

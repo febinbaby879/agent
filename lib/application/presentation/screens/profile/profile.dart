@@ -23,11 +23,12 @@ class ScreenProfile extends StatelessWidget {
             Expanded(child: Obx(() {
               switch (controller.profileNavItem.value) {
                 case 'profile':
-                  return ProfileContent(isSmallScreen: isSmallScreen,isTab:isTab);
+                  return ProfileContent(
+                      isSmallScreen: isSmallScreen, isTab: isTab);
                 case 'bankingInfo':
-                  return BankingInformation(isSmallScreen: isTab);
+                  return BankingInformation(isSmallScreen: isSmallScreen);
                 case 'aboutUs':
-                  return AboutUsInformation(isSmallScreen: isTab);
+                  return AboutUsInformation(isSmallScreen: isSmallScreen);
                 default:
                   return const SizedBox.shrink();
               }

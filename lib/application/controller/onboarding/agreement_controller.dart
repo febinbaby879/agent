@@ -88,7 +88,7 @@ class AgreementController extends GetxController {
     uploadPdfLoading.value = true;
     uploadSignatureResponse.value = UploadDocumentResponse();
     final result = await _onboardingService.uploadSignature(
-        signature: signatureBytes.value!,id: id);
+        signature: signatureBytes.value!, id: id);
     result.fold((l) {}, (r) {
       uploadSignatureResponse.value = r;
     });

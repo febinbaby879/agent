@@ -134,7 +134,7 @@ class ProfileContent extends StatelessWidget {
                       const SizedBox(height: 24),
 
                       // Profile Content
-                      isSmallScreen
+                      isSmallScreen || isTab
                           ? _buildMobileLayout(controller, context)
                           : _buildDesktopLayout(controller, context),
                     ],
@@ -429,7 +429,7 @@ class ProfileContent extends StatelessWidget {
         'controller': controller.directorPhoneController
       },
     ];
-
+    final width = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -477,8 +477,19 @@ class ProfileContent extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isSmallScreen ? 1 : 2,
-              childAspectRatio: isSmallScreen ? 5 : 4,
+              crossAxisCount: isTab ? 1 : 2,
+              /// need to do someting to make it proper responsive
+              childAspectRatio: width > 1100
+                  ? 4
+                  : width > 900
+                      ? 3
+                      : width > 800
+                          ? 4
+                          : isSmallScreen
+                              ? 5
+                              : isTab
+                                  ? 4
+                                  : 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
@@ -696,6 +707,7 @@ class ProfileContent extends StatelessWidget {
         },
       );
     }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       decoration: BoxDecoration(
