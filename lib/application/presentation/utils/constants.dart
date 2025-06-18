@@ -87,6 +87,8 @@ List<String> socialMediaPlatforms = [
   'WhatsApp',
 ];
 
+List<String> bankingAccountTypes = ['savings', 'current', 'business', 'other'];
+
 const List<String> countryList = [
   "Afghanistan",
   "Albania",

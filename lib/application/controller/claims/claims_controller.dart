@@ -1,3 +1,4 @@
+import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
@@ -105,8 +106,11 @@ class ClaimsController extends GetxController {
   }
 
   void addBankAccount(BuildContext context) {
-    if (bankingDetailKey.currentState?.validate() ?? false) {
-      if (addBankAccoundLoading.value) return;
+    if (Get.find<ProfileController>()
+            .bankingDetailKey
+            .currentState
+            ?.validate() ??
+        false) {      if (addBankAccoundLoading.value) return;
       addBankAccoundLoading.value = true;
       // Simulate a network call
       Future.delayed(const Duration(seconds: 2), () {

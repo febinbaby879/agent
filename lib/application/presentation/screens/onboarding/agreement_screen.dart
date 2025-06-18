@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:agent_dashboard/application/controller/onboarding/agreement_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/data/feature/pdf/pdf_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -393,7 +394,14 @@ class _SignaturePart extends StatelessWidget {
               ),
             ),
           ],
-        )
+        ),
+        ElevatedButton(
+            onPressed: () {
+              PdfService.downloadHtmlAsPdf(
+                  controller.agrementModel.value.generatedAgreement?.content ??
+                      "");
+            },
+            child: Text('download'))
       ],
     );
   }

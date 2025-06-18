@@ -5,7 +5,9 @@ import 'package:agent_dashboard/data/service/api_service.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
 import 'package:agent_dashboard/domain/model/commen/failure/failure.dart';
+import 'package:agent_dashboard/domain/model/commen/success_responce_model/success_responce_model.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
+import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_operation.dart';
 import 'package:agent_dashboard/domain/model/profile/upload_document_response/upload_document_response.dart';
 import 'package:agent_dashboard/domain/repository/profile_repo.dart';
 import 'package:dartz/dartz.dart';
@@ -79,6 +81,26 @@ class ProfileService implements ProfileRepo {
       }
     } catch (e) {
       log('catch uploadFile $e');
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponceModel>> bankingOperation(
+      {required BankOperation bankingOperation}) async {
+    try {
+      log('request bankingInfo => ${bankingOperation.toJson()}');
+      final responce = await _apiService.patch(ApiEndPoints.bankingOperations,
+          data: {'bankOperations': bankingOperation.toJson()});
+      log('Success bankingInfo');
+      if (responce.success ?? false) {
+        log("bankingInfo: ${responce.data.toString()}");
+        return Right(SuccessResponceModel.fromResponse(responce));
+      } else {
+        return Left(Failure.fromResponse(responce));
+      }
+    } catch (e) {
+      log('catch bankingInfo $e');
       return Left(Failure(message: e.toString()));
     }
   }

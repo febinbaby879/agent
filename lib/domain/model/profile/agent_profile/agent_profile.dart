@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'bank_details.dart';
 import 'social_media_link.dart';
 import 'uploaded_documents.dart';
 
@@ -29,6 +30,7 @@ class AgentProfile {
   String? directorContactNumber;
   String? businessRegNum;
   bool? onboading;
+  BankDetail? bankDetails;
 
   AgentProfile({
     this.agentId,
@@ -52,6 +54,7 @@ class AgentProfile {
     this.onboading,
     this.documents,
     this.id,
+    this.bankDetails,
   });
 
   factory AgentProfile.fromJson(Map<String, dynamic> json) {
@@ -86,6 +89,7 @@ class AgentProfile {
     String? directorContactNumber,
     String? businessRegNum,
     bool? onboading,
+    BankDetail? bankDetails,
   }) {
     return AgentProfile(
       id: id ?? this.id,
@@ -110,6 +114,7 @@ class AgentProfile {
           directorContactNumber ?? this.directorContactNumber,
       businessRegNum: businessRegNum ?? this.businessRegNum,
       onboading: onboading ?? this.onboading,
+      bankDetails: bankDetails ?? this.bankDetails,
     );
   }
 }
