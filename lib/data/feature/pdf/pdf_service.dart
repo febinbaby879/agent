@@ -4,6 +4,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf_render/pdf_render.dart' as render;
 import 'package:image/image.dart' as img;
 import 'dart:ui' as ui;
+import 'dart:js' as js;
 
 import 'package:printing/printing.dart';
 
@@ -62,15 +63,24 @@ class PdfService {
       return originalPdfBytes;
     }
   }
-  
-  static Future<void> downloadHtmlAsPdf(String htmlContent) async {
-  await Printing.layoutPdf(
-    onLayout: (PdfPageFormat format) async {
-      return await Printing.convertHtml(
-        format: format,
-        html: htmlContent,
-      );
-    },
-  );
-}
+
+  static void downloadHtmlAsPdf({String containerId = 'html-container'}) {
+    js.context.callMethod('eval', [
+      """
+    const element = document.getElementById('$containerId');
+    if (!element) {
+      alert('HTML content not found!');
+    } else {
+      const opt = {
+        margin:       10,
+        filename:     'download.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+    """
+    ]);
+  }
 }

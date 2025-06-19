@@ -3,6 +3,7 @@ import 'package:agent_dashboard/application/presentation/screens/profile/widgets
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/enum/enum.dart';
+import 'package:agent_dashboard/application/presentation/utils/html/html_page_viewer.dart';
 import 'package:agent_dashboard/application/presentation/utils/image_preview/network_image_with_loader.dart';
 import 'package:agent_dashboard/application/presentation/widgets/dropdown_builder.dart';
 import 'package:agent_dashboard/application/presentation/widgets/hover/hover_switcher.dart';
@@ -163,6 +164,7 @@ class ProfileContent extends StatelessWidget {
         // if (controller.profileInfo.value.socialMediaLinks != null &&
         //     controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
         _buildSocialMediaSection(context, controller),
+        _buildAgrementSection(context, controller),
       ],
     );
   }
@@ -191,6 +193,8 @@ class ProfileContent extends StatelessWidget {
               // if (controller.profileInfo.value.socialMediaLinks != null &&
               //     controller.profileInfo.value.socialMediaLinks!.isNotEmpty)
               _buildSocialMediaSection(context, controller),
+              kHeight10,
+              _buildAgrementSection(context, controller),
             ],
           ),
         ),
@@ -478,6 +482,7 @@ class ProfileContent extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: isTab ? 1 : 2,
+
               /// need to do someting to make it proper responsive
               childAspectRatio: width > 1100
                   ? 4
@@ -748,6 +753,78 @@ class ProfileContent extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAgrementSection(
+      BuildContext context, ProfileController controller) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Row(
+          children: [
+            const Text('Review Agreement'),
+            const Spacer(),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: kpurple400, foregroundColor: kWhite),
+                onPressed: () {
+                  controller.getCompletedAgrement();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Obx(() {
+                          if (controller.getAgreementLoading.value) {
+                            return const Center(
+                              child: CupertinoActivityIndicator(),
+                            );
+                          }
+                          if (controller.agrementModel.value.generatedAgreement
+                                  ?.content?.isEmpty ??
+                              true) {
+                            return const Center(
+                              child: Text('Agreement not Availale'),
+                            );
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: HtmlToPdfView(
+                                        htmlContent: controller.agrementModel
+                                            .value.generatedAgreement!.content!,
+                                        containerId: 'html-container'),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: kpurple400,
+                                        foregroundColor: kWhite),
+                                    onPressed: () {
+                                      controller.downloadAgrement();
+                                    },
+                                    icon: const Icon(Icons.download),
+                                    label: const Text('Download'),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+                    },
+                  );
+                },
+                child: const Text('Preview'))
+          ],
+        ),
       ),
     );
   }
