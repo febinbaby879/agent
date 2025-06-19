@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:agent_dashboard/application/controller/onboarding/agreement_controller.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/application/presentation/utils/html/html_page_viewer.dart';
 import 'package:agent_dashboard/data/feature/pdf/pdf_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -142,18 +143,10 @@ class _ScreenAgrementSignatureState extends State<ScreenAgrementSignature> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: kRadius10,
-                              // border: Border.all(),
                               boxShadow: boxShadow2),
                           margin: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-
-                          // child: Html(
-                          //   data: controller.agrementModel.value
-                          //           .generatedAgreement?.content ??
-                          //       '',
-                          // )
                           child: _DocumentSection(
-                            // pdfBytes: pdfBytes,
                             signedPdfBytes: signedPdfBytes,
                             isMobile: false,
                           ),
@@ -398,8 +391,9 @@ class _SignaturePart extends StatelessWidget {
         ElevatedButton(
             onPressed: () {
               PdfService.downloadHtmlAsPdf(
-                  controller.agrementModel.value.generatedAgreement?.content ??
-                      "");
+                  // controller.agrementModel.value.generatedAgreement?.content ??
+                  //     ""
+                  );
             },
             child: Text('download'))
       ],

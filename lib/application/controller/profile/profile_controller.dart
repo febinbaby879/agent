@@ -2,10 +2,12 @@ import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/image_picker/image_picker.dart';
 import 'package:agent_dashboard/application/presentation/utils/toast/flutter_toast.dart';
+import 'package:agent_dashboard/data/feature/pdf/pdf_service.dart';
 import 'package:agent_dashboard/data/service/profile/profile_service.dart';
 import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/social_media_link.dart';
+import 'package:agent_dashboard/domain/model/profile/agrement_model/agrement_model.dart';
 import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_account_info.dart';
 import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_operation.dart';
 import 'package:agent_dashboard/domain/repository/profile_repo.dart';
@@ -63,7 +65,9 @@ class ProfileController extends GetxController {
   RxBool bankingInfoLoading = false.obs;
   RxBool bankingInfoDeleteLoading = false.obs;
   RxBool isDefaultBanking = false.obs;
+  RxBool getAgreementLoading = false.obs;
   RxString bankAccountType = ''.obs;
+  Rx<AgrementModel> agrementModel = AgrementModel().obs;
 
   @override
   void onInit() {
@@ -377,6 +381,22 @@ class ProfileController extends GetxController {
           .copyWith(passportFile: r.uploadedDocuments?.passportFile);
     });
     passportImageLoading.value = false;
+  }
+
+  Future<void> getCompletedAgrement() async {
+    if (getAgreementLoading.value) return;
+    getAgreementLoading.value = true;
+    final result = await _profileService.getAgreement(service: 'eGAgent');
+    result.fold((l) {
+      agrementModel.value = AgrementModel();
+    }, (r) {
+      agrementModel.value = r;
+    });
+    getAgreementLoading.value = false;
+  }
+
+  Future<void> downloadAgrement()async{
+    PdfService.downloadHtmlAsPdf();
   }
 
   _loadFieldsToTextFields() {

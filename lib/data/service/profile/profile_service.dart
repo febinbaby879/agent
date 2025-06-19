@@ -7,6 +7,7 @@ import 'package:agent_dashboard/domain/core/endpoints/endpoints.dart';
 import 'package:agent_dashboard/domain/model/commen/failure/failure.dart';
 import 'package:agent_dashboard/domain/model/commen/success_responce_model/success_responce_model.dart';
 import 'package:agent_dashboard/domain/model/profile/agent_profile/agent_profile.dart';
+import 'package:agent_dashboard/domain/model/profile/agrement_model/agrement_model.dart';
 import 'package:agent_dashboard/domain/model/profile/bank_account_info/bank_operation.dart';
 import 'package:agent_dashboard/domain/model/profile/upload_document_response/upload_document_response.dart';
 import 'package:agent_dashboard/domain/repository/profile_repo.dart';
@@ -101,6 +102,30 @@ class ProfileService implements ProfileRepo {
       }
     } catch (e) {
       log('catch bankingInfo $e');
+      return Left(Failure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AgrementModel>> getAgreement(
+      {String? id, String? service}) async {
+    try {
+      log('reques getAgreement -> $service , $id');
+      final responce = await _apiService.post(
+          ApiEndPoints.getGeneratedAgrement.replaceFirst(
+              '{id}', id ?? await SharedPreferecesStorage.getUserId()),
+          data: {"service": service});
+      log('Success getAgreement -> ${responce.data}');
+      if (responce.success ?? false) {
+        log('Success getAgreement 1');
+        log("getAgreement: ${responce.data.toString()}");
+        return Right(AgrementModel.fromJson(responce.data));
+      } else {
+        log('Success getAgreement 2 fail');
+        return Left(Failure.fromResponse(responce));
+      }
+    } catch (e) {
+      log('catch getAgreement $e');
       return Left(Failure(message: e.toString()));
     }
   }

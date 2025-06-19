@@ -25,7 +25,6 @@ class ApiEndPoints {
   static String bankingOperations = '/agent/bank-details';
 
   /// [agreement]
-  // static String getAgreement = '/agreements/generate-complete/{id}';
   static String getAgreement = '/agreements/generate/{id}';
   static String addSignatureToAgreement = '/agent/upload-documents/{id}';
   static String getGeneratedAgrement = '/agreements/generate-complete/{id}';
