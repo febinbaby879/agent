@@ -22,6 +22,7 @@ class BuildRegistrationState extends StatelessWidget {
           ]),
       child: Row(children: [
         BuildRegistrationItem(
+          // onTap: () => ,
           count: 7,
           label: 'Student Registered (Today)',
           color: kpurple400!,
