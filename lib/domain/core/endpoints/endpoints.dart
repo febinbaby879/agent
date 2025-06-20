@@ -28,4 +28,7 @@ class ApiEndPoints {
   static String getAgreement = '/agreements/generate/{id}';
   static String addSignatureToAgreement = '/agent/upload-documents/{id}';
   static String getGeneratedAgrement = '/agreements/generate-complete/{id}';
+
+  /// [Home]
+  static String getCourses = '/course/agent-courses/eGAgent';
 }

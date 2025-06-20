@@ -395,7 +395,7 @@ class ProfileController extends GetxController {
     getAgreementLoading.value = false;
   }
 
-  Future<void> downloadAgrement()async{
+  Future<void> downloadAgrement() async {
     PdfService.downloadHtmlAsPdf();
   }
 

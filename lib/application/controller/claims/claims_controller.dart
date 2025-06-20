@@ -110,7 +110,8 @@ class ClaimsController extends GetxController {
             .bankingDetailKey
             .currentState
             ?.validate() ??
-        false) {      if (addBankAccoundLoading.value) return;
+        false) {
+      if (addBankAccoundLoading.value) return;
       addBankAccoundLoading.value = true;
       // Simulate a network call
       Future.delayed(const Duration(seconds: 2), () {

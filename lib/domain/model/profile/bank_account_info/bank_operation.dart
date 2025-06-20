@@ -21,7 +21,7 @@ class BankOperation {
 
   Map<String, dynamic> toJson() {
     final map = _$BankOperationToJson(this);
-    map.removeWhere((k,v)=> v==null);
+    map.removeWhere((k, v) => v == null);
     return map;
   }
 }
