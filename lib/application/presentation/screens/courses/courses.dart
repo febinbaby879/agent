@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agent_dashboard/application/controller/home/home_controller.dart';
 import 'package:agent_dashboard/application/presentation/screens/courses/widgets/courses_card.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
@@ -14,7 +12,6 @@ class CoursesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeController = Get.find<HomeController>();
-
     return Obx(() => homeController.courseLoading.value
         ? Center(child: CircularProgressIndicator(color: kpurple400))
         : homeController.allCourses.value.courses == null ||

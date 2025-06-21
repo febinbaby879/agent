@@ -56,7 +56,6 @@ class HomeController extends GetxController {
     courseLoading.value = true;
     final data = await homeRepo.getCourse();
     data.fold((l) => null, (r) {
-      //log('${r}');
       return allCourses.value = r;
     });
     courseLoading.value = false;
