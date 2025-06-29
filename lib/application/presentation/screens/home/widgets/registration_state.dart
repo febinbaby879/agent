@@ -21,23 +21,28 @@ class BuildRegistrationState extends StatelessWidget {
                 offset: const Offset(0, 1))
           ]),
       child: Row(children: [
-        BuildRegistrationItem(
-          // onTap: () => ,
-          count: 7,
-          label: 'Student Registered (Today)',
-          color: kpurple400!,
-          icon: Icons.calendar_today,
-        ),
-        BuildRegistrationItem(
-          count: 23,
-          label: 'Student Registered (This Month)',
-          color: kpurple400!,
-          icon: Icons.date_range,
-        ),
-        BuildRegistrationItem(
-            count: 89,
-            label: 'Student Registered (Total)',
+        Expanded(
+          child: BuildRegistrationItem(
+            count: 7,
+            label: 'Student Registered (Today)',
             color: kpurple400!,
-            icon: Icons.people)
+            icon: Icons.calendar_today,
+          ),
+        ),
+        Expanded(
+          child: BuildRegistrationItem(
+            count: 23,
+            label: 'Student Registered (This Month)',
+            color: kpurple400!,
+            icon: Icons.date_range,
+          ),
+        ),
+        Expanded(
+          child: BuildRegistrationItem(
+              count: 89,
+              label: 'Student Registered (Total)',
+              color: kpurple400!,
+              icon: Icons.people),
+        )
       ]));
 }

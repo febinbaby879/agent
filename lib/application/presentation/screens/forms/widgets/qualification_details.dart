@@ -19,21 +19,36 @@ class QualificationFilesDetails extends StatelessWidget {
             ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 kHeight10,
                 Text('Documents & Other Details', style: textHeadStyle1),
-                kHeight40,
+                kHeight20,
                 Text(
                     'Please attach clear copies of the documents asked in this section.',
                     style: textHeadStyle1.copyWith(fontSize: 14)),
+                kHeight20,
                 Obx(() => FilePickContainer(
                     isloading: formController.pickPassportImagesloading.value,
-                    needMoreFiles: (formController.passportImages.length == 1)
-                        ? true
-                        : false,
-                    text:
-                        'Passport Copy (Please upload the first and second page of passport, If applicable) (JPG 500 kb/File only)',
-                    selectedFiles: formController.passportImages,
+                    needMoreFiles:
+                        (formController.passportImagesFront.length == 1)
+                            ? true
+                            : false,
+                    text: 'Passport Front Side Copy *',
+                    selectedFiles: formController.passportImagesFront,
                     onTap: () => formController.pickPassportImages(),
                     onRemove: (image) => formController.removeImage(image))),
                 kHeight5,
+                GetBuilder<ApplicationController>(
+                    builder: (contro) => FilePickContainer(
+                        isloading: contro.pickPassportImagesBackloading.value,
+                        //  onUpdate: (p0) => formController.updatePassportSizePhoto(),
+                        needMoreFiles:
+                            (formController.passportImagesBack.length == 1)
+                                ? false
+                                : false,
+                        onTap: () => formController.pickPassportBackImages(),
+                        onRemove: (image) =>
+                            formController.removePassportBackImage(image),
+                        selectedFiles: formController.passportImagesBack,
+                        text: 'Passport Back Side Copy *')),
+                kHeight15,
                 GetBuilder<ApplicationController>(
                     builder: (contro) => FilePickContainer(
                         isloading: contro.pickPasspoertSizePhotoloading.value,
@@ -60,7 +75,7 @@ class QualificationFilesDetails extends StatelessWidget {
                         onRemove: (image) => formController
                             .removeHighestQualificationCertificate(image),
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         text:
@@ -73,7 +88,7 @@ class QualificationFilesDetails extends StatelessWidget {
                         selectedFiles: formController.mastersCertificate,
                         text: 'Master\'s Certificate (if applicable)',
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         onTap: () => formController.pickMastersCertificate(),
@@ -86,7 +101,7 @@ class QualificationFilesDetails extends StatelessWidget {
                             controller.pickBachlersCertificateloading.value,
                         selectedFiles: formController.bachelorsCertificate,
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         onTap: () => formController.pickBachlersCertificate(),
@@ -101,7 +116,7 @@ class QualificationFilesDetails extends StatelessWidget {
                         selectedFiles: formController.plustTwoALevelCertificate,
                         text: '+2 / A Level Certificate*',
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         onTap: () => formController.pickPlusTwoCertificate(),
@@ -114,7 +129,7 @@ class QualificationFilesDetails extends StatelessWidget {
                         selectedFiles: formController.tenthALevelCertificate,
                         text: '10 th / O Level Certificate*',
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         onTap: () => formController.pickTenthCertificate(),
@@ -126,7 +141,7 @@ class QualificationFilesDetails extends StatelessWidget {
                         isloading: controller.pickCVCertificateloading.value,
                         selectedFiles: formController.academicCVCertificate,
                         needMoreFiles:
-                            (formController.passportImages.length == 1)
+                            (formController.passportImagesFront.length == 1)
                                 ? false
                                 : false,
                         onTap: () => formController.pickCVCertificate(),
@@ -144,12 +159,11 @@ class QualificationFilesDetails extends StatelessWidget {
                             isloading:
                                 formController.pickPassportImagesloading.value,
                             needMoreFiles:
-                                (formController.passportImages.length == 1)
+                                (formController.passportImagesFront.length == 1)
                                     ? true
                                     : false,
-                            text:
-                                'Passport Copy (Please upload the first and second page of passport, If applicable) (JPG 500 kb/File only)',
-                            selectedFiles: formController.passportImages,
+                            text: 'Passport Front Side Copy',
+                            selectedFiles: formController.passportImagesFront,
                             onTap: () => formController.pickPassportImages(),
                             onRemove: (image) =>
                                 formController.removeImage(image)),
@@ -157,21 +171,22 @@ class QualificationFilesDetails extends StatelessWidget {
                   kWidth50,
                   GetBuilder<ApplicationController>(
                       builder: (contro) => Expanded(
-                          child: FilePickContainer(
-                              isloading:
-                                  contro.pickPasspoertSizePhotoloading.value,
-                              //  onUpdate: (p0) => formController.updatePassportSizePhoto(),
-                              needMoreFiles:
-                                  (formController.passportImages.length == 1)
-                                      ? false
-                                      : false,
-                              onTap: () =>
-                                  formController.pickPasspoertSizePhoto(),
-                              onRemove: (image) =>
-                                  formController.removePassportSizePhoto(image),
-                              selectedFiles: formController.passportSizePhoto,
-                              text:
-                                  'Passport Size Photo (With white background) (JPG 500 kb only)*')))
+                            child: FilePickContainer(
+                                isloading:
+                                    contro.pickPassportImagesBackloading.value,
+                                needMoreFiles:
+                                    (formController.passportImagesBack.length ==
+                                            1)
+                                        ? false
+                                        : false,
+                                onTap: () =>
+                                    formController.pickPassportBackImages(),
+                                onRemove: (image) => formController
+                                    .removePassportBackImage(image),
+                                selectedFiles:
+                                    formController.passportImagesBack,
+                                text: 'Passport Back Side Copy *'),
+                          )),
                 ]),
                 kHeight40,
                 Row(children: [
@@ -188,7 +203,8 @@ class QualificationFilesDetails extends StatelessWidget {
                               onRemove: (image) => formController
                                   .removeHighestQualificationCertificate(image),
                               needMoreFiles:
-                                  (formController.passportImages.length == 1)
+                                  (formController.passportImagesFront.length ==
+                                          1)
                                       ? false
                                       : false,
                               text:
@@ -202,7 +218,8 @@ class QualificationFilesDetails extends StatelessWidget {
                               selectedFiles: formController.mastersCertificate,
                               text: 'Master\'s Certificate (if applicable)',
                               needMoreFiles:
-                                  (formController.passportImages.length == 1)
+                                  (formController.passportImagesFront.length ==
+                                          1)
                                       ? false
                                       : false,
                               onTap: () =>
@@ -220,7 +237,8 @@ class QualificationFilesDetails extends StatelessWidget {
                               selectedFiles:
                                   formController.bachelorsCertificate,
                               needMoreFiles:
-                                  (formController.passportImages.length == 1)
+                                  (formController.passportImagesFront.length ==
+                                          1)
                                       ? false
                                       : false,
                               onTap: () =>
@@ -239,7 +257,8 @@ class QualificationFilesDetails extends StatelessWidget {
                                   formController.plustTwoALevelCertificate,
                               text: '+2 / A Level Certificate*',
                               needMoreFiles:
-                                  (formController.passportImages.length == 1)
+                                  (formController.passportImagesFront.length ==
+                                          1)
                                       ? false
                                       : false,
                               onTap: () =>
@@ -257,10 +276,11 @@ class QualificationFilesDetails extends StatelessWidget {
                                 selectedFiles:
                                     formController.tenthALevelCertificate,
                                 text: '10 th / O Level Certificate*',
-                                needMoreFiles:
-                                    (formController.passportImages.length == 1)
-                                        ? false
-                                        : false,
+                                needMoreFiles: (formController
+                                            .passportImagesFront.length ==
+                                        1)
+                                    ? false
+                                    : false,
                                 onTap: () =>
                                     formController.pickTenthCertificate(),
                                 onRemove: (image) => formController
@@ -274,17 +294,33 @@ class QualificationFilesDetails extends StatelessWidget {
                                     controller.pickCVCertificateloading.value,
                                 selectedFiles:
                                     formController.academicCVCertificate,
-                                needMoreFiles:
-                                    (formController.passportImages.length == 1)
-                                        ? false
-                                        : false,
+                                needMoreFiles: (formController
+                                            .passportImagesFront.length ==
+                                        1)
+                                    ? false
+                                    : false,
                                 onTap: () => formController.pickCVCertificate(),
                                 onRemove: (image) =>
                                     formController.removeCVCertificate(image),
                                 text:
                                     'Academic CV (Please upload Academic CV)*'),
                           ))
-                ])
+                ]),
+                kHeight40,
+                GetBuilder<ApplicationController>(
+                    builder: (contro) => FilePickContainer(
+                        isloading: contro.pickPasspoertSizePhotoloading.value,
+                        //  onUpdate: (p0) => formController.updatePassportSizePhoto(),
+                        needMoreFiles:
+                            (formController.passportImagesFront.length == 1)
+                                ? false
+                                : false,
+                        onTap: () => formController.pickPasspoertSizePhoto(),
+                        onRemove: (image) =>
+                            formController.removePassportSizePhoto(image),
+                        selectedFiles: formController.passportSizePhoto,
+                        text:
+                            'Passport Size Photo (With white background) (JPG 500 kb only)*'))
               ]));
   }
 }

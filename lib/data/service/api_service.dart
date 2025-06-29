@@ -25,7 +25,7 @@ class ApiService {
         if (addToken) {
           final token = await SharedPreferecesStorage.getAccessToken();
           if (token != null) {
-            options.headers['authorization'] = 'Bearer $token';
+            options.headers['authorization'] = 'Bearer Token $token';
           }
         }
         return handler.next(options);

@@ -1,12 +1,12 @@
 import 'package:agent_dashboard/application/controller/application/application.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/agency_details.dart';
 import 'package:agent_dashboard/application/presentation/screens/applications/widgets/build_steper.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/course_builder.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/current_address.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/parent_details.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/personal_details.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/qualification_details.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/working_experience.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/course_builder.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/emergency_contact_details.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/intake_add_info.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/intake_docs.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/intake_mode_study.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/personal_details.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/responsive/responsive.dart';
@@ -15,21 +15,23 @@ import 'package:agent_dashboard/application/presentation/widgets/event_button.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class StudentApllicationForm extends StatefulWidget {
-  const StudentApllicationForm({super.key});
+class IntakeForm extends StatefulWidget {
+  const IntakeForm({super.key});
 
   @override
-  State<StudentApllicationForm> createState() => _StudentApllicationFormState();
+  State<IntakeForm> createState() => _IntakeFormState();
 }
 
-class _StudentApllicationFormState extends State<StudentApllicationForm> {
+class _IntakeFormState extends State<IntakeForm> {
   int activeStep = 0;
   int upperBound = 6;
-
+  final bool agreeToTerms = false;
   @override
   Widget build(BuildContext context) {
+    final applicationController = Get.find<ApplicationController>();
     double screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallcreen = screenWidth < 700;
+
     Widget getStepContent(int stepIndex) {
       switch (stepIndex) {
         case 0:
@@ -37,21 +39,29 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
         case 1:
           return const PersonalDetails();
         case 2:
-          return ParentDetails();
+          return const IntakeAndModeOfStudySection();
         case 3:
-          return const CurrentAddress();
+          return const DocumentSubmissionSection();
         case 4:
-          return const QualificationFilesDetails();
-        case 5:
-          return const WorkExperience();
-        case 6:
           return const AgencyDetails();
+        case 5:
+          return const EmergencyContactDetails();
+        case 6:
+          return const AdditionalInformationSection();
         default:
           return kEmpty;
       }
     }
 
-    final formController = Get.find<ApplicationController>();
+    List<String> stepTitles = const [
+      'Choose Course',
+      'Personal Information',
+      'Intake and Mode of Study',
+      'Document Submission',
+      'Agency Details ',
+      'Emergency Contact Details',
+      'Additional Information'
+    ];
 
     bool validateCurrentStep() {
       showSnackbar(String message) {
@@ -64,23 +74,23 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
 
       switch (activeStep) {
         case 0:
-          if (formController.selectedCourse.value.isEmpty) {
+          if (applicationController.selectedCourse.value.isEmpty) {
             showSnackbar('Select Your Preferred Course');
             return false;
           }
           return true;
-        case 1:
+        case 1: //. Personal Details
           List<String> missingFields = [];
-          if (!formController.personalFormKey.currentState!.validate()) {
+          if (!applicationController.personalFormKey.currentState!.validate()) {
             missingFields.add("Personal Details");
           }
-          if (formController.selectedGender.value.isEmpty) {
+          if (applicationController.selectedGender.value.isEmpty) {
             missingFields.add("Gender");
           }
-          if (formController.personalDOBController.text.isEmpty) {
+          if (applicationController.personalDOBController.text.isEmpty) {
             missingFields.add("Date of Birth");
           }
-          if (formController.selectedmeritalStatus.value.isEmpty) {
+          if (applicationController.selectedmeritalStatus.value.isEmpty) {
             missingFields.add("Marital Status");
           }
           if (missingFields.isNotEmpty) {
@@ -88,34 +98,42 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
             return false;
           }
           return true;
-        case 2: //  Parent
-          if (!formController.parentFormKey.currentState!.validate()) {
-            showSnackbar('Please Fill Your Parent Details');
+
+        case 2: // Intake and Mode of Study
+          if (applicationController.selectedIntakeMonth.value.isEmpty) {
+            showSnackbar('Select Your Intake Month');
+            return false;
+          }
+          if (applicationController.selectedModeOfStudy.value.isEmpty) {
+            showSnackbar('Select Your Mode of Study');
             return false;
           }
           return true;
-        case 3: //  address
-          if (!formController.currentAddressFormKey.currentState!.validate()) {
-            showSnackbar('Please Fill Your Current Address');
+
+        case 3:
+          if (applicationController.signedOfferLetterUrl.isEmpty) {
+            showSnackbar('Select Your Signed offer letter');
+            return false;
+          }
+          if (applicationController.ticketsUrl.isEmpty) {
+            showSnackbar('Select Your Tickets');
             return false;
           }
           return true;
-        case 4: // Final Submission
-          List<String> missingDocs = [];
-          if (formController.passportImages.isEmpty) {
-            missingDocs.add("Passport Image");
+        case 5:
+          if (!applicationController.accomodationEmergecyFromKey.currentState!
+              .validate()) {
+            showSnackbar('Select Your Emergecy Details');
+            return false;
           }
-          if (formController.passportSizePhoto.isEmpty) {
-            missingDocs.add("Passport Size Photo");
+          return true;
+        case 6:
+          if (applicationController.selectedAccommodationAssistance.isEmpty) {
+            showSnackbar('Select Your Accommodation assistance');
+            return false;
           }
-          if (formController.highestQualificationCertificate.isEmpty) {
-            missingDocs.add("Highest Qualification Certificate");
-          }
-          if (formController.academicCVCertificate.isEmpty) {
-            missingDocs.add("Updated Resume Certificate");
-          }
-          if (missingDocs.isNotEmpty) {
-            showSnackbar("Please select: ${missingDocs.join(', ')}");
+          if (applicationController.airportPickupRequired.isEmpty) {
+            showSnackbar('Select Your Airport Pickup');
             return false;
           }
           return true;
@@ -123,16 +141,6 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
           return true;
       }
     }
-
-    List<String> stepTitles = const [
-      'Choose Course',
-      'Personal Information',
-      'Parent Details',
-      'Current Address',
-      'Qualification Details',
-      'Work Experience',
-      'Agency Details'
-    ];
 
     return Scaffold(
         body: Stack(children: [
@@ -163,12 +171,9 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                    Text('Start your application',
+                    Text('Intake application Form',
                         style: textHeadStyle1.copyWith(fontSize: 22)),
                     kHeight15,
-                    Text('Welcome to eduGuardian Dubai’s applicant portal!',
-                        style: textStyle1),
-                    kHeight10,
                     getStepContent(activeStep),
                     kHeight30,
                     Padding(
@@ -213,7 +218,12 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
                                         if (activeStep < upperBound) {
                                           activeStep++;
                                         } else {
-                                          formController.formSubmit(context);
+                                          applicationController.intakeFormSbmit(
+                                              applicationID: applicationController
+                                                      .getDetaailApplicationFormData
+                                                      .value
+                                                      .applicationId ??
+                                                  '');
                                         }
                                       });
                                     }
@@ -221,7 +231,7 @@ class _StudentApllicationFormState extends State<StudentApllicationForm> {
                             ])),
                     kHeight10,
                     Text(
-                        'Ensuring this data is correct helps us process your application efficiently and stay in touch with you throughout.',
+                        'I hereby declare that the information provided above is true and correct to the best of my knowledge. I understand that providing false or misleading information may lead to disqualification from the program. I consent to the use of my personal data for admission and communication purposes by eduGuardian.',
                         style: textThinStyle1.copyWith(fontSize: 10),
                         maxLines: 4)
                   ])))

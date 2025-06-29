@@ -36,7 +36,7 @@ class CurrentAddress extends StatelessWidget {
                         kHeight10,
                         CustomTextField(
                             validate: Validate.notNull,
-                            controller: formController.emiratesStatesController,
+                            controller: formController.currentStatesController,
                             hintText: 'Emirates/States',
                             onTapOutside: () =>
                                 FocusScope.of(context).unfocus()),
@@ -68,7 +68,7 @@ class CurrentAddress extends StatelessWidget {
                             child: CustomTextField(
                                 validate: Validate.notNull,
                                 controller:
-                                    formController.emiratesStatesController,
+                                    formController.currentStatesController,
                                 hintText: 'Emirates/States',
                                 onTapOutside: () =>
                                     FocusScope.of(context).unfocus()),

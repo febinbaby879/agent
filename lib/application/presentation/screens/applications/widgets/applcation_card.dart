@@ -1,16 +1,18 @@
-import 'package:agent_dashboard/application/presentation/screens/applications/application.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/course_builder.dart';
+import 'package:agent_dashboard/application/controller/application/application.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/widgets/course_builder.dart';
 import 'package:agent_dashboard/application/presentation/screens/home/home.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
+import 'package:agent_dashboard/domain/model/application/get_all_application_forms/application.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ApplicationStudentCard extends StatefulWidget {
-  final ApplicationModel task;
+  final ApplicationModel? applicationModel;
   final int index;
 
   const ApplicationStudentCard(
-      {super.key, required this.task, required this.index});
+      {super.key, this.applicationModel, required this.index});
 
   @override
   State<ApplicationStudentCard> createState() => _ApplicationStudentCardState();
@@ -21,20 +23,24 @@ class _ApplicationStudentCardState extends State<ApplicationStudentCard> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-    switch (widget.task.parentName.toLowerCase()) {
-      case 'completed':
-        statusColor = kGreen;
-        break;
-      case 'under review':
-        statusColor = kpurple400!;
-        break;
-      default:
-        statusColor = kDarkRed;
-    }
+    // Color statusColor;
+    // switch (widget.task.parentName.toLowerCase()) {
+    //   case 'completed':
+    //     statusColor = kGreen;
+    //     break;
+    //   case 'under review':
+    //     statusColor = kpurple400!;
+    //     break;
+    //   default:
+    //     statusColor = kDarkRed;
+    // }
 
     return GestureDetector(
-        onTap: () => scaffoldKey.currentState?.openEndDrawer(),
+        onTap: () {
+          scaffoldKey.currentState?.openEndDrawer();
+          Get.find<ApplicationController>().getDetailApplications(
+              id: widget.applicationModel?.applicationId ?? "");
+        },
         child: MouseRegion(
             onEnter: (_) => setState(() => _isHovered = true),
             onExit: (_) => setState(() => _isHovered = false),
@@ -62,16 +68,16 @@ class _ApplicationStudentCardState extends State<ApplicationStudentCard> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: statusColor.withOpacity(0.2),
+                                  color: kpurple400,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
-                                child: Text(widget.task.status ?? '',
-                                    style: TextStyle(
-                                        color: statusColor,
+                                child: Text(
+                                    widget.applicationModel?.status ?? '',
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12)))
                           ]),
-                          Text(widget.task.email,
+                          Text(widget.applicationModel?.courseName ?? '',
                               style: TextStyle(
                                   color: Colors.grey[600], fontSize: 14),
                               maxLines: 2,

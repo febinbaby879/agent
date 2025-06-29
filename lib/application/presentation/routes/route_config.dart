@@ -1,5 +1,6 @@
 import 'package:agent_dashboard/application/presentation/routes/routes.dart';
-import 'package:agent_dashboard/application/presentation/screens/applications/widgets/form.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/intake_form.dart';
+import 'package:agent_dashboard/application/presentation/screens/forms/student_form.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/forgot_password_.dart';
 import 'package:agent_dashboard/application/presentation/screens/auth/splash_screen.dart';
 import 'package:agent_dashboard/application/presentation/screens/onboarding/agreement_screen.dart';
@@ -24,8 +25,8 @@ class GoRouterConfig {
     // GoRoute(
     //     path: Routes.initial, builder: (context, state) => const HomeScreen()),
     GoRoute(
-        path: Routes.applicationForm,
-        builder: (context, state) => const StudentApllicationForm()),
+        path: Routes.homeScreen,
+        builder: (context, state) => const HomeScreen()),
     GoRoute(
         path: Routes.login, builder: (context, state) => const ScreenLogin()),
     GoRoute(
@@ -35,16 +36,18 @@ class GoRouterConfig {
         path: Routes.profile,
         builder: (context, state) => const ScreenProfile()),
     GoRoute(
-        path: Routes.homeScreen,
-        builder: (context, state) => const HomeScreen()),
+        path: Routes.studentApplicationForm,
+        builder: (context, state) => const StudentApllicationForm()),
     GoRoute(
-      path: '${Routes.agrementSign}/:id/:service',
-      builder: (context, state) {
-        final id = state.pathParameters['id'];
-        final name = state.pathParameters['service'];
-        return ScreenAgrementSignature(id: id, service: name);
-      },
-    ),
+        path: Routes.intakeApplicationForm,
+        builder: (context, state) => const IntakeForm()),
+    GoRoute(
+        path: '${Routes.agrementSign}/:id/:service',
+        builder: (context, state) {
+          final id = state.pathParameters['id'];
+          final name = state.pathParameters['service'];
+          return ScreenAgrementSignature(id: id, service: name);
+        })
   ];
   static _errorScreen() => Scaffold(
         appBar: AppBar(title: const Text('Error')),

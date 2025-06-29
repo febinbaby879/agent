@@ -31,7 +31,9 @@ class FilePickContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     log(isloading.toString());
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      text == '' ? kEmpty : Text(text, style: textThinStyle1),
+      text == ''
+          ? kEmpty
+          : Text(text, style: textThinStyle1.copyWith(color: kRed)),
       kHeight5,
       if (isloading)
         Container(

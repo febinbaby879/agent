@@ -94,7 +94,7 @@ class FilePickerService {
             log('Compression failed for ${file.name}');
           }
         }
-        log(imageModels[0]!.webImage.toString());
+        //log(imageModels[0]!.webImage.toString());
         return imageModels;
       }
       return [];

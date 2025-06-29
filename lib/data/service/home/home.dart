@@ -15,7 +15,7 @@ class HomeService implements HomeRepo {
       final responce = await _apiService.get(ApiEndPoints.getCourses);
       log('Success getCourse -> ');
       if (responce.success ?? false) {
-        log('Corsm >>> ${responce.data.toString()}');
+        log('Corsm >>>}');
         return Right(CourseData.fromJson(responce.data));
       } else {
         return Left(Failure.fromResponse(responce));

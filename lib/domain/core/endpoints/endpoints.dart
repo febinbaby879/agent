@@ -4,6 +4,7 @@ class ApiEndPoints {
 
   /// [Dev Local]
   // static String baseUrl = 'https://90n3qtc2-8000.inc1.devtunnels.ms/api';
+  static String localUrl = 'https://90n3qtc2-8000.inc1.devtunnels.ms/api';
 
   /// [imag base url]
   static String imgBaseUrl = 'https://api.myeduguardian.com';
@@ -14,6 +15,15 @@ class ApiEndPoints {
   static String userLogin = '/agent/login';
   static String forgotPassword = '/agent/forgot-password';
   static String resetNewPassword = '/agent/reset-password';
+
+  // student APPlication
+  static String studentApplication = '/agent/submit-student-application';
+  static String intakeForm = '/agent/intake-form/{id}';
+  static String allStudentApplication = '/agent/agent-student-applications';
+  static String detailStudentApplication =
+      '/agent/agent-student-applications/{id}';
+  static String fileUploading =
+      '/agent/student-applications/685c4c6e37805933808e927d/upload-files';
 
   // [onBoarding]
   static String getOnboardingStatus = '/agent/my-status';

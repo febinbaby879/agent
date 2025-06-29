@@ -43,7 +43,7 @@ class _BuildSearchAndFilersState extends State<BuildSearchAndFilers> {
         EventButton(
             hieght: 50,
             text: 'New Student',
-            onTap: () => context.go(Routes.applicationForm),
+            onTap: () => context.go(Routes.studentApplicationForm),
             color: kRed)
       ]),
       kHeight15,

@@ -76,7 +76,7 @@ class _TabbarState extends State<Tabbar> {
           style: textHeadStyle1,
           color: kRed,
           text: 'New Student',
-          onTap: () => context.go(Routes.applicationForm))
+          onTap: () => context.go(Routes.studentApplicationForm))
     ]);
   }
 
