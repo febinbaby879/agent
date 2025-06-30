@@ -82,7 +82,7 @@ class _ApplicationTabSectionState extends State<ApplicationTabSection>
                     .getAllApplicationFormsLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : applicationController.allApplicationData.value.applications !=
-                            null ||
+                            null &&
                         applicationController
                             .allApplicationData.value.applications!.isNotEmpty
                     ? GridView.builder(
