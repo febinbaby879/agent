@@ -43,11 +43,11 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.only(right: 30.0),
                           child: Obx(() {
-                            // if (!Get.find<ProfileController>()
-                            //     .onboardingDone
-                            //     .value) {
-                            //   return const KycUpdateActionWidget();
-                            // }
+                            if (!Get.find<ProfileController>()
+                                .onboardingDone
+                                .value) {
+                              return const KycUpdateActionWidget();
+                            }
                             switch (homeController.selectedTabContent.value) {
                               case 'dashboard':
                                 return const BuildDashboardContent();

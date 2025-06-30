@@ -759,73 +759,86 @@ class ProfileContent extends StatelessWidget {
 
   Widget _buildAgrementSection(
       BuildContext context, ProfileController controller) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: Row(
-          children: [
-            const Text('Review Agreement'),
-            const Spacer(),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: kpurple400, foregroundColor: kWhite),
-                onPressed: () {
-                  controller.getCompletedAgrement();
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: Obx(() {
-                          if (controller.getAgreementLoading.value) {
-                            return const Center(
-                              child: CupertinoActivityIndicator(),
-                            );
-                          }
-                          if (controller.agrementModel.value.generatedAgreement
-                                  ?.content?.isEmpty ??
-                              true) {
-                            return const Center(
-                              child: Text('Agreement not Availale'),
-                            );
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: HtmlToPdfView(
-                                        htmlContent: controller.agrementModel
-                                            .value.generatedAgreement!.content!,
-                                        containerId: 'html-container'),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: kpurple400,
-                                        foregroundColor: kWhite),
-                                    onPressed: () {
-                                      controller.downloadAgrement();
-                                    },
-                                    icon: const Icon(Icons.download),
-                                    label: const Text('Download'),
-                                  ),
-                                )
-                              ],
-                            ),
+    return Obx(
+      () => controller.onboardingDone.value
+          ? Card(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Row(
+                  children: [
+                    const Text('Peview Agreement'),
+                    const Spacer(),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: kpurple400,
+                            foregroundColor: kWhite),
+                        onPressed: () {
+                          controller.getCompletedAgrement();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: Obx(() {
+                                  if (controller.getAgreementLoading.value) {
+                                    return const Center(
+                                      child: CupertinoActivityIndicator(),
+                                    );
+                                  }
+                                  if (controller
+                                          .agrementModel
+                                          .value
+                                          .generatedAgreement
+                                          ?.content
+                                          ?.isEmpty ??
+                                      true) {
+                                    return const Center(
+                                      child: Text('Agreement not Availale'),
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            child: HtmlToPdfView(
+                                                htmlContent: controller
+                                                    .agrementModel
+                                                    .value
+                                                    .generatedAgreement!
+                                                    .content!,
+                                                containerId: 'html-container'),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: ElevatedButton.icon(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: kpurple400,
+                                                foregroundColor: kWhite),
+                                            onPressed: () {
+                                              controller.downloadAgrement();
+                                            },
+                                            icon: const Icon(Icons.download),
+                                            label: const Text('Download'),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              );
+                            },
                           );
-                        }),
-                      );
-                    },
-                  );
-                },
-                child: const Text('Preview'))
-          ],
-        ),
-      ),
+                        },
+                        child: const Text('Preview'))
+                  ],
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

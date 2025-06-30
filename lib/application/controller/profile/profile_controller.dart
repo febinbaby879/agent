@@ -386,7 +386,7 @@ class ProfileController extends GetxController {
   Future<void> getCompletedAgrement() async {
     if (getAgreementLoading.value) return;
     getAgreementLoading.value = true;
-    final result = await _profileService.getAgreement(service: 'eGAgent');
+    final result = await _profileService.getAgreement(service: 'eGAgents');
     result.fold((l) {
       agrementModel.value = AgrementModel();
     }, (r) {
