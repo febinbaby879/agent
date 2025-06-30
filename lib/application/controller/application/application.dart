@@ -23,7 +23,7 @@ class ApplicationController extends GetxController {
   void onInit() {
     super.onInit();
     workExperiences.add(WorkExperienceItem());
-    getAllApplications();
+    //getAllApplications();
   }
 
   Rx<ApplicationData> allApplicationData = ApplicationData().obs;
@@ -241,7 +241,7 @@ class ApplicationController extends GetxController {
     'November',
     'December'
   ];
-  final List<String> studyModes = ['On-Campus', 'Online', 'Blended'];
+  final List<String> studyModes = ['On Campus', 'Online', 'Blended'];
 
   void changeIntakeMonth(String month) {
     selectedIntakeMonth.value = month;
@@ -792,7 +792,7 @@ class ApplicationController extends GetxController {
   void intakeFormSbmit({required String applicationID}) async {
     final intakeFormData = {
       // Contact Information
-      'activeWhatsappNumber': '',
+      'activeWhatsappNumber': 'hbdfjhd',
       // Prsonal Details
       'firstName': firstNameController.text,
       'lastName': secondNameController.text,
@@ -811,8 +811,8 @@ class ApplicationController extends GetxController {
       // Academic Information
       'intakeMonth': selectedIntakeMonth.value,
       // Study Information
-      'modeOfStudy': selectedModeOfStudy.value
-          .toLowerCase(), // ensure enum match: on_campus, online, blended
+      'modeOfStudy':
+          'online', // normalizeModeOfStudy(selectedModeOfStudy.value), //
       // Emergency Contact Details
       'emergencyContactName':
           accomodationEmergecyFullNamerController.text.trim(),
@@ -828,8 +828,9 @@ class ApplicationController extends GetxController {
           .trim(), // convert to Date format at backend if needed
       'timeOfArrival': arrivalTimeController.text.trim(),
       // Services Required (Yes/No ➜ Boolean)
-      'requireAccommodation': selectedAccommodationAssistance.value,
-      'requireAirportPickup': airportPickupRequired.value,
+      'requireAccommodation':
+          yesNoToBool(selectedAccommodationAssistance.value),
+      'requireAirportPickup': yesNoToBool(airportPickupRequired.value),
       // Agreement
       'agreeTermsAndConditions': true,
     };
@@ -838,7 +839,7 @@ class ApplicationController extends GetxController {
 
     Map<String, RxList<ImageModel?>> fileGroups = {
       'signedOfferLetter': signedOfferLetterUrl,
-      // 'ticket': ticketsUrl
+      'flightTicket': ticketsUrl
     };
 
     for (final entry in fileGroups.entries) {
@@ -892,6 +893,18 @@ class ApplicationController extends GetxController {
             message: l.message ?? '', backgroundColor: kRed, title: ''),
         (r) => getDetaailApplicationFormData.value = r);
     getDetalApplicationFormLoading.value = false;
+  }
+
+  String? normalizeModeOfStudy(String input) {
+    const validModes = {
+      'On Campuss': 'on_campus',
+      'online': 'online',
+      'Blended': 'blended',
+    };
+
+    final normalizedInput = input.trim().toLowerCase();
+
+    return validModes[normalizedInput];
   }
 
   // Country codes list
