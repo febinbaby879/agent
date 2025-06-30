@@ -29,6 +29,7 @@ class AgentProfile {
   String? directorName;
   String? directorContactNumber;
   String? businessRegNum;
+  @JsonKey(name: 'onboarding')
   bool? onboading;
   BankDetail? bankDetails;
 

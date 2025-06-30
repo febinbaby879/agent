@@ -1,11 +1,14 @@
 import 'package:agent_dashboard/application/controller/profile/profile_controller.dart';
+import 'package:agent_dashboard/application/presentation/routes/routes.dart';
 import 'package:agent_dashboard/application/presentation/utils/colors.dart';
 import 'package:agent_dashboard/application/presentation/utils/constants.dart';
 import 'package:agent_dashboard/application/presentation/utils/image_preview/network_image_with_loader.dart';
 import 'package:agent_dashboard/application/presentation/widgets/hover/hover_menu.dart';
 import 'package:agent_dashboard/application/presentation/widgets/hover/hover_switcher.dart';
+import 'package:agent_dashboard/data/shared_preference/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class SidebarWidget extends StatelessWidget {
   final double maxWidth;
@@ -132,7 +135,10 @@ class SidebarWidget extends StatelessWidget {
                     iconColor: kpurple400,
                     icon: Icons.logout,
                     text: 'LOG-OUT',
-                    onTap: () {}),
+                    onTap: () {
+                      // SharedPreferecesStorage.clearLogin();
+                      // context.goNamed(Routes.login);
+                    }),
                 // NavItem(
                 //     icon: Icons.shopping_bag_outlined,
                 //     title: 'Course Wishlists',
