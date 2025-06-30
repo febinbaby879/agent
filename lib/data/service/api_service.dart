@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: ApiEndPoints.localUrl,
+      baseUrl: ApiEndPoints.baseUrl,
       headers: {'Content-Type': 'application/json'},
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
@@ -38,7 +38,7 @@ class ApiService {
       Map<String, String>? headers,
       bool addHeader = true}) async {
     try {
-      log('GET Url => ${ApiEndPoints.localUrl}$url');
+      log('GET Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.get(url,
           queryParameters: queryParameters, options: Options(headers: headers));
       return _handleResponse(response);
@@ -57,7 +57,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
-      log('POST Url => ${ApiEndPoints.localUrl}$url');
+      log('POST Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.post(url,
           data: data,
           queryParameters: queryParameters,
@@ -79,7 +79,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
-      log('PUT Url => ${ApiEndPoints.localUrl}$url');
+      log('PUT Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.put(url,
           data: data,
           queryParameters: queryParameters,
@@ -100,7 +100,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
-      log('DELETE Url => ${ApiEndPoints.localUrl}$url');
+      log('DELETE Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.delete(url,
           data: data,
           queryParameters: queryParameters,
@@ -121,7 +121,7 @@ class ApiService {
       dynamic data,
       bool addHeader = true}) async {
     try {
-      log('PATCH Url => ${ApiEndPoints.localUrl}$url');
+      log('PATCH Url => ${ApiEndPoints.baseUrl}$url');
       final response = await _dio.patch(url,
           data: data,
           queryParameters: queryParameters,
